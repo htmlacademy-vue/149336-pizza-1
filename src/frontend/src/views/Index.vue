@@ -27,26 +27,21 @@
             <div class="sheet">
               <h2 class="title title--small sheet__title">Выберите тесто</h2>
               <div class="sheet__content dough">
-                <label class="dough__input dough__input--light">
+                <label
+                  v-for="dough in pizzas.dough"
+                  :key="dough.id"
+                  class="dough__input"
+                  :class="getDoughName(dough.image)"
+                >
                   <input
                     type="radio"
                     name="dought"
-                    value="light"
+                    :value="getName('-', -4, dough.image)"
                     class="visually-hidden"
-                    checked
+                    :checked="dough.name === 'Тонкое'"
                   />
-                  <b>Тонкое</b>
-                  <span>Из твердых сортов пшеницы</span>
-                </label>
-                <label class="dough__input dough__input--large">
-                  <input
-                    type="radio"
-                    name="dought"
-                    value="large"
-                    class="visually-hidden"
-                  />
-                  <b>Толстое</b>
-                  <span>Из твердых сортов пшеницы</span>
+                  <b>{{ dough.name }}</b>
+                  <span>{{ dough.description }}</span>
                 </label>
               </div>
             </div>
@@ -57,33 +52,20 @@
               <h2 class="title title--small sheet__title">Выберите размер</h2>
 
               <div class="sheet__content diameter">
-                <label class="diameter__input diameter__input--small">
+                <label
+                  v-for="size in pizzas.sizes"
+                  :key="size.id"
+                  class="diameter__input"
+                  :class="getClassDiameter(size.multiplier)"
+                >
                   <input
                     type="radio"
                     name="diameter"
-                    value="small"
+                    :value="getClass(size.multiplier)"
                     class="visually-hidden"
+                    :checked="size.id === 2"
                   />
-                  <span>23 см</span>
-                </label>
-                <label class="diameter__input diameter__input--normal">
-                  <input
-                    type="radio"
-                    name="diameter"
-                    value="normal"
-                    class="visually-hidden"
-                    checked
-                  />
-                  <span>32 см</span>
-                </label>
-                <label class="diameter__input diameter__input--big">
-                  <input
-                    type="radio"
-                    name="diameter"
-                    value="big"
-                    class="visually-hidden"
-                  />
-                  <span>45 см</span>
+                  <span> {{ size.name }}</span>
                 </label>
               </div>
             </div>
@@ -97,14 +79,23 @@
               <div class="sheet__content ingridients">
                 <div class="ingridients__sauce">
                   <p>Основной соус:</p>
-                  <label class="radio ingridients__input">
-                    <input type="radio" name="sauce" value="tomato" checked />
-                    <span>Томатный</span>
+                  <label
+                    v-for="sauce in pizzas.sauces"
+                    :key="sauce.id"
+                    class="radio ingridients__input"
+                  >
+                    <input
+                      type="radio"
+                      name="sauce"
+                      :value="getValueSauce(sauce.name)"
+                      :checked="sauce.name === 'Томатный'"
+                    />
+                    <span>{{ sauce.name }}</span>
                   </label>
-                  <label class="radio ingridients__input">
+                  <!-- <label class="radio ingridients__input">
                     <input type="radio" name="sauce" value="creamy" />
                     <span>Сливочный</span>
-                  </label>
+                  </label> -->
                 </div>
                 <div class="ingridients__filling">
                   <p>Начинка:</p>
@@ -199,9 +190,47 @@ export default {
     };
   },
   methods: {
+    getName(symb, end, str) {
+      let st = str.slice(str.lastIndexOf(symb) + 1, end);
+      return st;
+    },
     getFillingName(str) {
-      let st = str.slice(str.lastIndexOf("/") + 1, -4);
-      return `filling--${st}`;
+      return `filling--${this.getName("/", -4, str)}`;
+    },
+    getDoughName(string) {
+      return `dough__input--${this.getName("-", -4, string)}`;
+    },
+    getClass(multiplier) {
+      let className =
+        multiplier === 1
+          ? "small"
+          : multiplier === 2
+          ? "normal"
+          : multiplier === 3
+          ? "big"
+          : "";
+      return className;
+    },
+    getClassDiameter(multiplier) {
+      let diameter = this.getClass(multiplier);
+      let className =
+        diameter === "small"
+          ? "diameter__input--small"
+          : diameter === "normal"
+          ? "diameter__input--normal"
+          : diameter === "big"
+          ? "diameter__input--big"
+          : "";
+      return className;
+    },
+    getValueSauce(sauceName) {
+      let sauce =
+        sauceName === "Томатный"
+          ? "tomato"
+          : sauceName === "Сливочный"
+          ? "creamy"
+          : "";
+      return sauce;
     },
   },
 };
