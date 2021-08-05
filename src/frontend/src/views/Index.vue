@@ -28,20 +28,20 @@
               <h2 class="title title--small sheet__title">Выберите тесто</h2>
               <div class="sheet__content dough">
                 <label
-                  v-for="dough in pizzas.dough"
-                  :key="dough.id"
+                  v-for="item in dough"
+                  :key="item.id"
                   class="dough__input"
-                  :class="getDoughName(dough.image)"
+                  :class="`dough__input--${item.type}`"
                 >
                   <input
                     type="radio"
                     name="dought"
-                    :value="getName('-', -4, dough.image)"
+                    :value="item.type"
                     class="visually-hidden"
-                    :checked="dough.name === 'Тонкое'"
+                    :checked="item.isChecked"
                   />
-                  <b>{{ dough.name }}</b>
-                  <span>{{ dough.description }}</span>
+                  <b>{{ item.name }}</b>
+                  <span>{{ item.description }}</span>
                 </label>
               </div>
             </div>
@@ -53,19 +53,19 @@
 
               <div class="sheet__content diameter">
                 <label
-                  v-for="size in pizzas.sizes"
-                  :key="size.id"
+                  v-for="item in sizes"
+                  :key="item.id"
                   class="diameter__input"
-                  :class="getClassDiameter(size.multiplier)"
+                  :class="`diameter__input--${item.size}`"
                 >
                   <input
                     type="radio"
                     name="diameter"
-                    :value="getClass(size.multiplier)"
+                    :value="item.size"
                     class="visually-hidden"
-                    :checked="size.id === 2"
+                    :checked="item.isChecked"
                   />
-                  <span> {{ size.name }}</span>
+                  <span> {{ item.name }}</span>
                 </label>
               </div>
             </div>
@@ -80,36 +80,29 @@
                 <div class="ingridients__sauce">
                   <p>Основной соус:</p>
                   <label
-                    v-for="sauce in pizzas.sauces"
-                    :key="sauce.id"
+                    v-for="item in sauces"
+                    :key="item.id"
                     class="radio ingridients__input"
                   >
                     <input
                       type="radio"
                       name="sauce"
-                      :value="getValueSauce(sauce.name)"
-                      :checked="sauce.name === 'Томатный'"
+                      :value="item.value"
+                      :checked="item.isChecked"
                     />
-                    <span>{{ sauce.name }}</span>
+                    <span>{{ item.name }}</span>
                   </label>
-                  <!-- <label class="radio ingridients__input">
-                    <input type="radio" name="sauce" value="creamy" />
-                    <span>Сливочный</span>
-                  </label> -->
                 </div>
                 <div class="ingridients__filling">
                   <p>Начинка:</p>
                   <ul class="ingridients__list">
                     <li
-                      v-for="filling in pizzas.ingredients"
-                      :key="filling.id"
+                      v-for="item in ingredients"
+                      :key="item.id"
                       class="ingridients__item"
                     >
-                      <span
-                        class="filling"
-                        :class="getFillingName(filling.image)"
-                      >
-                        {{ filling.name }}
+                      <span class="filling" :class="`filling--${item.label}`">
+                        {{ item.name }}
                       </span>
                       <div class="counter counter--orange ingridients__counter">
                         <button
@@ -180,58 +173,25 @@ import miscs from "@/static/misc.json";
 import pizzas from "@/static/pizza.json";
 import users from "@/static/user.json";
 
+import {
+  normalizeDough,
+  normalizeSizes,
+  normalizeSauces,
+  normalizeIngredients,
+} from "@/common/helpers";
+
 export default {
   name: "IndexHome",
   data() {
     return {
       miscs,
+      dough: pizzas.dough.map((item) => normalizeDough(item)),
+      sizes: pizzas.sizes.map((item) => normalizeSizes(item)),
+      sauces: pizzas.sauces.map((item) => normalizeSauces(item)),
+      ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
       pizzas,
       users,
     };
-  },
-  methods: {
-    getName(symb, end, str) {
-      let st = str.slice(str.lastIndexOf(symb) + 1, end);
-      return st;
-    },
-    getFillingName(str) {
-      return `filling--${this.getName("/", -4, str)}`;
-    },
-    getDoughName(string) {
-      return `dough__input--${this.getName("-", -4, string)}`;
-    },
-    getClass(multiplier) {
-      let className =
-        multiplier === 1
-          ? "small"
-          : multiplier === 2
-          ? "normal"
-          : multiplier === 3
-          ? "big"
-          : "";
-      return className;
-    },
-    getClassDiameter(multiplier) {
-      let diameter = this.getClass(multiplier);
-      let className =
-        diameter === "small"
-          ? "diameter__input--small"
-          : diameter === "normal"
-          ? "diameter__input--normal"
-          : diameter === "big"
-          ? "diameter__input--big"
-          : "";
-      return className;
-    },
-    getValueSauce(sauceName) {
-      let sauce =
-        sauceName === "Томатный"
-          ? "tomato"
-          : sauceName === "Сливочный"
-          ? "creamy"
-          : "";
-      return sauce;
-    },
   },
 };
 </script>
