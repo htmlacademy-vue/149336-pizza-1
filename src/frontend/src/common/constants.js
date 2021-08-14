@@ -37,3 +37,6 @@ export const INGREDIENTS_CLASS = {
   14: "parmesan",
   15: "blue_cheese",
 };
+
+export const MOVE = "move";
+export const DATA_TRANSFER_PAYLOAD = "payload";
