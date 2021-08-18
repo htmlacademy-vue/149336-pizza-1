@@ -3,8 +3,8 @@
     <button
       type="button"
       class="counter__button counter__button--disabled counter__button--minus"
-      :disabled="counterInput <= 0"
-      @click="counterInput--"
+      :disabled="value <= 0"
+      @click="$emit('input', value - 1)"
     >
       <span class="visually-hidden">Меньше</span>
     </button>
@@ -12,15 +12,14 @@
       type="text"
       name="counter"
       class="counter__input"
-      value="0"
-      @input="changeCounterValue($event, data.id, data.price)"
-      v-model="counterInput"
+      :value="value"
+      @keydown="validateCount($event, id)"
     />
     <button
       type="button"
       class="counter__button counter__button--plus"
-      :disabled="counterInput >= 3"
-      @click="counterInput++"
+      :disabled="value >= 3"
+      @click="$emit('input', value + 1)"
     >
       <span class="visually-hidden">Больше</span>
     </button>
@@ -30,25 +29,18 @@
 <script>
 export default {
   name: "ItemCounter",
-  data() {
-    return {
-      counterInput: 0,
-    };
-  },
   props: {
-    data: {
-      type: Object,
-      required: true,
-    },
+    value: {},
+    id: {},
   },
   methods: {
-    changeCounterValue(event, id, price) {
-      this.$parent.$emit("changeCounterValue", this.counterInput, id, price);
-    },
-  },
-  watch: {
-    counterInput: function () {
-      this.changeCounterValue();
+    validateCount(event, id) {
+      if (!/[0-3]/.test(event.key)) {
+        event.preventDefault();
+        console.log(`!`);
+      } else {
+        this.$emit("input", event.target.value, id);
+      }
     },
   },
 };

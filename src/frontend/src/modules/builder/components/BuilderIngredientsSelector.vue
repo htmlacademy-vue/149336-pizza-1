@@ -26,7 +26,10 @@
                 </span>
               </AppDrag>
             </AppDrop>
-            <ItemCounter :data="item" />
+            <ItemCounter
+              v-model="item.count"
+              @input="$emit('input', $event, item.id)"
+            />
           </li>
         </ul>
       </div>

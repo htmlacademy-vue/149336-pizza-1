@@ -12,9 +12,9 @@
           type="radio"
           name="dought"
           :value="item.type"
+          v-model="checkedDough"
           class="visually-hidden"
-          :checked="item.isChecked"
-          @change="changeDoughBtn($event, item.price)"
+          @change="$emit('change', $event.target.value, item.price)"
         />
         <b>{{ item.name }}</b>
         <span>{{ item.description }}</span>
@@ -26,15 +26,15 @@
 <script>
 export default {
   name: "BuilderDoughSelector",
+  data() {
+    return {
+      checkedDough: "light",
+    };
+  },
   props: {
     dough: {
       type: Array,
       required: true,
-    },
-  },
-  methods: {
-    changeDoughBtn(event, price) {
-      this.$emit("changeDoughBtn", event.target.value, price);
     },
   },
 };

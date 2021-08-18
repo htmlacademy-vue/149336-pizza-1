@@ -1,8 +1,24 @@
-<template></template>
+<template>
+  <div class="content__result">
+    <p>Итого: {{ totalPrice }} ₽</p>
+    <button
+      type="button"
+      class="button"
+      :class="{ 'button--disabled': isEmptyNamePizza }"
+      :disabled="isEmptyNamePizza"
+    >
+      Готовьте!
+    </button>
+  </div>
+</template>
 
 <script>
 export default {
-  name: "",
+  name: "BuilderPriceCounter",
+  props: {
+    totalPrice: {},
+    isEmptyNamePizza: {},
+  },
 };
 </script>
 

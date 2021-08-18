@@ -12,9 +12,10 @@
           type="radio"
           name="diameter"
           :value="item.size"
+          v-model="checkedSize"
           class="visually-hidden"
           :checked="item.isChecked"
-          @change="changeSizeBtn($event, item.multiplier)"
+          @change="$emit('change', $event.target.value, item.multiplier)"
         />
         <span> {{ item.name }}</span>
       </label>
@@ -25,15 +26,15 @@
 <script>
 export default {
   name: "BuilderSizeSelector",
+  data() {
+    return {
+      checkedSize: "normal",
+    };
+  },
   props: {
     sizes: {
       type: Array,
       required: true,
-    },
-  },
-  methods: {
-    changeSizeBtn(event, multiplier) {
-      this.$emit("changeSizeBtn", event.target.value, multiplier);
     },
   },
 };

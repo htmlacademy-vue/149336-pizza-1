@@ -5,6 +5,7 @@
       <input
         type="text"
         name="pizza_name"
+        v-model="pizzaName"
         placeholder="Введите название пиццы"
       />
     </label>
@@ -19,18 +20,29 @@
       </div>
     </div>
 
-    <div class="content__result">
-      <p>Итого: 0 ₽</p>
-      <button type="button" class="button button--disabled" disabled>
-        Готовьте!
-      </button>
-    </div>
+    <BuilderPriceCounter
+      :totalPrice="total"
+      :isEmptyNamePizza="!pizzaName.trim()"
+    />
   </div>
 </template>
 
 <script>
+import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+
 export default {
   name: "BuilderPizzaView",
+  components: {
+    BuilderPriceCounter,
+  },
+  props: {
+    total: {},
+  },
+  data() {
+    return {
+      pizzaName: "",
+    };
+  },
 };
 </script>
 
