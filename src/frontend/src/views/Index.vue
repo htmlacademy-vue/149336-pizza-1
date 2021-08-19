@@ -100,7 +100,7 @@ export default {
       this.updatePizza();
     },
     changeCounter(newCount, id) {
-      console.log(`changeCounter${id}`);
+      console.log(`count(Index)=${newCount}, id=${id}`);
       this.composition.ingr.filter((item, index) => {
         if (item.id == id) {
           this.composition.ingr[index].count = +newCount;

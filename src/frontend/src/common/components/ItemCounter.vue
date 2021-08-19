@@ -13,7 +13,7 @@
       name="counter"
       class="counter__input"
       :value="value"
-      @keydown="validateCount($event, id)"
+      @keydown="validateCount($event)"
     />
     <button
       type="button"
@@ -34,12 +34,13 @@ export default {
     id: {},
   },
   methods: {
-    validateCount(event, id) {
+    validateCount(event) {
+      console.log(`count(ItemCounter) = ${event.key}`);
       if (!/[0-3]/.test(event.key)) {
         event.preventDefault();
         console.log(`!`);
       } else {
-        this.$emit("input", event.target.value, id);
+        this.$emit("input", event.key);
       }
     },
   },
