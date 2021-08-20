@@ -11,18 +11,28 @@
     </label>
 
     <div class="content__constructor">
-      <div class="pizza pizza--foundation--big-tomato">
+      <div class="pizza" :class="classPizza">
         <div class="pizza__wrapper">
-          <div class="pizza__filling pizza__filling--ananas"></div>
-          <div class="pizza__filling pizza__filling--bacon"></div>
-          <div class="pizza__filling pizza__filling--cheddar"></div>
+          <div
+            v-for="item in pizza"
+            :key="item.id"
+            class="pizza__filling"
+            :class="[
+              {
+                'pizza__filling--second': item.count === 2,
+                'pizza__filling--third': item.count === 3,
+              },
+              `pizza__filling--${item.name}`,
+            ]"
+          ></div>
         </div>
       </div>
     </div>
 
     <BuilderPriceCounter
       :totalPrice="total"
-      :isEmptyNamePizza="!pizzaName.trim()"
+      :isEmptyNamePizza="!pizzaName.trim() || !pizza.length"
+      @click="$emit('click', $event, pizzaName)"
     />
   </div>
 </template>
@@ -37,11 +47,22 @@ export default {
   },
   props: {
     total: {},
+    classPizza: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
       pizzaName: "",
+      pizza: [],
     };
+  },
+  mounted() {
+    //TODO передача между соседними компонентами
+    this.$root.$on("changeFilling", (data) => {
+      this.pizza = data;
+    });
   },
 };
 </script>

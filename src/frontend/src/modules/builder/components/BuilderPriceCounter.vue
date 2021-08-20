@@ -6,6 +6,7 @@
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
+      @click="$emit('click', $event)"
     >
       Готовьте!
     </button>

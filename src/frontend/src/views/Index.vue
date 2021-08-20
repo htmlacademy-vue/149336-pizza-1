@@ -29,7 +29,11 @@
         </div>
 
         <div class="content__pizza">
-          <BuilderPizzaView :total="composition.totalPrice" />
+          <BuilderPizzaView
+            :total="composition.totalPrice"
+            :classPizza="composition.classPizza"
+            @click="orderPizza"
+          />
         </div>
       </div>
     </form>
@@ -85,13 +89,37 @@ export default {
         },
         ingr: pizzas.ingredients.map((item) => normalizeIngredients(item)),
         totalPrice: 0,
+        classPizza: "pizza--foundation--small-tomato",
+        pizzaFilling: [],
+        namePizza: "",
       },
     };
   },
   methods: {
+    switchClassPizza() {
+      let classPizza = "pizza--foundation";
+      switch (this.composition.dough.value) {
+        case "light":
+          classPizza = `${classPizza}--small`;
+          break;
+        case "large":
+          classPizza = `${classPizza}--big`;
+          break;
+      }
+      switch (this.composition.sauce.value) {
+        case "tomato":
+          classPizza = `${classPizza}-tomato`;
+          break;
+        case "creamy":
+          classPizza = `${classPizza}-creamy`;
+          break;
+      }
+      this.composition.classPizza = classPizza;
+    },
     changeDough(newDough, newPrice) {
       this.composition.dough.value = newDough;
       this.composition.dough.price = newPrice;
+      this.switchClassPizza();
       this.updatePizza();
     },
     changeSize(newSize, newMultiplier) {
@@ -100,24 +128,37 @@ export default {
       this.updatePizza();
     },
     changeCounter(newCount, id) {
-      console.log(`count(Index)=${newCount}, id=${id}`);
       this.composition.ingr.filter((item, index) => {
         if (item.id == id) {
           this.composition.ingr[index].count = +newCount;
-          console.log(`count = ${this.composition.ingr[index].count}`);
+
+          let filling = this.composition.ingr
+            .filter((item) => {
+              return item.count > 0;
+            })
+            .map((item) => {
+              item = {
+                id: item.id,
+                count: item.count,
+                name: item.label,
+              };
+              return item;
+            });
+          this.composition.pizzaFilling = filling;
           return index;
         }
       });
       this.updatePizza();
+      this.$root.$emit("changeFilling", this.composition.pizzaFilling); //TODO передача между соседними компонентами
     },
     changeSouces(newSauce, newPrice) {
       this.composition.sauce.value = newSauce;
       this.composition.sauce.price = newPrice;
+      this.switchClassPizza();
       this.updatePizza();
     },
     updatePizza() {
       let newArr = [];
-      console.log(this.composition.ingr);
       this.composition.ingr
         .filter((item) => {
           return item.count > 0;
@@ -131,6 +172,14 @@ export default {
         (this.composition.dough.price + this.composition.sauce.price + multi) *
         this.composition.size.multiplier;
       this.composition.totalPrice = newTotalPrice;
+    },
+    orderPizza(event, name) {
+      this.composition.namePizza = name;
+      console.log(this.composition.namePizza);
+      console.log(this.composition);
+      setTimeout(() => {
+        this.composition.namePizza = "";
+      }, 1000);
     },
   },
   created: function () {
