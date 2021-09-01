@@ -1,21 +1,37 @@
 <template>
-  <label class="radio" :class="classRadioBtn">
+  <label :class="classRadioBtn">
     <input
       type="radio"
-      name="sauce"
-      :value="data.value"
-      :checked="data.isChecked"
-      @change="changeRadioBtn($event, data.price)"
+      :name="name"
+      :value="
+        name === `sauce`
+          ? data.value
+          : name === `diameter`
+          ? data.size
+          : data.type
+      "
+      :checked="checkedInp"
+      :class="classRadioInput"
+      @change="$emit('change', $event.target.value)"
     />
-    <span>{{ data.name }}</span>
+    <slot></slot>
   </label>
 </template>
 
 <script>
 export default {
   name: "RadioButton",
+  model: {
+    prop: "checked",
+    event: "change",
+  },
   props: {
+    checked: {},
     classRadioBtn: {
+      type: String,
+      required: false,
+    },
+    classRadioInput: {
       type: String,
       required: false,
     },
@@ -23,11 +39,11 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  methods: {
-    changeRadioBtn(event, price) {
-      this.$parent.$emit("changeRadioBtn", event.target.value, price);
+    checkedInp: {
+      type: String,
+      required: true,
     },
+    name: {},
   },
 };
 </script>

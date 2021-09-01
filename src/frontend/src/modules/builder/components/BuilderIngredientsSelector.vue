@@ -8,8 +8,14 @@
           v-for="item in sauces"
           :key="item.id"
           :data="item"
-          :classRadioBtn="`ingridients__input`"
-        />
+          :name="`sauce`"
+          v-model="item.value"
+          :checkedInp="checkedSouce"
+          :classRadioBtn="`radio ingridients__input`"
+          @change="$emit('change', $event, item.price)"
+        >
+          <span>{{ item.name }}</span>
+        </RadioButton>
       </div>
       <div class="ingridients__filling">
         <p>Начинка:</p>
@@ -45,6 +51,11 @@ import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderIngredientsSelector",
+  data() {
+    return {
+      checkedSouce: "creamy",
+    };
+  },
   props: {
     ingredients: {
       type: Array,

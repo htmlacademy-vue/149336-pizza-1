@@ -2,28 +2,26 @@
   <div class="sheet">
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="diameter sheet__content">
-      <label
+      <RadioButton
         v-for="item in sizes"
         :key="item.id"
-        class="diameter__input"
-        :class="`diameter__input--${item.size}`"
+        :data="item"
+        :name="`diameter`"
+        v-model="item.size"
+        :checkedInp="checkedSize"
+        :classRadioBtn="`diameter__input diameter__input--${item.size}`"
+        :classRadioInput="`visually-hidden`"
+        @change="$emit('change', $event, item.multiplier)"
       >
-        <input
-          type="radio"
-          name="diameter"
-          :value="item.size"
-          v-model="checkedSize"
-          class="visually-hidden"
-          :checked="item.isChecked"
-          @change="$emit('change', $event.target.value, item.multiplier)"
-        />
         <span> {{ item.name }}</span>
-      </label>
+      </RadioButton>
     </div>
   </div>
 </template>
 
 <script>
+import RadioButton from "@/common/components/RadioButton";
+
 export default {
   name: "BuilderSizeSelector",
   data() {
@@ -36,6 +34,9 @@ export default {
       type: Array,
       required: true,
     },
+  },
+  components: {
+    RadioButton,
   },
 };
 </script>

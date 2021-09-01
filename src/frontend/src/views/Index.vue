@@ -24,7 +24,7 @@
             :sauces="sauces"
             :ingredients="ingredients"
             @input="changeCounter"
-            @changeRadioBtn="changeSouces"
+            @change="changeSouces"
           />
         </div>
 
