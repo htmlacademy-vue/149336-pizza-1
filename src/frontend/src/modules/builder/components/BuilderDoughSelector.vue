@@ -5,10 +5,9 @@
       <RadioButton
         v-for="item in dough"
         :key="item.id"
-        :data="item"
         :name="`dough`"
-        v-model="item.type"
-        :checkedInp="checkedDough"
+        :value="item.type"
+        v-model="checkedDough"
         :classRadioBtn="`dough__input dough__input--${item.type}`"
         :classRadioInput="`visually-hidden`"
         @change="$emit('change', $event, item.price)"

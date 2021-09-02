@@ -3,14 +3,8 @@
     <input
       type="radio"
       :name="name"
-      :value="
-        name === `sauce`
-          ? data.value
-          : name === `diameter`
-          ? data.size
-          : data.type
-      "
-      :checked="checkedInp"
+      :value="value"
+      :checked="isChecked"
       :class="classRadioInput"
       @change="$emit('change', $event.target.value)"
     />
@@ -35,15 +29,13 @@ export default {
       type: String,
       required: false,
     },
-    data: {
-      type: Object,
-      required: true,
-    },
-    checkedInp: {
-      type: String,
-      required: true,
-    },
     name: {},
+    value: {},
+  },
+  computed: {
+    isChecked() {
+      return this.checked == this.value;
+    },
   },
 };
 </script>

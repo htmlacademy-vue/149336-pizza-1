@@ -5,10 +5,9 @@
       <RadioButton
         v-for="item in sizes"
         :key="item.id"
-        :data="item"
         :name="`diameter`"
-        v-model="item.size"
-        :checkedInp="checkedSize"
+        :value="item.size"
+        v-model="checkedSize"
         :classRadioBtn="`diameter__input diameter__input--${item.size}`"
         :classRadioInput="`visually-hidden`"
         @change="$emit('change', $event, item.multiplier)"

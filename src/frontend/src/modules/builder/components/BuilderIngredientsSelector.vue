@@ -7,10 +7,9 @@
         <RadioButton
           v-for="item in sauces"
           :key="item.id"
-          :data="item"
           :name="`sauce`"
-          v-model="item.value"
-          :checkedInp="checkedSouce"
+          :value="item.value"
+          v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
           @change="$emit('change', $event, item.price)"
         >
@@ -53,7 +52,7 @@ export default {
   name: "BuilderIngredientsSelector",
   data() {
     return {
-      checkedSouce: "creamy",
+      checkedSouce: "tomato",
     };
   },
   props: {
