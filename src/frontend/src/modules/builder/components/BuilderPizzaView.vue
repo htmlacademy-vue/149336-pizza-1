@@ -32,7 +32,7 @@
     <BuilderPriceCounter
       :totalPrice="total"
       :isEmptyNamePizza="!pizzaName.trim() || !pizza.length"
-      @click="$emit('click', $event, pizzaName)"
+      @click="$emit('click', pizzaName)"
     />
   </div>
 </template>
@@ -51,18 +51,17 @@ export default {
       type: String,
       required: true,
     },
+    pizza: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {
       pizzaName: "",
-      pizza: [],
     };
-  },
-  mounted() {
-    //TODO передача между соседними компонентами
-    this.$root.$on("changeFilling", (data) => {
-      this.pizza = data;
-    });
   },
 };
 </script>

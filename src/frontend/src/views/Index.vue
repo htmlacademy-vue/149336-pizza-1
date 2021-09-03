@@ -32,6 +32,7 @@
           <BuilderPizzaView
             :total="composition.totalPrice"
             :classPizza="composition.classPizza"
+            :pizza="composition.pizzaFilling"
             @click="orderPizza"
           />
         </div>
@@ -149,7 +150,6 @@ export default {
         }
       });
       this.updatePizza();
-      this.$root.$emit("changeFilling", this.composition.pizzaFilling); //TODO передача между соседними компонентами
     },
     changeSouces(newSauce, newPrice) {
       this.composition.sauce.value = newSauce;
@@ -173,12 +173,11 @@ export default {
         this.composition.size.multiplier;
       this.composition.totalPrice = newTotalPrice;
     },
-    orderPizza(event, name) {
+    orderPizza(name) {
       this.composition.namePizza = name;
-      console.log(this.composition.namePizza);
       console.log(this.composition);
       setTimeout(() => {
-        this.composition.namePizza = "";
+        // this.composition.namePizza = "";
       }, 1000);
     },
   },
