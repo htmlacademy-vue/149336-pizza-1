@@ -1,7 +1,7 @@
 <template>
   <main class="content">
     <form action="#" method="post">
-      <div class="content__wrapper">
+      <AppDrop class="content__wrapper" @drop="moveIngridient">
         <h1 class="title title--big">Конструктор пиццы</h1>
         <div class="content__dough">
           <BuilderDoughSelector
@@ -22,9 +22,10 @@
         <div class="content__ingridients">
           <BuilderIngredientsSelector
             :sauces="sauces"
-            :ingredients="ingredients"
+            :ingredients="composition.ingr"
             @input="changeCounter"
             @change="changeSouces"
+            @drop="moveIngridient($event)"
           />
         </div>
 
@@ -36,7 +37,7 @@
             @click="orderPizza"
           />
         </div>
-      </div>
+      </AppDrop>
     </form>
   </main>
 </template>
@@ -57,6 +58,7 @@ import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngr
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "IndexHome",
@@ -65,6 +67,7 @@ export default {
     BuilderSizeSelector,
     BuilderDoughSelector,
     BuilderPizzaView,
+    AppDrop,
   },
   data() {
     return {
@@ -179,6 +182,13 @@ export default {
       setTimeout(() => {
         // this.composition.namePizza = "";
       }, 1000);
+    },
+    moveIngridient(active) {
+      if (active.count > 2) {
+        alert(active.count);
+        return;
+      }
+      this.changeCounter(active.count + 1, active.id);
     },
   },
   created: function () {
