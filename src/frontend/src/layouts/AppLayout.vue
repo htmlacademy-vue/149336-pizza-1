@@ -19,7 +19,10 @@
       </div>
     </header>
 
-    <IndexHome />
+    <IndexHome
+      :ingredients="ingredients"
+      @updateIngredients="$emit('updateIngredients', $event)"
+    />
   </div>
 </template>
 
@@ -30,6 +33,12 @@ export default {
   name: "AppLayout",
   components: {
     IndexHome,
+  },
+  props: {
+    ingredients: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>

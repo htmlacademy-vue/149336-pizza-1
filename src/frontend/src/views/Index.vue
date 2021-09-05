@@ -22,7 +22,7 @@
         <div class="content__ingridients">
           <BuilderIngredientsSelector
             :sauces="sauces"
-            :ingredients="composition.ingr"
+            :ingredients="ingredients"
             @input="changeCounter"
             @change="changeSouces"
             @drop="moveIngridient($event)"
@@ -43,9 +43,9 @@
 </template>
 
 <script>
-import miscs from "@/static/misc.json";
+// import miscs from "@/static/misc.json";
 import pizzas from "@/static/pizza.json";
-import users from "@/static/user.json";
+// import users from "@/static/user.json";
 
 import {
   normalizeDough,
@@ -69,15 +69,21 @@ export default {
     BuilderPizzaView,
     AppDrop,
   },
+  props: {
+    ingredients: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
-      miscs,
+      // miscs,
       dough: pizzas.dough.map((item) => normalizeDough(item)),
       sizes: pizzas.sizes.map((item) => normalizeSizes(item)),
       sauces: pizzas.sauces.map((item) => normalizeSauces(item)),
-      ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
+      // ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
       pizzas,
-      users,
+      // users,
       composition: {
         dough: {
           value: "light",
@@ -91,7 +97,7 @@ export default {
           value: "tomato",
           price: 50,
         },
-        ingr: pizzas.ingredients.map((item) => normalizeIngredients(item)),
+        ingr: this.ingredients.map((item) => normalizeIngredients(item)),
         totalPrice: 0,
         classPizza: "pizza--foundation--small-tomato",
         pizzaFilling: [],
@@ -189,6 +195,8 @@ export default {
         return;
       }
       this.changeCounter(active.count + 1, active.id);
+      let ingredientsToUpdate = this.composition.ingr;
+      this.$emit("updateIngredients", ingredientsToUpdate);
     },
   },
   created: function () {
