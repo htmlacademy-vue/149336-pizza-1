@@ -33,5 +33,6 @@ export const normalizeIngredients = (ingredient) => {
   return {
     ...ingredient,
     label: ingredient.id ? INGREDIENTS_CLASS[ingredient.id] : "",
+    count: 0,
   };
 };
