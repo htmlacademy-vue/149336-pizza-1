@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <label class="input">
       <span class="visually-hidden">Название пиццы</span>
       <input
@@ -46,7 +46,11 @@ export default {
     BuilderPriceCounter,
   },
   props: {
-    total: {},
+    total: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     classPizza: {
       type: String,
       required: true,

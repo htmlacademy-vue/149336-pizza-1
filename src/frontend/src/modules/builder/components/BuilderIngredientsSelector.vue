@@ -65,12 +65,6 @@ export default {
       required: true,
     },
   },
-  watch: {
-    ingredients: {
-      handler: () => {},
-      deep: true,
-    },
-  },
   components: {
     ItemCounter,
     RadioButton,

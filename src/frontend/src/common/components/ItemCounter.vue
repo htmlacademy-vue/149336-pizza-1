@@ -30,7 +30,10 @@
 export default {
   name: "ItemCounter",
   props: {
-    value: {},
+    value: {
+      type: Number,
+      required: true,
+    },
   },
   computed: {
     internalValue: {

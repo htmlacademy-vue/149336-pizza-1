@@ -20,7 +20,10 @@ export default {
     event: "change",
   },
   props: {
-    checked: {},
+    checked: {
+      type: String,
+      required: true,
+    },
     classRadioBtn: {
       type: String,
       required: false,
@@ -29,8 +32,14 @@ export default {
       type: String,
       required: false,
     },
-    name: {},
-    value: {},
+    name: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: String,
+      required: true,
+    },
   },
   computed: {
     isChecked() {

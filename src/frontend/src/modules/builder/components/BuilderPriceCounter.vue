@@ -17,8 +17,14 @@
 export default {
   name: "BuilderPriceCounter",
   props: {
-    totalPrice: {},
-    isEmptyNamePizza: {},
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
+    isEmptyNamePizza: {
+      type: Boolean,
+      required: true,
+    },
   },
 };
 </script>
