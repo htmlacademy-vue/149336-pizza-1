@@ -1,46 +1,58 @@
 <template>
-  <div class="app-layout">
-    <header class="header">
-      <div class="header__logo">
-        <a href="index.html" class="logo">
-          <img
-            :src="require(`@/assets/img/logo.svg`)"
-            alt="V!U!E! Pizza logo"
-            width="90"
-            height="40"
-          />
-        </a>
-      </div>
-      <div class="header__cart">
-        <a href="cart.html">0 ₽</a>
-      </div>
-      <div class="header__user">
-        <a href="#" class="header__login"><span>Войти</span></a>
-      </div>
-    </header>
-
-    <IndexHome
-      :ingredients="ingredients"
-      @updateIngredients="$emit('updateIngredients', $event)"
-    />
-  </div>
+  <component
+    :is="layout"
+    :ingredients="layoutIngredients"
+    :order="layoutOrders"
+    :auth="auth"
+    @updateIngredients="$emit('updateIngredients', $event)"
+    @addPizzaToCart="$emit('addPizzaToCart', $event)"
+  >
+    <slot />
+  </component>
 </template>
 
 <script>
-import IndexHome from "@/views/Index";
+const defaultLayout = "AppLayoutDefault";
 
 export default {
   name: "AppLayout",
-  components: {
-    IndexHome,
-  },
   props: {
     ingredients: {
       type: Array,
       required: true,
     },
+    order: {
+      type: Array,
+      required: false,
+    },
+    auth: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || defaultLayout;
+      return () => import(`@/layouts/${layout}.vue`);
+    },
+
+    layoutIngredients() {
+      return this.$route.meta.layout !== defaultLayout
+        ? this.ingredients
+        : null;
+    },
+
+    layoutOrders() {
+      return this.$route.meta.layout !== defaultLayout ? this.order : null;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+</style>

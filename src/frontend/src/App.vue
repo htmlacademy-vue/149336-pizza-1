@@ -2,8 +2,19 @@
   <div id="app">
     <AppLayout
       :ingredients="ingredients"
+      :order="order"
+      :auth="auth"
       @updateIngredients="updateIngredients"
-    />
+      @addPizzaToCart="addPizzaToCart"
+    >
+      <router-view
+        :ingredients="ingredients"
+        :order="order"
+        :auth="auth"
+        @updateIngredients="updateIngredients"
+        @addPizzaToCart="addPizzaToCart"
+      />
+    </AppLayout>
   </div>
 </template>
 
@@ -22,6 +33,8 @@ export default {
   data() {
     return {
       ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
+      order: [],
+      auth: false,
     };
   },
   methods: {
@@ -35,10 +48,21 @@ export default {
         }
       });
     },
+    addPizzaToCart(newPizza) {
+      this.order.push(newPizza);
+      console.log(`addPizzaToCart`);
+      console.log(this.order);
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import "~@/assets/scss/app";
+
+#app {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
 </style>

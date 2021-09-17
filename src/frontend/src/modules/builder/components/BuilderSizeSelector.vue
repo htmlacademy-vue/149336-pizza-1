@@ -23,10 +23,8 @@ import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderSizeSelector",
-  data() {
-    return {
-      checkedSize: "normal",
-    };
+  components: {
+    RadioButton,
   },
   props: {
     sizes: {
@@ -34,8 +32,10 @@ export default {
       required: true,
     },
   },
-  components: {
-    RadioButton,
+  data() {
+    return {
+      checkedSize: "normal",
+    };
   },
 };
 </script>
