@@ -50,10 +50,11 @@ import AppDrop from "@/common/components/AppDrop";
 
 export default {
   name: "BuilderIngredientsSelector",
-  data() {
-    return {
-      checkedSouce: "tomato",
-    };
+  components: {
+    ItemCounter,
+    RadioButton,
+    AppDrag,
+    AppDrop,
   },
   props: {
     ingredients: {
@@ -65,11 +66,10 @@ export default {
       required: true,
     },
   },
-  components: {
-    ItemCounter,
-    RadioButton,
-    AppDrag,
-    AppDrop,
+  data() {
+    return {
+      checkedSouce: "tomato",
+    };
   },
 };
 </script>

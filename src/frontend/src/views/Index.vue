@@ -39,6 +39,7 @@
         </div>
       </AppDrop>
     </form>
+    <router-view />
   </main>
 </template>
 
@@ -74,6 +75,10 @@ export default {
       type: Array,
       required: true,
     },
+    // isAuth: {
+    //   type: Boolean,
+    //   required: true,
+    // },
   },
   data() {
     return {
@@ -104,6 +109,14 @@ export default {
         namePizza: "",
       },
     };
+  },
+  created: function () {
+    this.updatePizza();
+    console.log(this.composition);
+    this.composition.pizzaFilling = [];
+    this.composition.ingr.forEach((item) => {
+      item.count = 0;
+    });
   },
   methods: {
     switchClassPizza() {
@@ -151,6 +164,7 @@ export default {
                 id: item.id,
                 count: item.count,
                 name: item.label,
+                title: item.name.toLowerCase(),
               };
               return item;
             });
@@ -185,22 +199,36 @@ export default {
     orderPizza(name) {
       this.composition.namePizza = name;
       console.log(this.composition);
-      setTimeout(() => {
-        // this.composition.namePizza = "";
-      }, 1000);
+      let fillings = "";
+      this.composition.pizzaFilling.forEach((item) => {
+        fillings += `${item.title}, `;
+      });
+      console.log(fillings);
+      let pizza = {
+        title: this.composition.namePizza,
+        size:
+          this.composition.size.value === "normal"
+            ? 32
+            : this.composition.size.value === "big"
+            ? 45
+            : 23,
+        dough: this.composition.dough.value === "large" ? "толстом" : "тонком",
+        sauce:
+          this.composition.sauce.value === "tomato" ? "томатный" : "сливочный",
+        fillings: fillings.slice(0, -2),
+        price: this.composition.totalPrice,
+      };
+      this.$emit("addPizzaToCart", pizza);
+      this.$router.push({ name: "Cart" });
     },
     moveIngridient(active) {
       if (active.count > 2) {
-        alert(active.count);
         return;
       }
       this.changeCounter(active.count + 1, active.id);
       let ingredientsToUpdate = this.composition.ingr;
       this.$emit("updateIngredients", ingredientsToUpdate);
     },
-  },
-  created: function () {
-    this.updatePizza();
   },
 };
 </script>

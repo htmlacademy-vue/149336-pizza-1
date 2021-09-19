@@ -24,10 +24,8 @@ import RadioButton from "@/common/components/RadioButton";
 
 export default {
   name: "BuilderDoughSelector",
-  data() {
-    return {
-      checkedDough: "light",
-    };
+  components: {
+    RadioButton,
   },
   props: {
     dough: {
@@ -35,8 +33,10 @@ export default {
       required: true,
     },
   },
-  components: {
-    RadioButton,
+  data() {
+    return {
+      checkedDough: "light",
+    };
   },
 };
 </script>
