@@ -13,7 +13,7 @@
     <div class="header__cart">
       <router-link :to="{ name: 'Cart' }">0 ₽</router-link>
     </div>
-    <div v-if="auth" class="header__user">
+    <div v-if="isAuth" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -51,7 +51,7 @@
 export default {
   name: "AppLayoutHeader",
   props: {
-    auth: {
+    isAuth: {
       type: Boolean,
       required: true,
     },

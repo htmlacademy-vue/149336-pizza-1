@@ -3,7 +3,7 @@
     :is="layout"
     :ingredients="layoutIngredients"
     :order="layoutOrders"
-    :auth="auth"
+    :isAuth="isAuth"
     @updateIngredients="$emit('updateIngredients', $event)"
     @addPizzaToCart="$emit('addPizzaToCart', $event)"
   >
@@ -25,7 +25,7 @@ export default {
       type: Array,
       required: false,
     },
-    auth: {
+    isAuth: {
       type: Boolean,
       required: true,
     },

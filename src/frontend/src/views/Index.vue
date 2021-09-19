@@ -39,7 +39,7 @@
         </div>
       </AppDrop>
     </form>
-    <router-view :auth="auth" />
+    <router-view />
   </main>
 </template>
 
@@ -75,10 +75,10 @@ export default {
       type: Array,
       required: true,
     },
-    auth: {
-      type: Boolean,
-      required: true,
-    },
+    // isAuth: {
+    //   type: Boolean,
+    //   required: true,
+    // },
   },
   data() {
     return {

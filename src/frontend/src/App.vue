@@ -3,14 +3,13 @@
     <AppLayout
       :ingredients="ingredients"
       :order="order"
-      :auth="auth"
+      :isAuth="isAuth"
       @updateIngredients="updateIngredients"
       @addPizzaToCart="addPizzaToCart"
     >
       <router-view
         :ingredients="ingredients"
         :order="order"
-        :auth="auth"
         @updateIngredients="updateIngredients"
         @addPizzaToCart="addPizzaToCart"
       />
@@ -34,7 +33,7 @@ export default {
     return {
       ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
       order: [],
-      auth: false,
+      isAuth: false,
     };
   },
   methods: {

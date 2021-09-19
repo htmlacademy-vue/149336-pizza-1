@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout-main">
-    <AppLayoutHeader :auth="auth" />
+    <AppLayoutHeader :isAuth="isAuth" />
     <slot />
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
     AppLayoutHeader,
   },
   props: {
-    auth: {
+    isAuth: {
       type: Boolean,
       required: true,
     },
