@@ -57,10 +57,10 @@ export default {
     AppDrop,
   },
   props: {
-    ingredients: {
-      type: Array,
-      required: true,
-    },
+    // ingredients: {
+    //   type: Array,
+    //   required: true,
+    // },
     sauces: {
       type: Array,
       required: true,
@@ -70,6 +70,11 @@ export default {
     return {
       checkedSouce: "tomato",
     };
+  },
+  computed: {
+    ingredients() {
+      return this.$store.getters["Builder/COMPOSITION"].ingr;
+    },
   },
 };
 </script>

@@ -53,6 +53,10 @@ export default {
       console.log(this.order);
     },
   },
+  created() {
+    this.$store.dispatch("init");
+    console.log(this.$store);
+  },
 };
 </script>
 

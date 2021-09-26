@@ -61,6 +61,9 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import AppDrop from "@/common/components/AppDrop";
 
+import { mapState /*, mapActions, mapMutations*/ } from "vuex";
+// import { UPDATE_ENTITY } from "@/store/mutation-types";
+
 export default {
   name: "IndexHome",
   components: {
@@ -75,10 +78,6 @@ export default {
       type: Array,
       required: true,
     },
-    // isAuth: {
-    //   type: Boolean,
-    //   required: true,
-    // },
   },
   data() {
     return {
@@ -110,6 +109,14 @@ export default {
       },
     };
   },
+  computed: {
+    // dough1() {
+    //   return this.$store.getters["Builder/COMPOSITION"];
+    // },
+    ...mapState("Composition", ["Builder/COMPOSITION"]),
+    // ...mapState("Columns", ["columns"]),
+    // ...mapState("Tasks", ["filters"]),
+  },
   created: function () {
     this.updatePizza();
     console.log(this.composition);
@@ -119,6 +126,10 @@ export default {
     });
   },
   methods: {
+    // ...mapActions("Columns", ["post", "put", "delete"]),
+    // ...mapMutations("Tasks", {
+    //   updateFilters: UPDATE_ENTITY,
+    // }),
     switchClassPizza() {
       let classPizza = "pizza--foundation";
       switch (this.composition.dough.value) {

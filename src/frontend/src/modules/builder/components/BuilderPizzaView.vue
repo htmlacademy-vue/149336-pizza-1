@@ -55,17 +55,22 @@ export default {
       type: String,
       required: true,
     },
-    pizza: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+    // pizza: {
+    //   type: Array,
+    //   default: () => {
+    //     return [];
+    //   },
+    // },
   },
   data() {
     return {
       pizzaName: "",
     };
+  },
+  computed: {
+    pizza() {
+      return this.$store.getters["Builder/PIZZA_FILLING"];
+    },
   },
 };
 </script>
