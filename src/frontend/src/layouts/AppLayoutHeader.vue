@@ -13,7 +13,7 @@
     <div class="header__cart">
       <router-link :to="{ name: 'Cart' }">0 ₽</router-link>
     </div>
-    <div v-if="isAuth" class="header__user">
+    <div v-if="USER" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -26,14 +26,14 @@
             "
           />
           <img
-            :src="require(`@/assets/img/users/user5.jpg`)"
+            :src="USER.avatar"
             :srcset="require(`@/assets/img/users/user5@2x.jpg`)"
-            alt="Василий Ложкин"
+            :alt="USER.name"
             width="32"
             height="32"
           />
         </picture>
-        <span>Василий Ложкин</span>
+        <span>{{ USER.name }}</span>
       </router-link>
       <router-link :to="{ name: '' }" class="header__logout">
         <span>Выйти</span>
@@ -48,18 +48,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppLayoutHeader",
-  props: {
-    isAuth: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  methods: {
-    // applyFilters(e) {
-    //   this.$emit('applyFilters',{ item: e.target.value, entity: 'search' });
-    // }
+  computed: {
+    ...mapGetters(["USER"]),
   },
 };
 </script>

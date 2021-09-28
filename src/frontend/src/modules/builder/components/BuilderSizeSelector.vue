@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -26,16 +27,18 @@ export default {
   components: {
     RadioButton,
   },
-  props: {
-    sizes: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       checkedSize: "normal",
     };
+  },
+  computed: {
+    ...mapState("Builder", ["composition"]),
+    ...mapGetters("Builder", ["Builder/SIZES"]),
+
+    sizes() {
+      return this.$store.getters["Builder/SIZES"];
+    },
   },
 };
 </script>

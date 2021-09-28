@@ -3,7 +3,7 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
       <RadioButton
-        v-for="item in dough"
+        v-for="item in DOUGHS"
         :key="item.id"
         :name="`dough`"
         :value="item.type"
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -27,16 +28,21 @@ export default {
   components: {
     RadioButton,
   },
-  props: {
-    dough: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       checkedDough: "light",
     };
+  },
+  computed: {
+    ...mapState("Builder", ["composition"]),
+    ...mapGetters("Builder", ["Builder/DOUGHS"]),
+
+    DOUGHS() {
+      return this.$store.getters["Builder/DOUGHS"];
+    },
+  },
+  created: function () {
+    // console.log(DOUGHS);
   },
 };
 </script>

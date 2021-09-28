@@ -47,6 +47,7 @@ import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -56,24 +57,21 @@ export default {
     AppDrag,
     AppDrop,
   },
-  props: {
-    // ingredients: {
-    //   type: Array,
-    //   required: true,
-    // },
-    sauces: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       checkedSouce: "tomato",
     };
   },
   computed: {
+    ...mapState("Builder", ["composition"]),
+    ...mapGetters("Builder", ["Builder/SAUCES"]),
+
     ingredients() {
       return this.$store.getters["Builder/COMPOSITION"].ingr;
+    },
+
+    sauces() {
+      return this.$store.getters["Builder/SAUCES"];
     },
   },
 };

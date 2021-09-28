@@ -39,28 +39,12 @@
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
   components: {
     BuilderPriceCounter,
-  },
-  props: {
-    total: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    classPizza: {
-      type: String,
-      required: true,
-    },
-    // pizza: {
-    //   type: Array,
-    //   default: () => {
-    //     return [];
-    //   },
-    // },
   },
   data() {
     return {
@@ -68,8 +52,19 @@ export default {
     };
   },
   computed: {
+    ...mapState("Builder", ["composition"]),
+    ...mapGetters("Builder", ["Builder/COMPOSITION", "Builder/PIZZA_FILLING"]),
+
+    classPizza() {
+      return this.$store.getters["Builder/COMPOSITION"].classPizza;
+    },
+
     pizza() {
       return this.$store.getters["Builder/PIZZA_FILLING"];
+    },
+
+    total() {
+      return this.$store.getters["Builder/COMPOSITION"].totalPrice;
     },
   },
 };

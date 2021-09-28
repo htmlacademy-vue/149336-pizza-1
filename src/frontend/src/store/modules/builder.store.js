@@ -15,6 +15,12 @@ const namespace = { entity, module };
 export default {
   namespaced: true,
   state: {
+    doughs: jsonPizza.dough.map((item) => normalizeDough(item)),
+    sizes: jsonPizza.sizes.map((item) => normalizeSizes(item)),
+    sauces: jsonPizza.sauces.map((item) => normalizeSauces(item)),
+    ingredients: jsonPizza.ingredients.map((item) =>
+      normalizeIngredients(item)
+    ),
     composition: {
       dough: {
         value: jsonPizza.dough.map((item) => normalizeDough(item))[0].type,
@@ -42,13 +48,21 @@ export default {
       return state.composition;
     },
 
+    DOUGHS: (state) => {
+      return state.doughs;
+    },
+
+    SIZES: (state) => {
+      return state.sizes;
+    },
+
+    SAUCES: (state) => {
+      return state.sauces;
+    },
+
     PIZZA_FILLING: (state) => {
       return state.composition.pizzaFilling;
     },
-    // sidebarTasksCount: (state) =>
-    //   state.tasks.filter(({ columnId }) => !columnId).length,
-    // getTaskById: (state) => (id) =>
-    //   state.tasks.find((task) => +task.id === +id),
   },
 
   mutations: {

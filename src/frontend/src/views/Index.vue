@@ -4,25 +4,15 @@
       <AppDrop class="content__wrapper" @drop="moveIngridient">
         <h1 class="title title--big">Конструктор пиццы</h1>
         <div class="content__dough">
-          <BuilderDoughSelector
-            v-if="dough.length"
-            :dough="dough"
-            @change="changeDough"
-          />
+          <BuilderDoughSelector @change="changeDough" />
         </div>
 
         <div class="content__diameter">
-          <BuilderSizeSelector
-            v-if="sizes.length"
-            :sizes="sizes"
-            @change="changeSize"
-          />
+          <BuilderSizeSelector @change="changeSize" />
         </div>
 
         <div class="content__ingridients">
           <BuilderIngredientsSelector
-            :sauces="sauces"
-            :ingredients="ingredients"
             @input="changeCounter"
             @change="changeSouces"
             @drop="moveIngridient($event)"
@@ -30,12 +20,7 @@
         </div>
 
         <div class="content__pizza">
-          <BuilderPizzaView
-            :total="composition.totalPrice"
-            :classPizza="composition.classPizza"
-            :pizza="composition.pizzaFilling"
-            @click="orderPizza"
-          />
+          <BuilderPizzaView @click="orderPizza" />
         </div>
       </AppDrop>
     </form>
@@ -44,24 +29,13 @@
 </template>
 
 <script>
-// import miscs from "@/static/misc.json";
-import pizzas from "@/static/pizza.json";
-// import users from "@/static/user.json";
-
-import {
-  normalizeDough,
-  normalizeSizes,
-  normalizeSauces,
-  normalizeIngredients,
-} from "@/common/helpers";
-
 import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
 import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import AppDrop from "@/common/components/AppDrop";
 
-import { mapState /*, mapActions, mapMutations*/ } from "vuex";
+import { mapState, mapGetters /*, mapActions, mapMutations*/ } from "vuex";
 // import { UPDATE_ENTITY } from "@/store/mutation-types";
 
 export default {
@@ -73,66 +47,26 @@ export default {
     BuilderPizzaView,
     AppDrop,
   },
-  props: {
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      // miscs,
-      dough: pizzas.dough.map((item) => normalizeDough(item)),
-      sizes: pizzas.sizes.map((item) => normalizeSizes(item)),
-      sauces: pizzas.sauces.map((item) => normalizeSauces(item)),
-      // ingredients: pizzas.ingredients.map((item) => normalizeIngredients(item)),
-      pizzas,
-      // users,
-      composition: {
-        dough: {
-          value: "light",
-          price: 300,
-        },
-        size: {
-          value: "normal",
-          multiplier: 2,
-        },
-        sauce: {
-          value: "tomato",
-          price: 50,
-        },
-        ingr: this.ingredients.map((item) => normalizeIngredients(item)),
-        totalPrice: 0,
-        classPizza: "pizza--foundation--small-tomato",
-        pizzaFilling: [],
-        namePizza: "",
-      },
-    };
-  },
   computed: {
-    // dough1() {
-    //   return this.$store.getters["Builder/COMPOSITION"];
-    // },
-    ...mapState("Composition", ["Builder/COMPOSITION"]),
-    // ...mapState("Columns", ["columns"]),
-    // ...mapState("Tasks", ["filters"]),
+    ...mapState("Builder", ["composition"]),
+    ...mapGetters("Builder", ["Builder/COMPOSITION"]),
+
+    classPizza() {
+      return this.$store.getters["Builder/COMPOSITION"].classPizza;
+    },
   },
   created: function () {
     this.updatePizza();
-    console.log(this.composition);
+    console.log(this.classPizza);
     this.composition.pizzaFilling = [];
     this.composition.ingr.forEach((item) => {
       item.count = 0;
     });
   },
   methods: {
-    // ...mapActions("Columns", ["post", "put", "delete"]),
-    // ...mapMutations("Tasks", {
-    //   updateFilters: UPDATE_ENTITY,
-    // }),
     switchClassPizza() {
       let classPizza = "pizza--foundation";
-      switch (this.composition.dough.value) {
+      switch (this.$store.getters["Builder/COMPOSITION"].dough.value) {
         case "light":
           classPizza = `${classPizza}--small`;
           break;
@@ -140,7 +74,7 @@ export default {
           classPizza = `${classPizza}--big`;
           break;
       }
-      switch (this.composition.sauce.value) {
+      switch (this.$store.getters["Builder/COMPOSITION"].sauce.value) {
         case "tomato":
           classPizza = `${classPizza}-tomato`;
           break;
@@ -148,7 +82,7 @@ export default {
           classPizza = `${classPizza}-creamy`;
           break;
       }
-      this.composition.classPizza = classPizza;
+      this.$store.state["Builder/COMPOSITION"].classPizza = classPizza;
     },
     changeDough(newDough, newPrice) {
       this.composition.dough.value = newDough;
