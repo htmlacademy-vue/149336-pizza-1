@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -34,15 +34,9 @@ export default {
     };
   },
   computed: {
-    ...mapState("Builder", ["composition"]),
-    ...mapGetters("Builder", ["Builder/DOUGHS"]),
-
-    DOUGHS() {
-      return this.$store.getters["Builder/DOUGHS"];
-    },
-  },
-  created: function () {
-    // console.log(DOUGHS);
+    ...mapGetters({
+      DOUGHS: "Builder/DOUGHS",
+    }),
   },
 };
 </script>

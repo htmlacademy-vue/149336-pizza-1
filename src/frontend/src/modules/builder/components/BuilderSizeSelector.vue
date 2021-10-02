@@ -3,7 +3,7 @@
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="diameter sheet__content">
       <RadioButton
-        v-for="item in sizes"
+        v-for="item in SIZES"
         :key="item.id"
         :name="`diameter`"
         :value="item.size"
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 import RadioButton from "@/common/components/RadioButton";
 
 export default {
@@ -33,12 +33,9 @@ export default {
     };
   },
   computed: {
-    ...mapState("Builder", ["composition"]),
-    ...mapGetters("Builder", ["Builder/SIZES"]),
-
-    sizes() {
-      return this.$store.getters["Builder/SIZES"];
-    },
+    ...mapGetters({
+      SIZES: "Builder/SIZES",
+    }),
   },
 };
 </script>

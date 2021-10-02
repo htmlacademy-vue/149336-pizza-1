@@ -4,3 +4,7 @@ export const SET_ENTITY = "SET_ENTITY";
 export const ADD_ENTITY = "ADD_ENTITY";
 export const UPDATE_ENTITY = "UPDATE_ENTITY";
 export const DELETE_ENTITY = "DELETE_ENTITY";
+export const CHANGE_DOUGH = "CHANGE_DOUGH";
+export const CHANGE_SIZE = "CHANGE_SIZE";
+export const SWITCH_CLASS_PIZZA = "SWITCH_CLASS_PIZZA";
+export const CHANGE_SOUCE = "CHANGE_SOUCE";

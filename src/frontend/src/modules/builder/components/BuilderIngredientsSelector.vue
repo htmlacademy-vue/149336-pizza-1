@@ -5,7 +5,7 @@
       <div class="ingridients__sauce">
         <p>Основной соус:</p>
         <RadioButton
-          v-for="item in sauces"
+          v-for="item in SAUCES"
           :key="item.id"
           :name="`sauce`"
           :value="item.value"
@@ -20,7 +20,7 @@
         <p>Начинка:</p>
         <ul class="ingridients__list">
           <li
-            v-for="item in ingredients"
+            v-for="item in COMPOSITION.ingr"
             :key="item.id"
             class="ingridients__item"
           >
@@ -47,7 +47,7 @@ import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
-import { mapState, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -63,16 +63,14 @@ export default {
     };
   },
   computed: {
-    ...mapState("Builder", ["composition"]),
-    ...mapGetters("Builder", ["Builder/SAUCES"]),
+    ...mapGetters({
+      SAUCES: "Builder/SAUCES",
+      COMPOSITION: "Builder/COMPOSITION",
+    }),
 
-    ingredients() {
-      return this.$store.getters["Builder/COMPOSITION"].ingr;
-    },
-
-    sauces() {
-      return this.$store.getters["Builder/SAUCES"];
-    },
+    // ingredients() {
+    //   return this.$store.getters["Builder/COMPOSITION"].ingr;
+    // },
   },
 };
 </script>

@@ -4,7 +4,7 @@
       <AppDrop class="content__wrapper" @drop="moveIngridient">
         <h1 class="title title--big">Конструктор пиццы</h1>
         <div class="content__dough">
-          <BuilderDoughSelector @change="changeDough" />
+          <BuilderDoughSelector @change="changeDoughMethod" />
         </div>
 
         <div class="content__diameter">
@@ -35,8 +35,13 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import AppDrop from "@/common/components/AppDrop";
 
-import { mapState, mapGetters /*, mapActions, mapMutations*/ } from "vuex";
-// import { UPDATE_ENTITY } from "@/store/mutation-types";
+import { mapState, /*mapGetters,*/ mapActions, mapMutations } from "vuex";
+import {
+  CHANGE_DOUGH,
+  CHANGE_SIZE,
+  CHANGE_SOUCE,
+  SWITCH_CLASS_PIZZA,
+} from "@/store/mutation-types";
 
 export default {
   name: "IndexHome",
@@ -49,51 +54,48 @@ export default {
   },
   computed: {
     ...mapState("Builder", ["composition"]),
-    ...mapGetters("Builder", ["Builder/COMPOSITION"]),
+    // ...mapGetters("Builder", ["Builder/COMPOSITION"]),
 
-    classPizza() {
-      return this.$store.getters["Builder/COMPOSITION"].classPizza;
-    },
+    // classPizza() {
+    //   return this.$store.getters["Builder/COMPOSITION"].classPizza;
+    // },
   },
   created: function () {
     this.updatePizza();
-    console.log(this.classPizza);
     this.composition.pizzaFilling = [];
     this.composition.ingr.forEach((item) => {
       item.count = 0;
     });
   },
   methods: {
+    ...mapActions("Builder", ["post", "changeDough", "delete"]),
+    ...mapMutations("Builder", {
+      updateDough: CHANGE_DOUGH,
+      updateSize: CHANGE_SIZE,
+      updateSouce: CHANGE_SOUCE,
+      updateClassPizza: SWITCH_CLASS_PIZZA,
+    }),
+
     switchClassPizza() {
-      let classPizza = "pizza--foundation";
-      switch (this.$store.getters["Builder/COMPOSITION"].dough.value) {
-        case "light":
-          classPizza = `${classPizza}--small`;
-          break;
-        case "large":
-          classPizza = `${classPizza}--big`;
-          break;
-      }
-      switch (this.$store.getters["Builder/COMPOSITION"].sauce.value) {
-        case "tomato":
-          classPizza = `${classPizza}-tomato`;
-          break;
-        case "creamy":
-          classPizza = `${classPizza}-creamy`;
-          break;
-      }
-      this.$store.state["Builder/COMPOSITION"].classPizza = classPizza;
+      this.updateClassPizza();
     },
-    changeDough(newDough, newPrice) {
-      this.composition.dough.value = newDough;
-      this.composition.dough.price = newPrice;
+    changeDoughMethod(newDough, newPrice) {
+      let payload = {
+        value: newDough,
+        price: newPrice,
+      };
+      // this.updateDough(payload);
+      this.changeDough(payload);
       this.switchClassPizza();
-      this.updatePizza();
+      // this.updatePizza();
     },
     changeSize(newSize, newMultiplier) {
-      this.composition.size.value = newSize;
-      this.composition.size.multiplier = newMultiplier;
-      this.updatePizza();
+      let payload = {
+        value: newSize,
+        multiplier: newMultiplier,
+      };
+      this.updateSize(payload);
+      // this.updatePizza();
     },
     changeCounter(newCount, id) {
       this.composition.ingr.filter((item, index) => {
@@ -120,10 +122,13 @@ export default {
       this.updatePizza();
     },
     changeSouces(newSauce, newPrice) {
-      this.composition.sauce.value = newSauce;
-      this.composition.sauce.price = newPrice;
+      let payload = {
+        value: newSauce,
+        price: newPrice,
+      };
+      this.updateSouce(payload);
       this.switchClassPizza();
-      this.updatePizza();
+      // this.updatePizza();
     },
     updatePizza() {
       let newArr = [];
