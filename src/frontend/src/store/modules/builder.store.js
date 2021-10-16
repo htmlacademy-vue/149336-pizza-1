@@ -1,20 +1,27 @@
 import {
-  SET_ENTITY,
-  DELETE_ENTITY,
+  // SET_ENTITY,
+  // DELETE_ENTITY,
   CHANGE_DOUGH,
+  CHANGE_SIZE,
+  CHANGE_SAUCE,
+  CHANGE_COUNTER,
+  SWITCH_CLASS_PIZZA,
+  UPDATE_NAME_PIZZA,
+  UPDATE_TOTAL_PRICE,
+  RESET_BUILDER,
 } from "@/store/mutation-types";
 import {
   normalizeDough,
   normalizeSizes,
   normalizeSauces,
   normalizeIngredients,
-  capitalize,
+  // capitalize,
 } from "@/common/helpers";
 import jsonPizza from "@/static/pizza.json";
 
-const entity = "builder";
-const module = capitalize(entity);
-const namespace = { entity, module };
+// const entity = "builder";
+// const module = capitalize(entity);
+// const namespace = { entity, module };
 
 export default {
   namespaced: true,
@@ -27,15 +34,18 @@ export default {
     ),
     composition: {
       dough: {
+        id: jsonPizza.dough.map((item) => normalizeDough(item))[0].id,
         value: jsonPizza.dough.map((item) => normalizeDough(item))[0].type,
         price: jsonPizza.dough.map((item) => normalizeDough(item))[0].price,
       },
       size: {
+        id: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].id,
         value: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].size,
         multiplier: jsonPizza.sizes.map((item) => normalizeSizes(item))[1]
           .multiplier,
       },
       sauce: {
+        id: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].id,
         value: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].value,
         price: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].price,
       },
@@ -67,51 +77,40 @@ export default {
     PIZZA_FILLING: (state) => {
       return state.composition.pizzaFilling;
     },
+
+    NAME_PIZZA: (state) => {
+      return state.composition.namePizza;
+    },
   },
 
   mutations: {
-    // SET_COMPOSITION: (state, payload) => {
-    //   state.composition = payload;
-    // },
-
-    // ADD_PIZZA_FILLING: (state, pizza) => {
-    //   // state.composition.pizzaFilling.push(pizza);
-    //   state.composition.pizzaFilling = [
-    //     ...state.composition.pizzaFilling,
-    //     pizza,
-    //   ];
-    // },
-
-    // UPDATE_PIZZA_FILLING: (state, id, count) => {
-    //   state.composition.pizzaFilling.filter((e) => {
-    //     +e.id === +id;
-    //     e.count = count;
-    //   });
-    // },
-
-    // DELETE_PIZZA_FILLING: (state, id) => {
-    //   state.composition.pizzaFilling.filter((e) => +e.id !== +id);
-    // },
-
-    // UPDATE_BUILDER: (state, payload) => {
-    // },
-
     [CHANGE_DOUGH]: (state, payload) => {
-      state.composition.dough = payload;
-      // payload = {value: payload.value, price: payload.price}
+      let price;
+      state.doughs.filter((item) => {
+        if (item.type == payload.value) {
+          price = item.price;
+        }
+      });
+      state.composition.dough.value = payload.value;
+      state.composition.dough.price = price;
     },
 
-    CHANGE_SIZE: (state, payload) => {
-      state.composition.size = payload;
-      // payload = {value: payload.value, multiplier: payload.multiplier}
+    [CHANGE_SIZE]: (state, payload) => {
+      let multiplier;
+      state.sizes.filter((item) => {
+        if (item.size == payload.value) {
+          multiplier = item.multiplier;
+        }
+      });
+      state.composition.size.value = payload.value;
+      state.composition.size.multiplier = multiplier;
     },
 
-    CHANGE_SOUCE: (state, payload) => {
+    [CHANGE_SAUCE]: (state, payload) => {
       state.composition.sauce = payload;
-      // payload = {value: payload.value, price: payload.price}
     },
 
-    SWITCH_CLASS_PIZZA: (state) => {
+    [SWITCH_CLASS_PIZZA]: (state) => {
       let classPizza = "pizza--foundation";
       switch (state.composition.dough.value) {
         case "light":
@@ -131,44 +130,148 @@ export default {
       }
       state.composition.classPizza = classPizza;
     },
-    // CHANGE_COUNTER: (state, payload) => {
-    // },
+
+    [CHANGE_COUNTER]: (state, payload) => {
+      state.composition.ingr.filter((item, index) => {
+        if (item.id == payload.id) {
+          state.composition.ingr[index].count = +payload.newCount;
+
+          let filling = state.composition.ingr
+            .filter((item) => {
+              return item.count > 0;
+            })
+            .map((item) => {
+              item = {
+                id: item.id,
+                count: item.count,
+                name: item.label,
+                title: item.name.toLowerCase(),
+              };
+              return item;
+            });
+          state.composition.pizzaFilling = filling;
+          return index;
+        }
+      });
+    },
+
+    [UPDATE_NAME_PIZZA]: (state, payload) => {
+      state.composition.namePizza = payload;
+    },
+
+    [UPDATE_TOTAL_PRICE]: (state) => {
+      let newArr = [];
+      state.composition.ingr
+        .filter((item) => {
+          return item.count > 0;
+        })
+        .forEach((element) => {
+          newArr.push(element.count * element.price);
+        });
+      let multi = newArr.reduce((sum, current) => sum + current, 0);
+      // (Основа + Соус + Добавки) * размер
+      let newTotalPrice =
+        (state.composition.dough.price +
+          state.composition.sauce.price +
+          multi) *
+        state.composition.size.multiplier;
+      state.composition.totalPrice = newTotalPrice;
+    },
+
+    [RESET_BUILDER]: (state) => {
+      let start = {
+        dough: {
+          id: jsonPizza.dough.map((item) => normalizeDough(item))[0].id,
+          value: jsonPizza.dough.map((item) => normalizeDough(item))[0].type,
+          price: jsonPizza.dough.map((item) => normalizeDough(item))[0].price,
+        },
+        size: {
+          id: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].id,
+          value: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].size,
+          multiplier: jsonPizza.sizes.map((item) => normalizeSizes(item))[1]
+            .multiplier,
+        },
+        sauce: {
+          id: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].id,
+          value: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].value,
+          price: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].price,
+        },
+        ingr: jsonPizza.ingredients.map((item) => normalizeIngredients(item)),
+        totalPrice: 0,
+        classPizza: "pizza--foundation--small-tomato",
+        pizzaFilling: [],
+        namePizza: "",
+      };
+      state.composition = start;
+    },
   },
 
   actions: {
-    query({ commit }) {
-      const data = jsonPizza.map((task) => normalizeDough(task));
-      commit(
-        SET_ENTITY,
-        {
-          ...namespace,
-          value: data,
-        },
-        { root: true }
-      );
-    },
+    // query({ commit }) {
+    //   const data = jsonPizza.map((task) => normalizeDough(task));
+    //   commit(
+    //     SET_ENTITY,
+    //     {
+    //       ...namespace,
+    //       value: data,
+    //     },
+    //     { root: true }
+    //   );
+    // },
 
     changeDough({ commit }, data) {
       commit(
         CHANGE_DOUGH,
         {
-          ...namespace,
-          value: data,
+          value: data.value,
         },
-        { root: true }
+        { root: false }
       );
     },
 
-    delete({ commit }, id) {
-      // TODO: Add api call
+    changeSize({ commit }, data) {
       commit(
-        DELETE_ENTITY,
+        CHANGE_SIZE,
         {
-          ...namespace,
-          id,
+          value: data.value,
+          multiplier: data.multiplier,
         },
-        { root: true }
+        { root: false }
       );
+    },
+
+    changeSauce({ commit }, data) {
+      commit(
+        CHANGE_SAUCE,
+        {
+          value: data.value,
+          price: data.price,
+        },
+        { root: false }
+      );
+    },
+
+    changeCounter({ commit }, data) {
+      commit(
+        CHANGE_COUNTER,
+        {
+          newCount: data.newCount,
+          id: data.id,
+        },
+        { root: false }
+      );
+    },
+
+    changeNamePizza({ commit }, data) {
+      commit(UPDATE_NAME_PIZZA, data);
+    },
+
+    changeTotalPrice({ commit }) {
+      commit(UPDATE_TOTAL_PRICE);
+    },
+
+    resetBuilder({ commit }) {
+      commit(RESET_BUILDER);
     },
   },
 };

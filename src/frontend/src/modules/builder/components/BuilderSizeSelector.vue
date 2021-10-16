@@ -10,7 +10,6 @@
         v-model="checkedSize"
         :classRadioBtn="`diameter__input diameter__input--${item.size}`"
         :classRadioInput="`visually-hidden`"
-        @change="$emit('change', $event, item.multiplier)"
       >
         <span> {{ item.name }}</span>
       </RadioButton>
@@ -19,23 +18,35 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
   components: {
     RadioButton,
   },
-  data() {
-    return {
-      checkedSize: "normal",
-    };
-  },
   computed: {
-    ...mapGetters({
-      SIZES: "Builder/SIZES",
+    ...mapState("Builder", {
+      SIZES: (state) => state.sizes,
+      SIZE: (state) => state.composition.size.value,
     }),
+
+    checkedSize: {
+      get() {
+        return this.SIZE;
+      },
+      set(newSize) {
+        let payload = {
+          value: newSize,
+        };
+        this.changeSize(payload);
+        this.changeTotalPrice();
+      },
+    },
+  },
+  methods: {
+    ...mapActions("Builder", ["changeSize", "changeTotalPrice"]),
   },
 };
 </script>

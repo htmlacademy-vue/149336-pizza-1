@@ -11,7 +11,7 @@
           :value="item.value"
           v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
-          @change="$emit('change', $event, item.price)"
+          @change="changeSouceMethod($event, item.price)"
         >
           <span>{{ item.name }}</span>
         </RadioButton>
@@ -20,7 +20,7 @@
         <p>Начинка:</p>
         <ul class="ingridients__list">
           <li
-            v-for="item in COMPOSITION.ingr"
+            v-for="item in INGRIDIENTS"
             :key="item.id"
             class="ingridients__item"
           >
@@ -33,7 +33,8 @@
             </AppDrop>
             <ItemCounter
               v-model="item.count"
-              @input="$emit('input', $event, item.id)"
+              :parentClass="`ingridients__counter`"
+              @input="changeCounterMethod($event, item.id)"
             />
           </li>
         </ul>
@@ -47,7 +48,9 @@ import ItemCounter from "@/common/components/ItemCounter";
 import RadioButton from "@/common/components/RadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
-import { mapGetters } from "vuex";
+
+import { mapState, mapActions, mapMutations } from "vuex";
+import { CHANGE_SAUCE, SWITCH_CLASS_PIZZA } from "@/store/mutation-types";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -57,20 +60,59 @@ export default {
     AppDrag,
     AppDrop,
   },
-  data() {
-    return {
-      checkedSouce: "tomato",
-    };
-  },
   computed: {
-    ...mapGetters({
-      SAUCES: "Builder/SAUCES",
-      COMPOSITION: "Builder/COMPOSITION",
+    ...mapState("Builder", {
+      INGRIDIENTS: (state) => state.composition.ingr,
+      SAUCES: (state) => state.sauces,
+      SAUCE: (state) => state.composition.sauce.value,
     }),
 
-    // ingredients() {
-    //   return this.$store.getters["Builder/COMPOSITION"].ingr;
-    // },
+    checkedSouce: {
+      get() {
+        return this.SAUCE;
+      },
+      set(newSauce) {
+        let payload = {
+          value: newSauce,
+        };
+        this.changeSauce(payload);
+        this.changeTotalPrice();
+        this.switchClassPizza();
+      },
+    },
+  },
+  methods: {
+    ...mapActions("Builder", [
+      "changeSauce",
+      "changeCounter",
+      "changeTotalPrice",
+    ]),
+    ...mapMutations("Builder", {
+      updateSauce: CHANGE_SAUCE,
+      updateClassPizza: SWITCH_CLASS_PIZZA,
+    }),
+
+    switchClassPizza() {
+      this.updateClassPizza();
+    },
+
+    changeCounterMethod(newCount, id) {
+      let payload = {
+        newCount,
+        id,
+      };
+      this.changeCounter(payload);
+      this.changeTotalPrice();
+    },
+    changeSouceMethod(newSauce, newPrice) {
+      let payload = {
+        value: newSauce,
+        price: newPrice,
+      };
+      this.changeSauce(payload);
+      this.changeTotalPrice();
+      this.switchClassPizza();
+    },
   },
 };
 </script>

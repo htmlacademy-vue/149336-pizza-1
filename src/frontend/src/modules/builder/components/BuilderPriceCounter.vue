@@ -1,12 +1,12 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ totalPrice }} ₽</p>
+    <p>Итого: {{ TOTAL_PRICE }} ₽</p>
     <button
       type="button"
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
-      @click="$emit('click', $event)"
+      @click="createPizzaMethod"
     >
       Готовьте!
     </button>
@@ -14,16 +14,28 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
 export default {
   name: "BuilderPriceCounter",
-  props: {
-    totalPrice: {
-      type: Number,
-      required: true,
+  computed: {
+    ...mapGetters({
+      namePizza: "Builder/NAME_PIZZA",
+    }),
+    ...mapState("Builder", {
+      TOTAL_PRICE: (state) => state.composition.totalPrice,
+      PIZZA: (state) => state.composition.pizzaFilling,
+    }),
+    isEmptyNamePizza() {
+      return !this.namePizza.trim() || !this.PIZZA.length;
     },
-    isEmptyNamePizza: {
-      type: Boolean,
-      required: true,
+  },
+  methods: {
+    ...mapActions("Cart", ["createPizza"]),
+
+    createPizzaMethod() {
+      this.createPizza();
+      this.$router.push({ name: "Cart" });
     },
   },
 };

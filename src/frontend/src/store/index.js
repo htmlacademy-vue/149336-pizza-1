@@ -8,6 +8,7 @@ import {
   DELETE_ENTITY,
 } from "@/store/mutation-types";
 import jsonUsers from "@/static/user.json";
+import { uniqueId } from "lodash";
 
 Vue.use(Vuex);
 
@@ -25,10 +26,15 @@ const getters = {
 const actions = {
   async init({ dispatch }) {
     dispatch("fetchUsers");
+    dispatch("Cart/query");
   },
   fetchUsers({ commit }) {
     const user = jsonUsers; // TODO: Add api call
-    commit(SET_ENTITY, { module: null, entity: "user", value: user });
+    commit(SET_ENTITY, {
+      module: null,
+      entity: "user",
+      value: { ...user, userId: uniqueId() },
+    });
   },
 };
 

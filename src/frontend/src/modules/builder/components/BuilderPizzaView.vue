@@ -5,16 +5,17 @@
       <input
         type="text"
         name="pizza_name"
-        v-model="pizzaName"
+        :value="NAME_PIZZA"
         placeholder="Введите название пиццы"
+        @input="updatePizzaName($event.target.value)"
       />
     </label>
 
     <div class="content__constructor">
-      <div class="pizza" :class="classPizza">
+      <div class="pizza" :class="CLASS_PIZZA">
         <div class="pizza__wrapper">
           <div
-            v-for="item in pizza"
+            v-for="item in PIZZA"
             :key="item.id"
             class="pizza__filling"
             :class="[
@@ -29,17 +30,14 @@
       </div>
     </div>
 
-    <BuilderPriceCounter
-      :totalPrice="total"
-      :isEmptyNamePizza="!pizzaName.trim() || !pizza.length"
-      @click="$emit('click', pizzaName)"
-    />
+    <BuilderPriceCounter />
   </div>
 </template>
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
+import { UPDATE_NAME_PIZZA } from "@/store/mutation-types";
 
 export default {
   name: "BuilderPizzaView",
@@ -52,19 +50,20 @@ export default {
     };
   },
   computed: {
-    ...mapState("Builder", ["composition"]),
-    ...mapGetters("Builder", ["Builder/COMPOSITION", "Builder/PIZZA_FILLING"]),
-
-    classPizza() {
-      return this.$store.getters["Builder/COMPOSITION"].classPizza;
-    },
-
-    pizza() {
-      return this.$store.getters["Builder/PIZZA_FILLING"];
-    },
-
-    total() {
-      return this.$store.getters["Builder/COMPOSITION"].totalPrice;
+    ...mapState("Builder", {
+      CLASS_PIZZA: (state) => state.composition.classPizza,
+      PIZZA: (state) => state.composition.pizzaFilling,
+      NAME_PIZZA: (state) => state.composition.namePizza,
+    }),
+  },
+  methods: {
+    ...mapActions("Builder", ["changeNamePizza"]),
+    ...mapMutations("Builder", {
+      updateNamePizza: UPDATE_NAME_PIZZA,
+    }),
+    updatePizzaName(value) {
+      // this.updateNamePizza(value);
+      this.changeNamePizza(value);
     },
   },
 };
