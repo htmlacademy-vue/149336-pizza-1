@@ -89,6 +89,7 @@ export default {
       PIZZAS: (state) => state.pizzas,
       MISC: (state) => state.misc,
       TOTAL_PRICE_ORDER: (state) => state.totalPriceOrder,
+      ADDRESS: (state) => state.address,
     }),
     ...mapState("Orders", {
       ORDERS: (state) => state.orders,
@@ -140,7 +141,7 @@ export default {
       );
 
       let order = {
-        userId: this.USER.id || null,
+        userId: this.USER.userId || null,
         pizzas: [
           {
             name: this.COMPOSITION.namePizza,
@@ -153,14 +154,14 @@ export default {
         ],
         misc: myMisc,
         address: {
-          name: "",
-          street: "",
-          building: "",
-          flat: "",
+          name: this.USER.name,
+          street: this.ADDRESS.street,
+          building: this.ADDRESS.house,
+          flat: this.ADDRESS.apartment,
           comment: "",
         },
       };
-      order.userid === null ? null : this.createOrder(order);
+      order.userId === null ? null : this.createOrder(order);
       this.$router.push({ name: "Popup" });
     },
 

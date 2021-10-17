@@ -22,19 +22,19 @@
       <div class="cart-form__input">
         <label class="input">
           <span>Улица*</span>
-          <input type="text" name="street" v-model="street" />
+          <input type="text" name="street" v-model="streetAddress" />
         </label>
       </div>
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Дом*</span>
-          <input type="text" name="house" v-model="house" />
+          <input type="text" name="house" v-model="houseAddress" />
         </label>
       </div>
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Квартира</span>
-          <input type="text" name="apartment" v-model="apartment" />
+          <input type="text" name="apartment" v-model="apartmentAddress" />
         </label>
       </div>
     </div>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CartForm",
@@ -50,11 +50,13 @@ export default {
   data() {
     return {
       recipientOrder: "1",
+      street: "",
     };
   },
   computed: {
     ...mapState({
       USER: (state) => state.user,
+      ADDRESS: (state) => state.address,
     }),
 
     phoneUser: {
@@ -68,11 +70,52 @@ export default {
         this.changeUserPhone(payload);
       },
     },
+
+    ...mapGetters({
+      ADDRESS: "Cart/ADDRESS",
+    }),
+
+    streetAddress: {
+      get() {
+        return this.ADDRESS.street;
+      },
+      set(newStreet) {
+        let payload = {
+          street: newStreet,
+        };
+        this.updateUserAddress(payload);
+      },
+    },
+
+    houseAddress: {
+      get() {
+        return this.ADDRESS.house;
+      },
+      set(newHouse) {
+        let payload = {
+          house: newHouse,
+        };
+        this.updateUserAddress(payload);
+      },
+    },
+
+    apartmentAddress: {
+      get() {
+        return this.ADDRESS.apartment;
+      },
+      set(newApartment) {
+        let payload = {
+          apartment: newApartment,
+        };
+        this.updateUserAddress(payload);
+      },
+    },
   },
   watch: {},
   created() {},
   methods: {
     ...mapActions("Auth", ["changeUserPhone"]),
+    ...mapActions("Cart", ["updateUserAddress"]),
   },
 };
 </script>

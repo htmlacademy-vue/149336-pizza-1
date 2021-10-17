@@ -6,6 +6,7 @@ import {
   UPDATE_PIZZA,
   UPDATE_TOTAL_PRICE_ORDER,
   RESET_PIZZAS,
+  UPDATE_USER_ADDRESS,
 } from "@/store/mutation-types";
 import { normalizeMisc /*, capitalize*/ } from "@/common/helpers";
 import jsonMisc from "@/static/misc.json";
@@ -20,6 +21,11 @@ export default {
     pizzas: [],
     misc: [],
     totalPriceOrder: 0,
+    address: {
+      street: "",
+      house: "",
+      apartment: "",
+    },
   },
   getters: {
     PIZZAS: (state) => {
@@ -28,6 +34,10 @@ export default {
 
     MISC: (state) => {
       return state.misc;
+    },
+
+    ADDRESS: (state) => {
+      return state.address;
     },
   },
   mutations: {
@@ -104,6 +114,16 @@ export default {
       state.pizzas = [];
       state.totalPriceOrder = 0;
     },
+
+    [UPDATE_USER_ADDRESS]: (state, payload) => {
+      payload.data.street
+        ? (state.address.street = payload.data.street)
+        : payload.data.house
+        ? (state.address.house = payload.data.house)
+        : payload.data.apartment
+        ? (state.address.apartment = payload.data.apartment)
+        : false;
+    },
   },
   actions: {
     query({ commit }) {
@@ -153,6 +173,17 @@ export default {
 
     resetPizzas({ commit }) {
       commit(RESET_PIZZAS);
+    },
+
+    updateUserAddress({ commit, rootState }, data) {
+      commit(
+        UPDATE_USER_ADDRESS,
+        {
+          data,
+          rootData: rootState,
+        },
+        { root: false }
+      );
     },
   },
 };
