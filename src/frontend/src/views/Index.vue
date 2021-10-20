@@ -51,13 +51,21 @@ export default {
     // this.resetBuilder();
   },
   methods: {
-    ...mapActions("Builder", ["changeTotalPrice", "resetBuilder"]),
+    ...mapActions("Builder", [
+      "changeTotalPrice",
+      "changeCounter",
+      // "resetBuilder",
+    ]),
 
     moveIngridient(active) {
       if (active.count > 2) {
         return;
       }
-      this.changeCounter(active.count + 1, active.id);
+      let payload = {
+        newCount: active.count + 1,
+        id: active.id,
+      };
+      this.changeCounter(payload);
       let ingredientsToUpdate = this.composition.ingr;
       this.$emit("updateIngredients", ingredientsToUpdate);
     },

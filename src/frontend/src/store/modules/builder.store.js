@@ -266,6 +266,10 @@ export default {
       commit(UPDATE_NAME_PIZZA, data);
     },
 
+    switchClassPizza({ commit }, data) {
+      commit(SWITCH_CLASS_PIZZA, data);
+    },
+
     changeTotalPrice({ commit }) {
       commit(UPDATE_TOTAL_PRICE);
     },

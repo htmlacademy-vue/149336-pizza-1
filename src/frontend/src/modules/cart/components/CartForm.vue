@@ -50,7 +50,6 @@ export default {
   data() {
     return {
       recipientOrder: "1",
-      street: "",
     };
   },
   computed: {
@@ -111,8 +110,6 @@ export default {
       },
     },
   },
-  watch: {},
-  created() {},
   methods: {
     ...mapActions("Auth", ["changeUserPhone"]),
     ...mapActions("Cart", ["updateUserAddress"]),

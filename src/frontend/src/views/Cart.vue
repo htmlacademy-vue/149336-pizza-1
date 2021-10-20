@@ -67,8 +67,8 @@
 
 <script>
 import CartProductItem from "@/modules/cart/components/CartProductItem";
-import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem.vue";
-import CartForm from "@/modules/cart/components/CartForm.vue";
+import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
+import CartForm from "@/modules/cart/components/CartForm";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -88,11 +88,7 @@ export default {
     ...mapState("Cart", {
       PIZZAS: (state) => state.pizzas,
       MISC: (state) => state.misc,
-      TOTAL_PRICE_ORDER: (state) => state.totalPriceOrder,
       ADDRESS: (state) => state.address,
-    }),
-    ...mapState("Orders", {
-      ORDERS: (state) => state.orders,
     }),
 
     totalPriceOrder() {
@@ -111,9 +107,6 @@ export default {
       this.updateTotalPriceOrder();
       return pizzasPrice + miscsPrice;
     },
-  },
-  created() {
-    console.log(this.COMPOSITION);
   },
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),
@@ -142,16 +135,7 @@ export default {
 
       let order = {
         userId: this.USER.userId || null,
-        pizzas: [
-          {
-            name: this.COMPOSITION.namePizza,
-            sauceId: this.COMPOSITION.sauce.id,
-            doughId: this.COMPOSITION.dough.id,
-            sizeId: this.COMPOSITION.size.id,
-            quantity: 0,
-            ingredients: myIngr,
-          },
-        ],
+        pizzas: [],
         misc: myMisc,
         address: {
           name: this.USER.name,
@@ -161,6 +145,19 @@ export default {
           comment: "",
         },
       };
+
+      this.PIZZAS.forEach((pizza) => {
+        let newPizza = {
+          name: pizza.composition.namePizza,
+          sauceId: pizza.composition.sauce.id,
+          doughId: pizza.composition.dough.id,
+          sizeId: pizza.composition.size.id,
+          quantity: pizza.count,
+          ingredients: myIngr,
+        };
+        order.pizzas.push(newPizza);
+      });
+
       order.userId === null ? null : this.createOrder(order);
       this.$router.push({ name: "Popup" });
     },

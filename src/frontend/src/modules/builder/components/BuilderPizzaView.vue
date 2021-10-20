@@ -5,14 +5,14 @@
       <input
         type="text"
         name="pizza_name"
-        :value="NAME_PIZZA"
+        :value="name_pizza"
         placeholder="Введите название пиццы"
         @input="updatePizzaName($event.target.value)"
       />
     </label>
 
     <div class="content__constructor">
-      <div class="pizza" :class="CLASS_PIZZA">
+      <div class="pizza" :class="class_pizza">
         <div class="pizza__wrapper">
           <div
             v-for="item in PIZZA"
@@ -36,33 +36,24 @@
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { mapState, mapMutations, mapActions } from "vuex";
-import { UPDATE_NAME_PIZZA } from "@/store/mutation-types";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
   components: {
     BuilderPriceCounter,
   },
-  data() {
-    return {
-      pizzaName: "",
-    };
-  },
   computed: {
     ...mapState("Builder", {
-      CLASS_PIZZA: (state) => state.composition.classPizza,
+      class_pizza: (state) => state.composition.classPizza,
       PIZZA: (state) => state.composition.pizzaFilling,
-      NAME_PIZZA: (state) => state.composition.namePizza,
+      name_pizza: (state) => state.composition.namePizza,
     }),
   },
   methods: {
     ...mapActions("Builder", ["changeNamePizza"]),
-    ...mapMutations("Builder", {
-      updateNamePizza: UPDATE_NAME_PIZZA,
-    }),
+
     updatePizzaName(value) {
-      // this.updateNamePizza(value);
       this.changeNamePizza(value);
     },
   },

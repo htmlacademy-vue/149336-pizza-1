@@ -21,33 +21,26 @@
 <script>
 import RadioButton from "@/common/components/RadioButton";
 
-import { mapState, mapActions, mapMutations } from "vuex";
-import { CHANGE_DOUGH, SWITCH_CLASS_PIZZA } from "@/store/mutation-types";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
   components: {
     RadioButton,
   },
-  // data() {
-  //   return {
-  //     checkedDough: "light",
-  //   };
-  // },
   computed: {
     ...mapState("Builder", {
       DOUGHS: (state) => state.doughs,
-      DOUGH: (state) => state.composition.dough.value,
+      dough: (state) => state.composition.dough.value,
     }),
 
     checkedDough: {
       get() {
-        return this.DOUGH;
+        return this.dough;
       },
       set(newDough) {
         let payload = {
           value: newDough,
-          // price: newPrice,
         };
         this.changeDough(payload);
         this.changeTotalPrice();
@@ -56,22 +49,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeDough", "changeTotalPrice"]),
-    ...mapMutations("Builder", {
-      updateDough: CHANGE_DOUGH,
-      updateClassPizza: SWITCH_CLASS_PIZZA,
-    }),
-
-    switchClassPizza() {
-      this.updateClassPizza();
-    },
+    ...mapActions("Builder", [
+      "changeDough",
+      "changeTotalPrice",
+      "switchClassPizza",
+    ]),
 
     changeDoughMethod(newDough, newPrice) {
       let payload = {
         value: newDough,
         price: newPrice,
       };
-      // this.updateDough(payload);
       this.changeDough(payload);
       this.changeTotalPrice();
       this.switchClassPizza();

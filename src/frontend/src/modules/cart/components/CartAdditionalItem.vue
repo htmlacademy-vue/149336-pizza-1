@@ -33,13 +33,6 @@ export default {
       required: false,
     },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
-  methods: {},
 };
 </script>
 

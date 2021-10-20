@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ TOTAL_PRICE }} ₽</p>
+    <p>Итого: {{ total_price }} ₽</p>
     <button
       type="button"
       class="button"
@@ -22,10 +22,12 @@ export default {
     ...mapGetters({
       namePizza: "Builder/NAME_PIZZA",
     }),
+
     ...mapState("Builder", {
-      TOTAL_PRICE: (state) => state.composition.totalPrice,
+      total_price: (state) => state.composition.totalPrice,
       PIZZA: (state) => state.composition.pizzaFilling,
     }),
+
     isEmptyNamePizza() {
       return !this.namePizza.trim() || !this.PIZZA.length;
     },

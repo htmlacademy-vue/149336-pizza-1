@@ -29,12 +29,12 @@ export default {
   computed: {
     ...mapState("Builder", {
       SIZES: (state) => state.sizes,
-      SIZE: (state) => state.composition.size.value,
+      size: (state) => state.composition.size.value,
     }),
 
     checkedSize: {
       get() {
-        return this.SIZE;
+        return this.size;
       },
       set(newSize) {
         let payload = {

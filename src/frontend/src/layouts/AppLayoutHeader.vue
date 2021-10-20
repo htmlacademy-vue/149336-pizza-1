@@ -12,7 +12,7 @@
     </div>
     <div class="header__cart">
       <router-link :to="{ name: 'Cart' }"
-        >{{ TOTAL_PRICE_ORDER }} ₽</router-link
+        >{{ total_price_order }} ₽</router-link
       >
     </div>
     <div v-if="USER" class="header__user">
@@ -57,8 +57,7 @@ export default {
   computed: {
     ...mapGetters(["USER"]),
     ...mapState("Cart", {
-      PIZZAS: (state) => state.pizzas,
-      TOTAL_PRICE_ORDER: (state) => state.totalPriceOrder,
+      total_price_order: (state) => state.totalPriceOrder,
     }),
   },
 };

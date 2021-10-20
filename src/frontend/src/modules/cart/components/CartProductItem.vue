@@ -2,11 +2,11 @@
   <div class="cart-list__item">
     <div class="product cart-list__product">
       <img
-        :src="require(`@/assets/img/product.svg`)"
+        src="@/assets/img/product.svg"
         class="product__img"
         width="56"
         height="56"
-        alt="item.title"
+        :alt="pizza.title"
       />
       <div class="product__text">
         <h2>{{ pizza.title }}</h2>
@@ -56,12 +56,6 @@ export default {
       required: false,
     },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
   methods: {
     ...mapActions("Cart", ["updatePizza", "updateTotalPriceOrder"]),
 

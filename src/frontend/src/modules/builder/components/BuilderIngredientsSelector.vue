@@ -49,8 +49,7 @@ import RadioButton from "@/common/components/RadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 
-import { mapState, mapActions, mapMutations } from "vuex";
-import { CHANGE_SAUCE, SWITCH_CLASS_PIZZA } from "@/store/mutation-types";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderIngredientsSelector",
@@ -64,12 +63,12 @@ export default {
     ...mapState("Builder", {
       INGRIDIENTS: (state) => state.composition.ingr,
       SAUCES: (state) => state.sauces,
-      SAUCE: (state) => state.composition.sauce.value,
+      sauce: (state) => state.composition.sauce.value,
     }),
 
     checkedSouce: {
       get() {
-        return this.SAUCE;
+        return this.sauce;
       },
       set(newSauce) {
         let payload = {
@@ -86,15 +85,8 @@ export default {
       "changeSauce",
       "changeCounter",
       "changeTotalPrice",
+      "switchClassPizza",
     ]),
-    ...mapMutations("Builder", {
-      updateSauce: CHANGE_SAUCE,
-      updateClassPizza: SWITCH_CLASS_PIZZA,
-    }),
-
-    switchClassPizza() {
-      this.updateClassPizza();
-    },
 
     changeCounterMethod(newCount, id) {
       let payload = {
