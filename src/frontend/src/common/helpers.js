@@ -4,7 +4,7 @@ import {
   SAUCES_VALUE,
   INGREDIENTS_CLASS,
 } from "@/common/constants";
-import { uniqueId } from "lodash";
+import uniqueId from "lodash/uniqueId";
 
 export const normalizeDough = (dough) => {
   return {

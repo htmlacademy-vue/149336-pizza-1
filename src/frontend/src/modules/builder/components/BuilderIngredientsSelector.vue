@@ -5,9 +5,9 @@
       <div class="ingridients__sauce">
         <p>Основной соус:</p>
         <RadioButton
-          v-for="item in SAUCES"
+          v-for="item in sauces"
           :key="item.id"
-          :name="`sauce`"
+          name="sauce"
           :value="item.value"
           v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
@@ -20,7 +20,7 @@
         <p>Начинка:</p>
         <ul class="ingridients__list">
           <li
-            v-for="item in INGRIDIENTS"
+            v-for="item in ingridients"
             :key="item.id"
             class="ingridients__item"
           >
@@ -61,8 +61,8 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      INGRIDIENTS: (state) => state.composition.ingr,
-      SAUCES: (state) => state.sauces,
+      ingridients: (state) => state.composition.ingr,
+      sauces: (state) => state.sauces,
       sauce: (state) => state.composition.sauce.value,
     }),
 
@@ -111,6 +111,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/filling.scss";
 @import "~@/assets/scss/blocks/ingridients.scss";
 </style>

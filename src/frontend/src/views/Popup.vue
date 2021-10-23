@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapState({
-      USER: (state) => state.user,
+      user: (state) => state.user,
     }),
   },
   watch: {},
@@ -39,7 +39,7 @@ export default {
     closePopupMethod() {
       this.resetBuilder();
       this.resetPizzas();
-      this.USER
+      this.user
         ? this.$router.push({ name: "Orders" })
         : this.$router.push({ name: "IndexHome" });
     },
@@ -49,4 +49,5 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/close.scss";
 </style>

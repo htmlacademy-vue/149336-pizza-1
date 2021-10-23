@@ -1,4 +1,5 @@
-import { uniqueId, cloneDeep } from "lodash";
+import uniqueId from "lodash/uniqueId";
+import cloneDeep from "lodash/cloneDeep";
 import {
   SET_ENTITY,
   // DELETE_ENTITY,
@@ -28,15 +29,15 @@ export default {
     },
   },
   getters: {
-    PIZZAS: (state) => {
+    pizzas: (state) => {
       return state.pizzas;
     },
 
-    MISC: (state) => {
+    misc: (state) => {
       return state.misc;
     },
 
-    ADDRESS: (state) => {
+    address: (state) => {
       return state.address;
     },
   },
@@ -87,7 +88,6 @@ export default {
       state.pizzas.push(pizza);
     },
     [UPDATE_PIZZA]: (state, payload) => {
-      console.log(state, payload);
       payload.rootData.Builder.composition = payload.data.composition;
     },
     [UPDATE_TOTAL_PRICE_ORDER]: (state, payload) => {

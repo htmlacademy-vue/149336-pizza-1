@@ -6,35 +6,35 @@
           <h1 class="title title--big">Корзина</h1>
         </div>
 
-        <div class="sheet cart__empty" v-if="!PIZZAS.length">
+        <div class="sheet cart__empty" v-if="!pizzas.length">
           <p>В корзине нет ни одного товара</p>
         </div>
 
-        <ul class="cart-list sheet" v-if="PIZZAS.length">
+        <ul class="cart-list sheet" v-if="pizzas.length">
           <li
             is="cart-product-item"
-            v-for="(item, index) in PIZZAS"
+            v-for="(item, index) in pizzas"
             :key="index"
             :pizza="item"
           ></li>
         </ul>
 
         <div class="cart__additional">
-          <ul class="additional-list" v-if="PIZZAS.length & MISC.length">
+          <ul class="additional-list" v-if="pizzas.length & misc.length">
             <li
               is="cart-additional-item"
-              v-for="(item, index) in MISC"
+              v-for="(item, index) in misc"
               :key="index"
               :item="item"
             ></li>
           </ul>
         </div>
-        <div class="cart__form" v-if="PIZZAS.length">
+        <div class="cart__form" v-if="pizzas.length">
           <cart-form />
         </div>
       </div>
     </main>
-    <section class="footer" v-if="PIZZAS.length">
+    <section class="footer" v-if="pizzas.length">
       <div class="footer__more">
         <a
           href="#"
@@ -54,7 +54,7 @@
         <button
           type="button"
           class="button"
-          :disabled="!PIZZAS.length"
+          :disabled="!pizzas.length"
           @click="createOrderMethod"
         >
           Оформить заказ
@@ -80,30 +80,34 @@ export default {
   },
   computed: {
     ...mapState({
-      USER: (state) => state.user,
+      user: (state) => state.user,
     }),
     ...mapState("Builder", {
-      COMPOSITION: (state) => state.composition,
+      composition: (state) => state.composition,
     }),
     ...mapState("Cart", {
-      PIZZAS: (state) => state.pizzas,
-      MISC: (state) => state.misc,
-      ADDRESS: (state) => state.address,
+      pizzas: (state) => state.pizzas,
+      misc: (state) => state.misc,
+      address: (state) => state.address,
     }),
 
     totalPriceOrder() {
       let pizzasPrice = 0,
         miscsPrice = 0;
-      this.PIZZAS.filter((pizza) => {
-        return pizza.count > 0;
-      }).forEach((pizza) => {
-        pizzasPrice += pizza.count * pizza.price;
-      });
-      this.MISC.filter((misc) => {
-        return misc.count > 0;
-      }).forEach((misc) => {
-        miscsPrice += misc.count * misc.price;
-      });
+      this.pizzas
+        .filter((pizza) => {
+          return pizza.count > 0;
+        })
+        .forEach((pizza) => {
+          pizzasPrice += pizza.count * pizza.price;
+        });
+      this.misc
+        .filter((misc) => {
+          return misc.count > 0;
+        })
+        .forEach((misc) => {
+          miscsPrice += misc.count * misc.price;
+        });
       this.updateTotalPriceOrder();
       return pizzasPrice + miscsPrice;
     },
@@ -119,7 +123,7 @@ export default {
 
     createOrderMethod() {
       let myIngr = [];
-      this.COMPOSITION.ingr
+      this.composition.ingr
         .filter((ingr) => {
           return ingr.count > 0;
         })
@@ -127,26 +131,28 @@ export default {
           myIngr.push({ ingredientId: item.id, quantity: item.count });
         });
       let myMisc = [];
-      this.MISC.filter((misc) => {
-        return misc.count > 0;
-      }).forEach((item) =>
-        myMisc.push({ miscId: item.id, quantity: item.count })
-      );
+      this.misc
+        .filter((misc) => {
+          return misc.count > 0;
+        })
+        .forEach((item) =>
+          myMisc.push({ miscId: item.id, quantity: item.count })
+        );
 
       let order = {
-        userId: this.USER.userId || null,
+        userId: this.user.userId || null,
         pizzas: [],
         misc: myMisc,
         address: {
-          name: this.USER.name,
-          street: this.ADDRESS.street,
-          building: this.ADDRESS.house,
-          flat: this.ADDRESS.apartment,
+          name: this.user.name,
+          street: this.address.street,
+          building: this.address.house,
+          flat: this.address.apartment,
           comment: "",
         },
       };
 
-      this.PIZZAS.forEach((pizza) => {
+      this.pizzas.forEach((pizza) => {
         let newPizza = {
           name: pizza.composition.namePizza,
           sauceId: pizza.composition.sauce.id,
@@ -172,10 +178,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
-@import "~@/assets/scss/blocks/counter.scss";
 @import "~@/assets/scss/blocks/cart-list.scss";
 @import "~@/assets/scss/blocks/cart.scss";
 @import "~@/assets/scss/blocks/additional-list.scss";
-@import "~@/assets/scss/blocks/cart-form.scss";
 @import "~@/assets/scss/blocks/footer.scss";
 </style>

@@ -3,9 +3,9 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
       <RadioButton
-        v-for="item in DOUGHS"
+        v-for="item in doughs"
         :key="item.id"
-        :name="`dough`"
+        name="dough"
         :value="item.type"
         v-model="checkedDough"
         :classRadioBtn="`dough__input dough__input--${item.type}`"
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      DOUGHS: (state) => state.doughs,
+      doughs: (state) => state.doughs,
       dough: (state) => state.composition.dough.value,
     }),
 
@@ -70,5 +70,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/dough.scss";
 </style>

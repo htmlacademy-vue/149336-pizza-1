@@ -5,7 +5,7 @@
       <select name="test" class="select" v-model="recipientOrder">
         <option value="1">Заберу сам</option>
         <option value="2">Новый адрес</option>
-        <option value="3" v-if="USER">Дом</option>
+        <option value="3" v-if="user">Дом</option>
       </select>
     </label>
     <label class="input input--big-label">
@@ -54,13 +54,12 @@ export default {
   },
   computed: {
     ...mapState({
-      USER: (state) => state.user,
-      ADDRESS: (state) => state.address,
+      user: (state) => state.user,
     }),
 
     phoneUser: {
       get() {
-        return this.USER.phone;
+        return this.user.phone;
       },
       set(newPhone) {
         let payload = {
@@ -71,12 +70,12 @@ export default {
     },
 
     ...mapGetters({
-      ADDRESS: "Cart/ADDRESS",
+      address: "Cart/address",
     }),
 
     streetAddress: {
       get() {
-        return this.ADDRESS.street;
+        return this.address.street;
       },
       set(newStreet) {
         let payload = {
@@ -88,7 +87,7 @@ export default {
 
     houseAddress: {
       get() {
-        return this.ADDRESS.house;
+        return this.address.house;
       },
       set(newHouse) {
         let payload = {
@@ -100,7 +99,7 @@ export default {
 
     apartmentAddress: {
       get() {
-        return this.ADDRESS.apartment;
+        return this.address.apartment;
       },
       set(newApartment) {
         let payload = {

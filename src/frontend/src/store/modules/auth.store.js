@@ -11,14 +11,13 @@ export default {
     user: user[0],
   },
   getters: {
-    USER: (state) => {
+    user: (state) => {
       return state.user;
     },
   },
   mutations: {
     [CHANGE_USER_PHONE]: (state, payload) => {
       state.user.phone = payload.value;
-      console.log(payload.value);
     },
   },
   actions: {

@@ -8,7 +8,7 @@ import {
   DELETE_ENTITY,
 } from "@/store/mutation-types";
 import jsonUsers from "@/static/user.json";
-import { uniqueId } from "lodash";
+import uniqueId from "lodash/uniqueId";
 
 Vue.use(Vuex);
 

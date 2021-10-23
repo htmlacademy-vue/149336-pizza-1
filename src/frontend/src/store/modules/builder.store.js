@@ -58,27 +58,27 @@ export default {
   },
 
   getters: {
-    COMPOSITION: (state) => {
+    composition: (state) => {
       return state.composition;
     },
 
-    DOUGHS: (state) => {
+    doughs: (state) => {
       return state.doughs;
     },
 
-    SIZES: (state) => {
+    sizes: (state) => {
       return state.sizes;
     },
 
-    SAUCES: (state) => {
+    sauces: (state) => {
       return state.sauces;
     },
 
-    PIZZA_FILLING: (state) => {
+    pizzaFilling: (state) => {
       return state.composition.pizzaFilling;
     },
 
-    NAME_PIZZA: (state) => {
+    namePizza: (state) => {
       return state.composition.namePizza;
     },
   },

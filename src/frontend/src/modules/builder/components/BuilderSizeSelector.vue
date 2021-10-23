@@ -3,9 +3,9 @@
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="diameter sheet__content">
       <RadioButton
-        v-for="item in SIZES"
+        v-for="item in sizes"
         :key="item.id"
-        :name="`diameter`"
+        name="diameter"
         :value="item.size"
         v-model="checkedSize"
         :classRadioBtn="`diameter__input diameter__input--${item.size}`"
@@ -28,7 +28,7 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      SIZES: (state) => state.sizes,
+      sizes: (state) => state.sizes,
       size: (state) => state.composition.size.value,
     }),
 
@@ -53,5 +53,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/diameter.scss";
 </style>

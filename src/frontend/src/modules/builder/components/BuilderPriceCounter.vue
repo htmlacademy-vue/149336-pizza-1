@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ total_price }} ₽</p>
+    <p>Итого: {{ totalPrice }} ₽</p>
     <button
       type="button"
       class="button"
@@ -20,16 +20,16 @@ export default {
   name: "BuilderPriceCounter",
   computed: {
     ...mapGetters({
-      namePizza: "Builder/NAME_PIZZA",
+      namePizza: "Builder/namePizza",
+      pizzaFilling: "Builder/pizzaFilling",
     }),
 
     ...mapState("Builder", {
-      total_price: (state) => state.composition.totalPrice,
-      PIZZA: (state) => state.composition.pizzaFilling,
+      totalPrice: (state) => state.composition.totalPrice,
     }),
 
     isEmptyNamePizza() {
-      return !this.namePizza.trim() || !this.PIZZA.length;
+      return !this.namePizza.trim() || !this.pizzaFilling.length;
     },
   },
   methods: {
@@ -43,4 +43,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/mixins/mixins.scss";
+</style>

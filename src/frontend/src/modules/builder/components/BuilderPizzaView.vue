@@ -5,17 +5,17 @@
       <input
         type="text"
         name="pizza_name"
-        :value="name_pizza"
+        :value="namePizza"
         placeholder="Введите название пиццы"
         @input="updatePizzaName($event.target.value)"
       />
     </label>
 
     <div class="content__constructor">
-      <div class="pizza" :class="class_pizza">
+      <div class="pizza" :class="classPizza">
         <div class="pizza__wrapper">
           <div
-            v-for="item in PIZZA"
+            v-for="item in pizzaFilling"
             :key="item.id"
             class="pizza__filling"
             :class="[
@@ -45,9 +45,9 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      class_pizza: (state) => state.composition.classPizza,
-      PIZZA: (state) => state.composition.pizzaFilling,
-      name_pizza: (state) => state.composition.namePizza,
+      classPizza: (state) => state.composition.classPizza,
+      pizzaFilling: (state) => state.composition.pizzaFilling,
+      namePizza: (state) => state.composition.namePizza,
     }),
   },
   methods: {
@@ -60,4 +60,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/pizza.scss";
+</style>

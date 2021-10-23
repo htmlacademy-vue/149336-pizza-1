@@ -44,7 +44,6 @@ export default {
   },
   computed: {
     ...mapState("Builder", ["composition"]),
-    ...mapState("Cart", ["orders"]),
   },
   mounted: function () {
     this.changeTotalPrice();

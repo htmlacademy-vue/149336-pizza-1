@@ -1,4 +1,4 @@
-// import { uniqueId } from "lodash";
+// import uniqueId from "lodash/uniqueId";
 import {
   // SET_ENTITY,
   // DELETE_ENTITY,
@@ -11,7 +11,7 @@ export default {
     orders: [],
   },
   getters: {
-    ORDERS: (state) => {
+    orders: (state) => {
       return state.orders;
     },
   },
@@ -49,7 +49,6 @@ export default {
       //     comment: payload.data.address.comment,
       //   },
       // };
-      console.log(payload.data);
       state.orders.push(payload.data);
     },
   },
