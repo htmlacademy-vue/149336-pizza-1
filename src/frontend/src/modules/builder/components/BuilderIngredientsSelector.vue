@@ -7,11 +7,11 @@
         <RadioButton
           v-for="item in sauces"
           :key="item.id"
-          :name="`sauce`"
+          name="sauce"
           :value="item.value"
           v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
-          @change="$emit('change', $event, item.price)"
+          @change="changeSouceMethod($event, item.price)"
         >
           <span>{{ item.name }}</span>
         </RadioButton>
@@ -20,7 +20,7 @@
         <p>Начинка:</p>
         <ul class="ingridients__list">
           <li
-            v-for="item in ingredients"
+            v-for="item in ingridients"
             :key="item.id"
             class="ingridients__item"
           >
@@ -33,7 +33,8 @@
             </AppDrop>
             <ItemCounter
               v-model="item.count"
-              @input="$emit('input', $event, item.id)"
+              :parentClass="`ingridients__counter`"
+              @input="changeCounterMethod($event, item.id)"
             />
           </li>
         </ul>
@@ -48,6 +49,8 @@ import RadioButton from "@/common/components/RadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "BuilderIngredientsSelector",
   components: {
@@ -56,26 +59,59 @@ export default {
     AppDrag,
     AppDrop,
   },
-  props: {
-    ingredients: {
-      type: Array,
-      required: true,
-    },
-    sauces: {
-      type: Array,
-      required: true,
+  computed: {
+    ...mapState("Builder", {
+      ingridients: (state) => state.composition.ingr,
+      sauces: (state) => state.sauces,
+      sauce: (state) => state.composition.sauce.value,
+    }),
+
+    checkedSouce: {
+      get() {
+        return this.sauce;
+      },
+      set(newSauce) {
+        let payload = {
+          value: newSauce,
+        };
+        this.changeSauce(payload);
+        this.changeTotalPrice();
+        this.switchClassPizza();
+      },
     },
   },
-  data() {
-    return {
-      checkedSouce: "tomato",
-    };
+  methods: {
+    ...mapActions("Builder", [
+      "changeSauce",
+      "changeCounter",
+      "changeTotalPrice",
+      "switchClassPizza",
+    ]),
+
+    changeCounterMethod(newCount, id) {
+      let payload = {
+        newCount,
+        id,
+      };
+      this.changeCounter(payload);
+      this.changeTotalPrice();
+    },
+    changeSouceMethod(newSauce, newPrice) {
+      let payload = {
+        value: newSauce,
+        price: newPrice,
+      };
+      this.changeSauce(payload);
+      this.changeTotalPrice();
+      this.switchClassPizza();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/filling.scss";
 @import "~@/assets/scss/blocks/ingridients.scss";
 </style>

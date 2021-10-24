@@ -5,12 +5,11 @@
       <RadioButton
         v-for="item in sizes"
         :key="item.id"
-        :name="`diameter`"
+        name="diameter"
         :value="item.size"
         v-model="checkedSize"
         :classRadioBtn="`diameter__input diameter__input--${item.size}`"
         :classRadioInput="`visually-hidden`"
-        @change="$emit('change', $event, item.multiplier)"
       >
         <span> {{ item.name }}</span>
       </RadioButton>
@@ -20,27 +19,40 @@
 
 <script>
 import RadioButton from "@/common/components/RadioButton";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
   components: {
     RadioButton,
   },
-  props: {
-    sizes: {
-      type: Array,
-      required: true,
+  computed: {
+    ...mapState("Builder", {
+      sizes: (state) => state.sizes,
+      size: (state) => state.composition.size.value,
+    }),
+
+    checkedSize: {
+      get() {
+        return this.size;
+      },
+      set(newSize) {
+        let payload = {
+          value: newSize,
+        };
+        this.changeSize(payload);
+        this.changeTotalPrice();
+      },
     },
   },
-  data() {
-    return {
-      checkedSize: "normal",
-    };
+  methods: {
+    ...mapActions("Builder", ["changeSize", "changeTotalPrice"]),
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/diameter.scss";
 </style>

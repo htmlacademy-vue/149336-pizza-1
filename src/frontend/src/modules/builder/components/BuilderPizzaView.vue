@@ -5,8 +5,9 @@
       <input
         type="text"
         name="pizza_name"
-        v-model="pizzaName"
+        :value="namePizza"
         placeholder="Введите название пиццы"
+        @input="updatePizzaName($event.target.value)"
       />
     </label>
 
@@ -14,7 +15,7 @@
       <div class="pizza" :class="classPizza">
         <div class="pizza__wrapper">
           <div
-            v-for="item in pizza"
+            v-for="item in pizzaFilling"
             :key="item.id"
             class="pizza__filling"
             :class="[
@@ -29,45 +30,37 @@
       </div>
     </div>
 
-    <BuilderPriceCounter
-      :totalPrice="total"
-      :isEmptyNamePizza="!pizzaName.trim() || !pizza.length"
-      @click="$emit('click', pizzaName)"
-    />
+    <BuilderPriceCounter />
   </div>
 </template>
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
   components: {
     BuilderPriceCounter,
   },
-  props: {
-    total: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-    classPizza: {
-      type: String,
-      required: true,
-    },
-    pizza: {
-      type: Array,
-      default: () => {
-        return [];
-      },
-    },
+  computed: {
+    ...mapState("Builder", {
+      classPizza: (state) => state.composition.classPizza,
+      pizzaFilling: (state) => state.composition.pizzaFilling,
+      namePizza: (state) => state.composition.namePizza,
+    }),
   },
-  data() {
-    return {
-      pizzaName: "",
-    };
+  methods: {
+    ...mapActions("Builder", ["changeNamePizza"]),
+
+    updatePizzaName(value) {
+      this.changeNamePizza(value);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/pizza.scss";
+</style>

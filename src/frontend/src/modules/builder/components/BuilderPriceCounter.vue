@@ -6,7 +6,7 @@
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
-      @click="$emit('click', $event)"
+      @click="createPizzaMethod"
     >
       Готовьте!
     </button>
@@ -14,19 +14,35 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
+
 export default {
   name: "BuilderPriceCounter",
-  props: {
-    totalPrice: {
-      type: Number,
-      required: true,
+  computed: {
+    ...mapGetters({
+      namePizza: "Builder/namePizza",
+      pizzaFilling: "Builder/pizzaFilling",
+    }),
+
+    ...mapState("Builder", {
+      totalPrice: (state) => state.composition.totalPrice,
+    }),
+
+    isEmptyNamePizza() {
+      return !this.namePizza.trim() || !this.pizzaFilling.length;
     },
-    isEmptyNamePizza: {
-      type: Boolean,
-      required: true,
+  },
+  methods: {
+    ...mapActions("Cart", ["createPizza"]),
+
+    createPizzaMethod() {
+      this.createPizza();
+      this.$router.push({ name: "Cart" });
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/mixins/mixins.scss";
+</style>

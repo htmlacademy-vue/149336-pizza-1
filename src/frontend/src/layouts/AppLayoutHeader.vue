@@ -11,9 +11,11 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }">0 ₽</router-link>
+      <router-link :to="{ name: 'Cart' }"
+        >{{ total_price_order }} ₽</router-link
+      >
     </div>
-    <div v-if="isAuth" class="header__user">
+    <div v-if="user" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -26,14 +28,14 @@
             "
           />
           <img
-            :src="require(`@/assets/img/users/user5.jpg`)"
+            :src="user.avatar"
             :srcset="require(`@/assets/img/users/user5@2x.jpg`)"
-            alt="Василий Ложкин"
+            :alt="user.name"
             width="32"
             height="32"
           />
         </picture>
-        <span>Василий Ложкин</span>
+        <span>{{ user.name }}</span>
       </router-link>
       <router-link :to="{ name: '' }" class="header__logout">
         <span>Выйти</span>
@@ -48,20 +50,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "AppLayoutHeader",
-  props: {
-    isAuth: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  methods: {
-    // applyFilters(e) {
-    //   this.$emit('applyFilters',{ item: e.target.value, entity: 'search' });
-    // }
+  computed: {
+    ...mapState(["user"]),
+    ...mapState("Cart", {
+      total_price_order: (state) => state.totalPriceOrder,
+    }),
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/header.scss";
+</style>

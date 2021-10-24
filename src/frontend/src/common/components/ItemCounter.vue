@@ -1,5 +1,5 @@
 <template>
-  <div class="counter counter--orange ingridients__counter">
+  <div class="counter" :class="parentClass">
     <button
       type="button"
       class="counter__button counter__button--disabled counter__button--minus"
@@ -18,6 +18,7 @@
     <button
       type="button"
       class="counter__button counter__button--plus"
+      :class="colorBtn"
       :disabled="internalValue >= 3"
       @click="internalValue++"
     >
@@ -33,6 +34,14 @@ export default {
     value: {
       type: Number,
       required: true,
+    },
+    parentClass: {
+      type: String,
+      required: false,
+    },
+    colorBtn: {
+      type: String,
+      required: false,
     },
   },
   computed: {

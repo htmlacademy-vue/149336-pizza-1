@@ -3,14 +3,13 @@
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
       <RadioButton
-        v-for="item in dough"
+        v-for="item in doughs"
         :key="item.id"
-        :name="`dough`"
+        name="dough"
         :value="item.type"
         v-model="checkedDough"
         :classRadioBtn="`dough__input dough__input--${item.type}`"
         :classRadioInput="`visually-hidden`"
-        @change="$emit('change', $event, item.price)"
       >
         <b>{{ item.name }}</b>
         <span>{{ item.description }}</span>
@@ -22,26 +21,55 @@
 <script>
 import RadioButton from "@/common/components/RadioButton";
 
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "BuilderDoughSelector",
   components: {
     RadioButton,
   },
-  props: {
-    dough: {
-      type: Array,
-      required: true,
+  computed: {
+    ...mapState("Builder", {
+      doughs: (state) => state.doughs,
+      dough: (state) => state.composition.dough.value,
+    }),
+
+    checkedDough: {
+      get() {
+        return this.dough;
+      },
+      set(newDough) {
+        let payload = {
+          value: newDough,
+        };
+        this.changeDough(payload);
+        this.changeTotalPrice();
+        this.switchClassPizza();
+      },
     },
   },
-  data() {
-    return {
-      checkedDough: "light",
-    };
+  methods: {
+    ...mapActions("Builder", [
+      "changeDough",
+      "changeTotalPrice",
+      "switchClassPizza",
+    ]),
+
+    changeDoughMethod(newDough, newPrice) {
+      let payload = {
+        value: newDough,
+        price: newPrice,
+      };
+      this.changeDough(payload);
+      this.changeTotalPrice();
+      this.switchClassPizza();
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/title.scss";
 @import "~@/assets/scss/blocks/dough.scss";
 </style>
