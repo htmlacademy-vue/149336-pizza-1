@@ -10,11 +10,6 @@ export default {
   state: {
     user: user[0],
   },
-  getters: {
-    user: (state) => {
-      return state.user;
-    },
-  },
   mutations: {
     [CHANGE_USER_PHONE]: (state, payload) => {
       state.user.phone = payload.value;

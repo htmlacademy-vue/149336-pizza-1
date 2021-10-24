@@ -15,7 +15,7 @@
         >{{ total_price_order }} ₽</router-link
       >
     </div>
-    <div v-if="USER" class="header__user">
+    <div v-if="user" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -28,14 +28,14 @@
             "
           />
           <img
-            :src="USER.avatar"
+            :src="user.avatar"
             :srcset="require(`@/assets/img/users/user5@2x.jpg`)"
-            :alt="USER.name"
+            :alt="user.name"
             width="32"
             height="32"
           />
         </picture>
-        <span>{{ USER.name }}</span>
+        <span>{{ user.name }}</span>
       </router-link>
       <router-link :to="{ name: '' }" class="header__logout">
         <span>Выйти</span>
@@ -50,12 +50,12 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "AppLayoutHeader",
   computed: {
-    ...mapGetters(["USER"]),
+    ...mapState(["user"]),
     ...mapState("Cart", {
       total_price_order: (state) => state.totalPriceOrder,
     }),
@@ -63,4 +63,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/layout/header.scss";
+</style>
