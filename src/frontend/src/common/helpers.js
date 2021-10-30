@@ -6,6 +6,25 @@ import {
 } from "@/common/constants";
 import uniqueId from "lodash/uniqueId";
 
+import resources from "@/common/enums/resources";
+import {
+  AuthApiService,
+  // CrudApiService,
+  ReadOnlyApiService,
+  // TaskApiService
+} from "@/services/api.service";
+
+export const createResources = (notifier) => {
+  return {
+    [resources.USERS]: new ReadOnlyApiService(resources.USERS, notifier),
+    [resources.AUTH]: new AuthApiService(notifier),
+    // [resources.TASKS]: new TaskApiService(notifier),
+    // [resources.COLUMNS]: new CrudApiService(resources.COLUMNS, notifier),
+    // [resources.TICKS]: new CrudApiService(resources.TICKS, notifier),
+    // [resources.COMMENTS]: new CrudApiService(resources.COMMENTS, notifier),
+  };
+};
+
 export const normalizeDough = (dough) => {
   return {
     ...dough,
