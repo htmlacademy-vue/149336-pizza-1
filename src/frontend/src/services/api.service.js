@@ -80,6 +80,25 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 }
 
+export class MiscApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(notifier);
+  }
+
+  _normalize(misc) {
+    return {
+      ...misc,
+      count: 0,
+    };
+  }
+
+  async query() {
+    const miscs = await axios.get("misc");
+    console.log("miscs");
+    return miscs.data.map((misc) => this._normalize(misc));
+  }
+}
+
 // export class TaskApiService extends CrudApiService {
 //   constructor(notifier) {
 //     super('tasks', notifier);

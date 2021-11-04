@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Orders",
   components: {},
@@ -10,7 +12,9 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    ...mapState("Orders", ["orders"]),
+  },
   watch: {},
   created() {},
   methods: {},

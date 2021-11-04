@@ -45,9 +45,10 @@ export default {
   computed: {
     ...mapState("Builder", ["composition"]),
   },
-  mounted: function () {
+  mounted() {
     this.changeTotalPrice();
     // this.resetBuilder();
+    console.log(this.$store);
   },
   methods: {
     ...mapActions("Builder", [

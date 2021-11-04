@@ -9,12 +9,12 @@ import {
   RESET_PIZZAS,
   UPDATE_USER_ADDRESS,
 } from "@/store/mutation-types";
-import { normalizeMisc /*, capitalize*/ } from "@/common/helpers";
-import jsonMisc from "@/static/misc.json";
+import { /*normalizeMisc,*/ capitalize } from "@/common/helpers";
+// import jsonMisc from "@/static/misc.json";
 
-// const entity = "cart";
-// const module = capitalize(entity);
-// const namespace = { entity, module };
+const entity = "cart";
+const module = capitalize(entity);
+const namespace = { entity, module };
 
 export default {
   namespaced: true,
@@ -126,13 +126,14 @@ export default {
     },
   },
   actions: {
-    query({ commit }) {
-      const data = jsonMisc.map((item) => normalizeMisc(item)); // TODO: Add api call
+    async query({ commit }) {
+      // const data = jsonMisc.map((item) => normalizeMisc(item)); // TODO: Add api call
+      const data = await this.$api.misc.query();
+      console.log("data");
       commit(
         SET_ENTITY,
         {
-          module: "Cart",
-          entity: "misc",
+          ...namespace,
           value: data,
         },
         { root: true }

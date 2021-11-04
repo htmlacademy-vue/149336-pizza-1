@@ -11,18 +11,30 @@ import {
   AuthApiService,
   // CrudApiService,
   ReadOnlyApiService,
-  // TaskApiService
+  MiscApiService,
 } from "@/services/api.service";
+import { SET_ENTITY } from "@/store/mutation-types";
 
 export const createResources = (notifier) => {
   return {
-    [resources.USERS]: new ReadOnlyApiService(resources.USERS, notifier),
+    [resources.WHOAMI]: new ReadOnlyApiService(resources.WHOAMI, notifier),
     [resources.AUTH]: new AuthApiService(notifier),
+    [resources.MISC]: new MiscApiService(resources.MISC, notifier),
     // [resources.TASKS]: new TaskApiService(notifier),
     // [resources.COLUMNS]: new CrudApiService(resources.COLUMNS, notifier),
     // [resources.TICKS]: new CrudApiService(resources.TICKS, notifier),
     // [resources.COMMENTS]: new CrudApiService(resources.COMMENTS, notifier),
   };
+};
+
+export const setAuth = (store) => {
+  store.$api.auth.setAuthHeader();
+  store.dispatch("Auth/getMe");
+  store.commit(SET_ENTITY, {
+    module: "Auth",
+    entity: "isAuthenticated",
+    value: true,
+  });
 };
 
 export const normalizeDough = (dough) => {
@@ -64,10 +76,10 @@ export const normalizeIngredients = (ingredient) => {
 export const capitalize = (string) =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
-export const normalizeMisc = (misc) => {
-  return {
-    ...misc,
-    id: uniqueId(),
-    count: 0,
-  };
-};
+// export const normalizeMisc = (misc) => {
+//   return {
+//     ...misc,
+//     id: uniqueId(),
+//     count: 0,
+//   };
+// };

@@ -18,29 +18,24 @@ Vue.use(Vuex);
 
 const state = () => ({
   notifications: [],
-  users: [],
 });
 
-const getters = {
-  user: (state) => {
-    return state.user;
-  },
-};
+const getters = {};
 
 const actions = {
   async init({ dispatch }) {
-    dispatch("fetchUsers");
     dispatch("Cart/query");
   },
-  async fetchUsers({ commit }) {
-    // const user = jsonUsers; // TODO: Add api call
-    const users = await this.$api.users.query();
-    commit(SET_ENTITY, {
-      module: null,
-      entity: "users",
-      value: { ...users, userId: uniqueId() },
-    });
-  },
+  // async fetchUsers({ commit }) {
+  //   // const user = jsonUsers; // TODO: Add api call
+  //   const user = await this.$api.whoAmI.query();
+  //   commit(SET_ENTITY, {
+  //     module: null,
+  //     entity: "user",
+  //     value: { ...user, userId: uniqueId() },
+  //   });
+  //   console.log("fetchUsers");
+  // },
   async createNotification({ commit }, { ...notification }) {
     const uniqueNotification = {
       ...notification,

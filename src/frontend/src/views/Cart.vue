@@ -79,7 +79,7 @@ export default {
     CartForm,
   },
   computed: {
-    ...mapState({
+    ...mapState("Auth", {
       user: (state) => state.user,
     }),
     ...mapState("Builder", {
@@ -112,9 +112,13 @@ export default {
       return pizzasPrice + miscsPrice;
     },
   },
+  // created: function () {
+  //   this.query();
+  // },
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),
     ...mapActions("Cart", [
+      // "query",
       "createPizza",
       "updatePizza",
       "updateTotalPriceOrder",
@@ -140,7 +144,7 @@ export default {
         );
 
       let order = {
-        userId: this.user.userId || null,
+        userId: this.user.id || null,
         pizzas: [],
         misc: myMisc,
         address: {

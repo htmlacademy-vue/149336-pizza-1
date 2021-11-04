@@ -14,7 +14,7 @@
         type="text"
         name="tel"
         placeholder="+7 999-999-99-99"
-        v-model="phoneUser"
+        :value="phoneUser"
       />
     </label>
     <div class="cart-form__address" v-if="recipientOrder !== '1'">
@@ -53,20 +53,12 @@ export default {
     };
   },
   computed: {
-    ...mapState({
+    ...mapState("Auth", {
       user: (state) => state.user,
     }),
 
-    phoneUser: {
-      get() {
-        return this.user.phone;
-      },
-      set(newPhone) {
-        let payload = {
-          value: newPhone,
-        };
-        this.changeUserPhone(payload);
-      },
+    phoneUser() {
+      return this.user.phone;
     },
 
     ...mapGetters({

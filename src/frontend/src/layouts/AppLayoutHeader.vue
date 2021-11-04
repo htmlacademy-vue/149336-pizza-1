@@ -15,7 +15,7 @@
         >{{ total_price_order }} ₽</router-link
       >
     </div>
-    <div v-if="user" class="header__user">
+    <div v-if="isAuthenticated" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -37,28 +37,38 @@
         </picture>
         <span>{{ user.name }}</span>
       </router-link>
-      <router-link :to="{ name: '' }" class="header__logout">
+      <a href="" class="header__logout" @click="$logout">
         <span>Выйти</span>
-      </router-link>
+      </a>
     </div>
     <div v-else class="header__user">
-      <router-link :to="{ name: 'Login' }" class="header__login">
+      <a class="header__login" @click="$router.push('/login')">
         <span>Войти</span>
-      </router-link>
+      </a>
     </div>
   </header>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import { logout } from "@/common/mixins";
 
 export default {
   name: "AppLayoutHeader",
+  mixins: [logout],
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["Auth"]),
     ...mapState("Cart", {
       total_price_order: (state) => state.totalPriceOrder,
     }),
+
+    user() {
+      return this.Auth.user || {};
+    },
+
+    isAuthenticated() {
+      return this.Auth.isAuthenticated;
+    },
   },
 };
 </script>
