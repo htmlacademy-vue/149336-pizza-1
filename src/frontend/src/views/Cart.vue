@@ -1,5 +1,5 @@
 <template>
-  <form action="test.html" method="post" class="layout-form">
+  <form class="layout-form" @submit.prevent="createOrderMethod">
     <main class="content cart">
       <div class="container">
         <div class="cart__title">
@@ -30,7 +30,7 @@
           </ul>
         </div>
         <div class="cart__form" v-if="pizzas.length">
-          <cart-form />
+          <cart-form v-model="phone" :validations="validations" />
         </div>
       </div>
     </main>
@@ -51,12 +51,7 @@
         <b>Итого: {{ totalPriceOrder }} ₽</b>
       </div>
       <div class="footer__submit">
-        <button
-          type="button"
-          class="button"
-          :disabled="!pizzas.length"
-          @click="createOrderMethod"
-        >
+        <button type="submit" class="button" :disabled="!pizzas.length">
           Оформить заказ
         </button>
       </div>
@@ -64,11 +59,11 @@
     <router-view />
   </form>
 </template>
-
 <script>
 import CartProductItem from "@/modules/cart/components/CartProductItem";
 import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
 import CartForm from "@/modules/cart/components/CartForm";
+import { validator } from "@/common/mixins";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -77,6 +72,37 @@ export default {
     CartProductItem,
     CartAdditionalItem,
     CartForm,
+  },
+  mixins: [validator],
+  data: () => ({
+    // email: "",
+    // password: "",
+    phone: "",
+    validations: {
+      // email: {
+      //   error: "",
+      //   rules: ["required", "email"],
+      // },
+      // password: {
+      //   error: "",
+      //   rules: ["required"],
+      // },
+      phone: {
+        error: "",
+        rules: ["phone"],
+      },
+    },
+  }),
+  watch: {
+    // email() {
+    //   this.$clearValidationErrors();
+    // },
+    // password() {
+    //   this.$clearValidationErrors();
+    // },
+    phone() {
+      this.$clearValidationErrors();
+    },
   },
   computed: {
     ...mapState("Auth", {
@@ -89,6 +115,7 @@ export default {
       pizzas: (state) => state.pizzas,
       misc: (state) => state.misc,
       address: (state) => state.address,
+      recipient: (state) => state.recipient,
     }),
 
     totalPriceOrder() {
@@ -112,20 +139,25 @@ export default {
       return pizzasPrice + miscsPrice;
     },
   },
-  // created: function () {
-  //   this.query();
-  // },
+  created: function () {
+    this.query();
+  },
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),
     ...mapActions("Cart", [
-      // "query",
+      "query",
       "createPizza",
       "updatePizza",
       "updateTotalPriceOrder",
     ]),
+
+    ...mapActions("Auth", ["newAddresses"]),
     ...mapActions("Orders", ["createOrder"]),
 
     createOrderMethod() {
+      if (!this.$validateFields({ phone: this.phone }, this.validations)) {
+        return;
+      }
       let myIngr = [];
       this.composition.ingr
         .filter((ingr) => {
@@ -142,18 +174,32 @@ export default {
         .forEach((item) =>
           myMisc.push({ miscId: item.id, quantity: item.count })
         );
-
+      let myAddress;
+      switch (this.recipient) {
+        case "1":
+          myAddress = null;
+          break;
+        case "3":
+          myAddress = { id: 111 };
+          break;
+        default:
+          myAddress = {
+            name: this.user.name,
+            userId: this.user.id,
+            street: this.address.street,
+            building: this.address.house,
+            flat: this.address.apartment,
+            comment: "",
+          };
+          this.newAddresses(myAddress);
+      }
+      console.log(`myAddress = `);
+      console.log(myAddress);
       let order = {
         userId: this.user.id || null,
         pizzas: [],
         misc: myMisc,
-        address: {
-          name: this.user.name,
-          street: this.address.street,
-          building: this.address.house,
-          flat: this.address.apartment,
-          comment: "",
-        },
+        address: myAddress,
       };
 
       this.pizzas.forEach((pizza) => {

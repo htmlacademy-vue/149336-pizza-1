@@ -1,10 +1,11 @@
-import { SET_ENTITY } from "@/store/mutation-types";
+import { SET_ENTITY, ADD_ENTITY } from "@/store/mutation-types";
 
 export default {
   namespaced: true,
   state: {
     isAuthenticated: false,
     user: null,
+    addresses: null,
   },
   getters: {
     getUserAttribute: (state) => (attr) => state.user ? state.user[attr] : "",
@@ -53,6 +54,32 @@ export default {
         // Note: in case of not proper login, i.e. token is expired
         dispatch("logout", false);
       }
+    },
+
+    async queryAddresses({ commit }) {
+      const data = await this.$api.addresses.get();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          value: data,
+        },
+        { root: true }
+      );
+    },
+
+    async newAddresses({ commit }, address) {
+      const data = await this.$api.addresses.post(address);
+      commit(
+        ADD_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          value: data,
+        },
+        { root: true }
+      );
     },
   },
 };

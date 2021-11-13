@@ -2,19 +2,21 @@ import uniqueId from "lodash/uniqueId";
 import cloneDeep from "lodash/cloneDeep";
 import {
   SET_ENTITY,
+  // ADD_ENTITY,
   // DELETE_ENTITY,
   CREATE_PIZZA,
   UPDATE_PIZZA,
   UPDATE_TOTAL_PRICE_ORDER,
   RESET_PIZZAS,
   UPDATE_USER_ADDRESS,
+  UPDATE_RECIPIENT,
 } from "@/store/mutation-types";
-import { /*normalizeMisc,*/ capitalize } from "@/common/helpers";
+// import { /*normalizeMisc,*/ capitalize } from "@/common/helpers";
 // import jsonMisc from "@/static/misc.json";
 
-const entity = "cart";
-const module = capitalize(entity);
-const namespace = { entity, module };
+// const entity = "cart";
+// const module = capitalize(entity);
+// const namespace = { entity, module };
 
 export default {
   namespaced: true,
@@ -27,6 +29,7 @@ export default {
       house: "",
       apartment: "",
     },
+    recipient: "myself",
   },
   getters: {
     pizzas: (state) => {
@@ -48,20 +51,6 @@ export default {
       payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
-
-      // const pizza = {
-      //   name: "",
-      //   sauceId: 0,
-      //   doughId: 0,
-      //   sizeId: 0,
-      //   quantity: 0,
-      //   ingredients: [
-      //     {
-      //       ingredientId: 0,
-      //       quantity: 0,
-      //     },
-      //   ],
-      // };
 
       let pizza = {
         composition: data,
@@ -116,24 +105,36 @@ export default {
     },
 
     [UPDATE_USER_ADDRESS]: (state, payload) => {
-      payload.data.street
-        ? (state.address.street = payload.data.street)
-        : payload.data.house
-        ? (state.address.house = payload.data.house)
-        : payload.data.apartment
-        ? (state.address.apartment = payload.data.apartment)
-        : false;
+      // payload.data.street
+      //   ? (state.address.street = payload.data.street)
+      //   : payload.data.house
+      // ? (state.address.house = payload.data.house)
+      // : payload.data.apartment
+      // ? (state.address.apartment = payload.data.apartment)
+      // : false;
+      if (payload.data.street) {
+        state.address.street = payload.data.street;
+      }
+      if (payload.data.house) {
+        state.address.house = payload.data.house;
+      }
+      if (payload.data.apartment) {
+        state.address.apartment = payload.data.apartment;
+      }
+    },
+
+    [UPDATE_RECIPIENT]: (state, payload) => {
+      state.recipient = payload.data.recipient;
     },
   },
   actions: {
     async query({ commit }) {
-      // const data = jsonMisc.map((item) => normalizeMisc(item)); // TODO: Add api call
       const data = await this.$api.misc.query();
-      console.log("data");
       commit(
         SET_ENTITY,
         {
-          ...namespace,
+          module: "Cart",
+          entity: "misc",
           value: data,
         },
         { root: true }
@@ -182,6 +183,16 @@ export default {
         {
           data,
           rootData: rootState,
+        },
+        { root: false }
+      );
+    },
+
+    updateUserRecipient({ commit }, data) {
+      commit(
+        UPDATE_RECIPIENT,
+        {
+          data,
         },
         { root: false }
       );

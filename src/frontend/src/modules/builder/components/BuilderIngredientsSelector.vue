@@ -5,7 +5,7 @@
       <div class="ingridients__sauce">
         <p>Основной соус:</p>
         <RadioButton
-          v-for="item in sauces"
+          v-for="item in sortedSauces(sauces)"
           :key="item.id"
           name="sauce"
           :value="item.value"
@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      ingridients: (state) => state.composition.ingr,
+      ingridients: (state) => state.ingredients,
       sauces: (state) => state.sauces,
       sauce: (state) => state.composition.sauce.value,
     }),
@@ -104,6 +104,12 @@ export default {
       this.changeSauce(payload);
       this.changeTotalPrice();
       this.switchClassPizza();
+    },
+    sortedSauces(arr) {
+      return arr
+        .slice()
+        .sort((a, b) => b.name - a.name)
+        .reverse();
     },
   },
 };

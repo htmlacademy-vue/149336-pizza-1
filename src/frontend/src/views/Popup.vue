@@ -26,7 +26,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState({
+    ...mapState("Auth", {
       user: (state) => state.user,
     }),
   },

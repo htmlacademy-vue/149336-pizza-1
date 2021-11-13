@@ -33,10 +33,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["createPizza"]),
+    ...mapActions("Auth", ["queryAddresses"]),
+    ...mapActions("Cart", ["query", "createPizza"]),
 
     createPizzaMethod() {
       this.createPizza();
+      // this.query();
+      this.queryAddresses();
       this.$router.push({ name: "Cart" });
     },
   },

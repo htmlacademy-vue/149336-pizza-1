@@ -1,4 +1,4 @@
-import { emailRegex, urlRegex } from "@/common/constants";
+import { emailRegex, urlRegex, phoneRegex } from "@/common/constants";
 
 const rules = {
   isNotEmpty: {
@@ -17,6 +17,10 @@ const rules = {
   url: {
     rule: (value) => (value ? urlRegex.test(value) : true),
     message: "Ссылка имеет неверный формат",
+  },
+  phone: {
+    rule: (value) => (value ? phoneRegex.test(value) : true),
+    message: "Телефон имеет неверный формат",
   },
 };
 

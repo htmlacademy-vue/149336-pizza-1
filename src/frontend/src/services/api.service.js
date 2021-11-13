@@ -1,7 +1,10 @@
 import JwtService from "@/services/jwt.service";
-// import taskStatuses from "@/common/enums/taskStatuses";
-// import timeStatuses from "@/common/enums/timeStatuses";
-// import { DAY_IN_MILLISEC } from "@/common/constants";
+import {
+  DOUGH_TYPES,
+  SIZES,
+  SAUCES_VALUE,
+  // INGREDIENTS_CLASS,
+} from "@/common/constants";
 import axios from "@/plugins/axios";
 
 class BaseApiService {
@@ -94,8 +97,138 @@ export class MiscApiService extends ReadOnlyApiService {
 
   async query() {
     const miscs = await axios.get("misc");
-    console.log("miscs");
     return miscs.data.map((misc) => this._normalize(misc));
+  }
+}
+
+export class DoughApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(notifier);
+  }
+
+  _normalize(dough) {
+    return {
+      ...dough,
+      type: DOUGH_TYPES.find(({ label }) => dough.name === label)?.value,
+      isChecked: dough.name === "Тонкое",
+    };
+  }
+
+  async query() {
+    const doughs = await axios.get("dough");
+    return doughs.data.map((dough) => this._normalize(dough));
+  }
+}
+
+export class SizesApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(notifier);
+  }
+
+  _normalize(size) {
+    return {
+      ...size,
+      size: size.multiplier ? SIZES[size.multiplier] : "",
+      isChecked: size.id === 2,
+    };
+  }
+
+  async query() {
+    const sizes = await axios.get("sizes");
+    return sizes.data.map((size) => this._normalize(size));
+  }
+}
+
+export class SaucesApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(notifier);
+  }
+
+  _normalize(sauce) {
+    return {
+      ...sauce,
+      value:
+        sauce.name === "Сливочный"
+          ? SAUCES_VALUE[2]
+          : sauce.name === "Томатный"
+          ? SAUCES_VALUE[1]
+          : "",
+      isChecked: sauce.id === 1,
+    };
+  }
+
+  async query() {
+    const sauces = await axios.get("sauces");
+    return sauces.data.map((sauce) => this._normalize(sauce));
+  }
+}
+
+export class IngredientsApiService extends ReadOnlyApiService {
+  constructor(notifier) {
+    super(notifier);
+  }
+
+  _normalize(ingredient) {
+    return {
+      ...ingredient,
+      label: ingredient.image.slice(ingredient.image.lastIndexOf("/") + 1, -4),
+      count: 0,
+    };
+  }
+
+  async query() {
+    const ingredients = await axios.get("ingredients");
+    return ingredients.data.map((ingredient) => this._normalize(ingredient));
+  }
+}
+
+export class AddressesApiService extends CrudApiService {
+  constructor(notifier) {
+    super("addresses", notifier);
+  }
+
+  // _normalize(task) {
+  //   return {
+  //     ...task,
+  //     ticks: task.ticks ? task.ticks : [],
+  //     dueDate: task.dueDate ? new Date(task.dueDate) : null,
+  //     status: task.statusId ? taskStatuses[task.statusId] : '',
+  //     timeStatus: TaskApiService.getTimeStatus(task.dueDate)
+  //   };
+  // }
+
+  // _createRequest(task) {
+  //   const { ticks, comments, status, timeStatus, user, ...request } = task;
+  //   return request;
+  // }
+
+  // async query(config = {}) {
+  //   const tasks = await super.query(config);
+  //   return tasks.map(task => this._normalize(task));
+  // }
+
+  async get(config = {}) {
+    const { data } = await axios.get(`addresses`, config);
+    // return this._normalize(data);
+    return data;
+  }
+
+  async post(address) {
+    const { data: newAddress } = await axios.post("addresses", address);
+    // return this._normalize(newAddress);
+    return newAddress;
+  }
+
+  async put(address) {
+    await axios.put(`addresses/${address.id}`, address);
+    // return this._normalize(address);
+    return address;
+  }
+
+  async delete(address) {
+    await axios.delete(`addresses/${address.id}`, address);
+    // return this._normalize(address);
+    return address;
   }
 }
 

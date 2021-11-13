@@ -24,7 +24,6 @@ export default {
     if (this.$jwt.getToken()) {
       setAuth(this.$store);
     }
-    console.log("+--+-+-+--+---+--++-++---+-");
     // Note: fetch initial data
     this.$store.dispatch("init");
   },

@@ -9,6 +9,7 @@ import {
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  SET_LONG_ENTITY,
 } from "@/store/mutation-types";
 // import jsonUsers from "@/static/user.json";
 import uniqueId from "lodash/uniqueId";
@@ -24,18 +25,12 @@ const getters = {};
 
 const actions = {
   async init({ dispatch }) {
-    dispatch("Cart/query");
+    dispatch("Builder/queryDough");
+    dispatch("Builder/querySizes");
+    dispatch("Builder/querySauces");
+    dispatch("Builder/queryIngridients");
   },
-  // async fetchUsers({ commit }) {
-  //   // const user = jsonUsers; // TODO: Add api call
-  //   const user = await this.$api.whoAmI.query();
-  //   commit(SET_ENTITY, {
-  //     module: null,
-  //     entity: "user",
-  //     value: { ...user, userId: uniqueId() },
-  //   });
-  //   console.log("fetchUsers");
-  // },
+
   async createNotification({ commit }, { ...notification }) {
     const uniqueNotification = {
       ...notification,
@@ -60,6 +55,10 @@ const mutations = {
   },
   [SET_ENTITY](state, { module, entity, value }) {
     module ? (state[module][entity] = value) : (state[entity] = value);
+  },
+
+  [SET_LONG_ENTITY](state, { module, path, entity, value }) {
+    state[module][path][entity] = value;
   },
 
   [ADD_ENTITY](state, { module, entity, value }) {
