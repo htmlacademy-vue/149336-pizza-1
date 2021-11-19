@@ -75,32 +75,38 @@ export default {
   },
   mixins: [validator],
   data: () => ({
-    // email: "",
-    // password: "",
     phone: "",
+    street: "",
     validations: {
-      // email: {
-      //   error: "",
-      //   rules: ["required", "email"],
-      // },
-      // password: {
-      //   error: "",
-      //   rules: ["required"],
-      // },
       phone: {
         error: "",
         rules: ["phone"],
       },
+      street: {
+        error: "",
+        rules: ["required"],
+      },
+      house: {
+        error: "",
+        rules: ["required"],
+      },
+      apartment: {
+        error: "",
+        rules: ["required"],
+      },
     },
   }),
   watch: {
-    // email() {
-    //   this.$clearValidationErrors();
-    // },
-    // password() {
-    //   this.$clearValidationErrors();
-    // },
     phone() {
+      this.$clearValidationErrors();
+    },
+    street() {
+      this.$clearValidationErrors();
+    },
+    house() {
+      this.$clearValidationErrors();
+    },
+    apartment() {
       this.$clearValidationErrors();
     },
   },

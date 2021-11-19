@@ -37,9 +37,13 @@
       <div class="cart-form__input">
         <label class="input">
           <span>Улица*</span>
-          <input
+          <AppInput
+            :value="street"
             type="text"
             name="street"
+            class="input"
+            placeholder=""
+            :error-text="validations.street.error"
             v-model="streetAddress"
             :disabled="savedAddress"
           />
@@ -48,13 +52,31 @@
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Дом*</span>
-          <input type="text" name="house" v-model="houseAddress" />
+          <AppInput
+            :value="house"
+            type="text"
+            name="house"
+            class="input"
+            placeholder=""
+            :error-text="validations.house.error"
+            v-model="houseAddress"
+            :disabled="savedAddress"
+          />
         </label>
       </div>
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Квартира</span>
-          <input type="text" name="apartment" v-model="apartmentAddress" />
+          <AppInput
+            :value="apartment"
+            type="text"
+            name="apartment"
+            class=""
+            placeholder=""
+            :error-text="validations.apartment.error"
+            v-model="apartmentAddress"
+            :disabled="savedAddress"
+          />
         </label>
       </div>
     </div>
@@ -81,42 +103,20 @@ export default {
       type: Object,
     },
   },
-  // data: () => ({
-  //   // email: "",
-  //   // password: "",
-  //   phone: "",
-  //   validations: {
-  //     // email: {
-  //     //   error: "",
-  //     //   rules: ["required", "email"],
-  //     // },
-  //     // password: {
-  //     //   error: "",
-  //     //   rules: ["required"],
-  //     // },
-  //     phone: {
-  //       error: "",
-  //       rules: ["phone"],
-  //     },
+  // watch: {
+  //   phone() {
+  //     this.$clearValidationErrors();
   //   },
-  // }),
-  watch: {
-    // email() {
-    //   this.$clearValidationErrors();
-    // },
-    // password() {
-    //   this.$clearValidationErrors();
-    // },
-    phone() {
-      this.$clearValidationErrors();
-    },
-    savedAddress() {
-      console.log(
-        this.recipientOrder !== "myself" && this.recipientOrder !== "new"
-      );
-      return this.recipientOrder !== "myself" && this.recipientOrder !== "new";
-    },
-  },
+  //   street() {
+  //     this.$clearValidationErrors();
+  //   },
+  //   house() {
+  //     this.$clearValidationErrors();
+  //   },
+  //   apartment() {
+  //     this.$clearValidationErrors();
+  //   },
+  // },
   computed: {
     ...mapState("Auth", {
       user: (state) => state.user,
@@ -139,23 +139,42 @@ export default {
         return this.recipient;
       },
       set(newRecipient) {
+        this.$clearValidationErrors();
+
         let payload = {
           recipient: newRecipient,
         };
         this.updateUserRecipient(payload);
+        if (newRecipient === "new") {
+          let newPayload1 = {
+            street: "",
+            house: "",
+            apartment: "",
+          };
+          this.updateUserAddress(newPayload1);
+        }
         if (newRecipient !== "myself" && newRecipient !== "new") {
           let address = this.addresses.filter((address) => {
             return address.id == newRecipient;
           });
-          console.log(address);
-          let payload = {
-            street: address.street,
-            house: address.flat,
-            apartment: address.building,
+          let newPayload2 = {
+            street: address[0].street,
+            house: address[0].building,
+            apartment: address[0].flat,
           };
-          this.updateUserAddress(payload);
+          this.updateUserAddress(newPayload2);
         }
       },
+    },
+
+    savedAddress() {
+      let boolVal =
+        this.recipientOrder === "myself"
+          ? false
+          : this.recipientOrder === "new"
+          ? false
+          : true;
+      return boolVal;
     },
 
     streetAddress: {
