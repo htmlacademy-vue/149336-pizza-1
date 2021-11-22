@@ -10,6 +10,7 @@ import {
   RESET_PIZZAS,
   UPDATE_USER_ADDRESS,
   UPDATE_RECIPIENT,
+  RESET_USER_ADDRESS,
 } from "@/store/mutation-types";
 // import { /*normalizeMisc,*/ capitalize } from "@/common/helpers";
 // import jsonMisc from "@/static/misc.json";
@@ -105,13 +106,6 @@ export default {
     },
 
     [UPDATE_USER_ADDRESS]: (state, payload) => {
-      // payload.data.street
-      //   ? (state.address.street = payload.data.street)
-      //   : payload.data.house
-      // ? (state.address.house = payload.data.house)
-      // : payload.data.apartment
-      // ? (state.address.apartment = payload.data.apartment)
-      // : false;
       if (payload.data.street) {
         state.address.street = payload.data.street;
       }
@@ -121,6 +115,12 @@ export default {
       if (payload.data.apartment) {
         state.address.apartment = payload.data.apartment;
       }
+    },
+
+    [RESET_USER_ADDRESS]: (state) => {
+      state.address.street = "";
+      state.address.house = "";
+      state.address.apartment = "";
     },
 
     [UPDATE_RECIPIENT]: (state, payload) => {
@@ -196,6 +196,10 @@ export default {
         },
         { root: false }
       );
+    },
+
+    resetUserAddress({ commit }) {
+      commit(RESET_USER_ADDRESS, { root: false });
     },
   },
 };

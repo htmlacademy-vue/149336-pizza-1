@@ -1,4 +1,9 @@
-import { SET_ENTITY, ADD_ENTITY } from "@/store/mutation-types";
+import {
+  SET_ENTITY,
+  ADD_ENTITY,
+  DELETE_ENTITY,
+  UPDATE_ENTITY,
+} from "@/store/mutation-types";
 
 export default {
   namespaced: true,
@@ -77,6 +82,32 @@ export default {
           module: "Auth",
           entity: "addresses",
           value: data,
+        },
+        { root: true }
+      );
+    },
+
+    async updateAddresses({ commit }, address) {
+      await this.$api.addresses.put(address);
+      commit(
+        UPDATE_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          value: address,
+        },
+        { root: true }
+      );
+    },
+
+    async deleteAddress({ commit }, address) {
+      await this.$api.addresses.delete(address);
+      commit(
+        DELETE_ENTITY,
+        {
+          module: "Auth",
+          entity: "addresses",
+          id: address.id,
         },
         { root: true }
       );

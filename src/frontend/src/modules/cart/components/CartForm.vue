@@ -22,7 +22,6 @@
         name="tel"
         class="input"
         placeholder="+7 999-999-99-99"
-        :error-text="validations.phone.error"
       />
     </label>
     <div class="cart-form__address" v-if="recipientOrder !== 'myself'">
@@ -38,12 +37,10 @@
         <label class="input">
           <span>Улица*</span>
           <AppInput
-            :value="street"
             type="text"
             name="street"
             class="input"
             placeholder=""
-            :error-text="validations.street.error"
             v-model="streetAddress"
             :disabled="savedAddress"
           />
@@ -53,12 +50,10 @@
         <label class="input">
           <span>Дом*</span>
           <AppInput
-            :value="house"
             type="text"
             name="house"
             class="input"
             placeholder=""
-            :error-text="validations.house.error"
             v-model="houseAddress"
             :disabled="savedAddress"
           />
@@ -68,12 +63,10 @@
         <label class="input">
           <span>Квартира</span>
           <AppInput
-            :value="apartment"
             type="text"
             name="apartment"
             class=""
             placeholder=""
-            :error-text="validations.apartment.error"
             v-model="apartmentAddress"
             :disabled="savedAddress"
           />
@@ -85,7 +78,6 @@
 
 <script>
 import AppInput from "@/common/components/AppInput";
-import { validator } from "@/common/mixins";
 import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
@@ -93,30 +85,12 @@ export default {
   components: {
     AppInput,
   },
-  mixins: [validator],
   props: {
     phone: {
       type: String,
       default: "",
     },
-    validations: {
-      type: Object,
-    },
   },
-  // watch: {
-  //   phone() {
-  //     this.$clearValidationErrors();
-  //   },
-  //   street() {
-  //     this.$clearValidationErrors();
-  //   },
-  //   house() {
-  //     this.$clearValidationErrors();
-  //   },
-  //   apartment() {
-  //     this.$clearValidationErrors();
-  //   },
-  // },
   computed: {
     ...mapState("Auth", {
       user: (state) => state.user,
@@ -139,19 +113,12 @@ export default {
         return this.recipient;
       },
       set(newRecipient) {
-        this.$clearValidationErrors();
-
         let payload = {
           recipient: newRecipient,
         };
         this.updateUserRecipient(payload);
         if (newRecipient === "new") {
-          let newPayload1 = {
-            street: "",
-            house: "",
-            apartment: "",
-          };
-          this.updateUserAddress(newPayload1);
+          this.resetUserAddress();
         }
         if (newRecipient !== "myself" && newRecipient !== "new") {
           let address = this.addresses.filter((address) => {
@@ -215,7 +182,11 @@ export default {
   },
   methods: {
     ...mapActions("Auth", ["changeUserPhone"]),
-    ...mapActions("Cart", ["updateUserAddress", "updateUserRecipient"]),
+    ...mapActions("Cart", [
+      "updateUserAddress",
+      "updateUserRecipient",
+      "resetUserAddress",
+    ]),
   },
 
   mounted() {

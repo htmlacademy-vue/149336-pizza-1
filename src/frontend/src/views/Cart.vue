@@ -30,7 +30,7 @@
           </ul>
         </div>
         <div class="cart__form" v-if="pizzas.length">
-          <cart-form v-model="phone" :validations="validations" />
+          <cart-form v-model="phone" />
         </div>
       </div>
     </main>
@@ -63,7 +63,6 @@
 import CartProductItem from "@/modules/cart/components/CartProductItem";
 import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
 import CartForm from "@/modules/cart/components/CartForm";
-import { validator } from "@/common/mixins";
 import { mapState, mapActions } from "vuex";
 
 export default {
@@ -73,43 +72,10 @@ export default {
     CartAdditionalItem,
     CartForm,
   },
-  mixins: [validator],
   data: () => ({
     phone: "",
     street: "",
-    validations: {
-      phone: {
-        error: "",
-        rules: ["phone"],
-      },
-      street: {
-        error: "",
-        rules: ["required"],
-      },
-      house: {
-        error: "",
-        rules: ["required"],
-      },
-      apartment: {
-        error: "",
-        rules: ["required"],
-      },
-    },
   }),
-  watch: {
-    phone() {
-      this.$clearValidationErrors();
-    },
-    street() {
-      this.$clearValidationErrors();
-    },
-    house() {
-      this.$clearValidationErrors();
-    },
-    apartment() {
-      this.$clearValidationErrors();
-    },
-  },
   computed: {
     ...mapState("Auth", {
       user: (state) => state.user,
@@ -161,9 +127,9 @@ export default {
     ...mapActions("Orders", ["createOrder"]),
 
     createOrderMethod() {
-      if (!this.$validateFields({ phone: this.phone }, this.validations)) {
-        return;
-      }
+      // if (!this.$validateFields({ phone: this.phone }, this.validations)) {
+      //   return;
+      // }
       let myIngr = [];
       this.composition.ingr
         .filter((ingr) => {
