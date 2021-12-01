@@ -3,7 +3,7 @@
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="diameter sheet__content">
       <RadioButton
-        v-for="item in sortedSizes(sizes)"
+        v-for="item in sizes"
         :key="item.id"
         name="diameter"
         :value="item.size"
@@ -47,10 +47,6 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["changeSize", "changeTotalPrice"]),
-
-    sortedSizes(arr) {
-      return arr.slice().sort((a, b) => a.multiplier - b.multiplier);
-    },
   },
 };
 </script>

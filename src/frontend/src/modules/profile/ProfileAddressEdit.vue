@@ -187,12 +187,12 @@ export default {
 
     updateAddress(event) {
       let address = {
-        name: this.addrName,
-        userId: this.user.id,
-        street: this.addrStreet,
-        building: this.addrHouse,
-        flat: this.addrApartment,
-        comment: this.addrComment,
+        name: this.addrName || "",
+        userId: this.user.id || "",
+        street: this.addrStreet || "",
+        building: this.addrHouse || "",
+        flat: this.addrApartment || "",
+        comment: this.addrComment || "",
       };
       if (this.addrId) {
         address.id = this.addrId;
@@ -215,9 +215,7 @@ export default {
         flat: this.addrApartment,
         comment: this.addrComment,
       };
-      console.log(address);
       this.deleteAddress(address);
-      // console.log(event.target);
       this.$emit("resetAddress");
       this.$emit("changeVisibleForm");
     },

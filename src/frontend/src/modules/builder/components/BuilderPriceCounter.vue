@@ -38,7 +38,6 @@ export default {
 
     createPizzaMethod() {
       this.createPizza();
-      // this.query();
       this.queryAddresses();
       this.$router.push({ name: "Cart" });
     },

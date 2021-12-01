@@ -11,7 +11,6 @@ import {
   DELETE_ENTITY,
   SET_LONG_ENTITY,
 } from "@/store/mutation-types";
-// import jsonUsers from "@/static/user.json";
 import uniqueId from "lodash/uniqueId";
 import { MESSAGE_LIVE_TIME } from "@/common/constants";
 
@@ -29,6 +28,7 @@ const actions = {
     dispatch("Builder/querySizes");
     dispatch("Builder/querySauces");
     dispatch("Builder/queryIngridients");
+    dispatch("Cart/query");
   },
 
   async createNotification({ commit }, { ...notification }) {

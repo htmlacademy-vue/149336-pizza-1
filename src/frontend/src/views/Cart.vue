@@ -124,7 +124,7 @@ export default {
     ]),
 
     ...mapActions("Auth", ["newAddresses"]),
-    ...mapActions("Orders", ["createOrder"]),
+    ...mapActions("Orders", ["newOrder"]),
 
     createOrderMethod() {
       // if (!this.$validateFields({ phone: this.phone }, this.validations)) {
@@ -148,14 +148,21 @@ export default {
         );
       let myAddress;
       switch (this.recipient) {
-        case "1":
+        case "myself":
           myAddress = null;
           break;
-        case "3":
-          myAddress = { id: 111 };
+        case "new":
+          myAddress = {
+            id: null,
+            street: this.address.street,
+            building: this.address.house,
+            flat: this.address.apartment,
+          };
+          this.newAddresses(myAddress);
           break;
         default:
           myAddress = {
+            id: this.recipient,
             name: this.user.name,
             userId: this.user.id,
             street: this.address.street,
@@ -163,10 +170,7 @@ export default {
             flat: this.address.apartment,
             comment: "",
           };
-          this.newAddresses(myAddress);
       }
-      console.log(`myAddress = `);
-      console.log(myAddress);
       let order = {
         userId: this.user.id || null,
         pizzas: [],
@@ -185,8 +189,7 @@ export default {
         };
         order.pizzas.push(newPizza);
       });
-
-      order.userId === null ? null : this.createOrder(order);
+      order.userId === null ? null : this.newOrder(order);
       this.$router.push({ name: "Popup" });
     },
 

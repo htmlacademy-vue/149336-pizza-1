@@ -87,14 +87,6 @@ export default {
   },
   methods: {
     async login() {
-      // if (
-      //   !this.$validateFields(
-      //     { email: this.email, password: this.password },
-      //     this.validations
-      //   )
-      // ) {
-      //   return;
-      // }
       await this.$store.dispatch("Auth/login", {
         email: this.email,
         password: this.password,

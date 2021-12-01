@@ -62,8 +62,7 @@
 </template>
 
 <script>
-// import AppInput from "@/common/components/AppInput";
-import { mapState, mapActions /*, mapGetters*/ } from "vuex";
+import { mapState, mapActions } from "vuex";
 import ProfileAddressEdit from "../modules/profile/ProfileAddressEdit.vue";
 import ProfileAddressView from "../modules/profile/ProfileAddressView.vue";
 
@@ -102,7 +101,6 @@ export default {
 
     changeVisibleForm() {
       this.visibleForm = !this.visibleForm;
-      // this.editableAddress = {};
     },
 
     putAddress(address) {
@@ -119,7 +117,6 @@ export default {
         addrApartment: "",
         addrComment: "",
       };
-      debugger;
     },
   },
 };

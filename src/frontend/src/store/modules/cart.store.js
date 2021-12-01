@@ -12,8 +12,6 @@ import {
   UPDATE_RECIPIENT,
   RESET_USER_ADDRESS,
 } from "@/store/mutation-types";
-// import { /*normalizeMisc,*/ capitalize } from "@/common/helpers";
-// import jsonMisc from "@/static/misc.json";
 
 // const entity = "cart";
 // const module = capitalize(entity);

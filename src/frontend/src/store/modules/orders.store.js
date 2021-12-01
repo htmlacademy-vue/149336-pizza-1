@@ -1,9 +1,5 @@
-// import uniqueId from "lodash/uniqueId";
-import {
-  // SET_ENTITY,
-  // DELETE_ENTITY,
-  CREATE_ORDER,
-} from "@/store/mutation-types";
+import { SET_ENTITY, ADD_ENTITY, DELETE_ENTITY } from "@/store/mutation-types";
+import { totalPrice } from "@/common/helpers";
 
 export default {
   namespaced: true,
@@ -15,52 +11,48 @@ export default {
       return state.orders;
     },
   },
-  mutations: {
-    [CREATE_ORDER]: (state, payload) => {
-      // const data = cloneDeep(payload.rootData.Builder.composition);
-      // let order = {
-      //   userId: payload.rootData.user.id || null,
-      //   pizzas: [
-      //     {
-      //       name: payload.rootData.Builder.composition.namePizza,
-      //       sauceId: payload.rootData.Builder.composition.sauce.id,
-      //       doughId: payload.rootData.Builder.composition.dough.id,
-      //       sizeId: payload.rootData.Builder.composition.size.id,
-      //       quantity: 0,
-      //       ingredients: [
-      //         {
-      //           ingredientId: 0,
-      //           quantity: 0,
-      //         },
-      //       ],
-      //     },
-      //   ],
-      //   misc: [
-      //     {
-      //       miscId: 0,
-      //       quantity: 0,
-      //     },
-      //   ],
-      //   address: {
-      //     name: payload.data.address.name,
-      //     street: payload.data.address.street,
-      //     building: payload.data.address.building,
-      //     flat: payload.data.address.flat,
-      //     comment: payload.data.address.comment,
-      //   },
-      // };
-      state.orders.push(payload.data);
-    },
-  },
+  mutations: {},
   actions: {
-    createOrder({ commit, rootState }, data) {
+    async queryOrders({ commit, rootState }) {
+      const data = await this.$api.orders.get();
+      let newData = [];
+      data.forEach((order) => {
+        newData.push(totalPrice(order, rootState));
+      });
       commit(
-        CREATE_ORDER,
+        SET_ENTITY,
         {
-          data,
-          rootData: rootState,
+          module: "Orders",
+          entity: "orders",
+          value: newData,
         },
-        { root: false }
+        { root: true }
+      );
+    },
+
+    async newOrder({ commit }, order) {
+      const data = await this.$api.orders.post(order);
+      commit(
+        ADD_ENTITY,
+        {
+          module: "Orders",
+          entity: "orders",
+          value: data,
+        },
+        { root: true }
+      );
+    },
+
+    async deleteOrder({ commit }, order) {
+      await this.$api.orders.delete(order);
+      commit(
+        DELETE_ENTITY,
+        {
+          module: "Orders",
+          entity: "orders",
+          id: order.id,
+        },
+        { root: true }
       );
     },
   },

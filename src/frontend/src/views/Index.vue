@@ -47,15 +47,9 @@ export default {
   },
   mounted() {
     this.changeTotalPrice();
-    // this.resetBuilder();
-    console.log(this.$store);
   },
   methods: {
-    ...mapActions("Builder", [
-      "changeTotalPrice",
-      "changeCounter",
-      // "resetBuilder",
-    ]),
+    ...mapActions("Builder", ["changeTotalPrice", "changeCounter"]),
 
     moveIngridient(active) {
       if (active.count > 2) {

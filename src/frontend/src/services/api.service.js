@@ -129,13 +129,16 @@ export class SizesApiService extends ReadOnlyApiService {
     return {
       ...size,
       size: size.multiplier ? SIZES[size.multiplier] : "",
-      isChecked: size.id === 2,
+      isChecked: size.multiplier === 2,
     };
   }
 
   async query() {
     const sizes = await axios.get("sizes");
-    return sizes.data.map((size) => this._normalize(size));
+    return sizes.data
+      .map((size) => this._normalize(size))
+      .slice()
+      .sort((a, b) => a.multiplier - b.multiplier);
   }
 }
 
@@ -153,13 +156,16 @@ export class SaucesApiService extends ReadOnlyApiService {
           : sauce.name === "Томатный"
           ? SAUCES_VALUE[1]
           : "",
-      isChecked: sauce.id === 1,
+      isChecked: sauce.name === "Томатный",
     };
   }
 
   async query() {
     const sauces = await axios.get("sauces");
-    return sauces.data.map((sauce) => this._normalize(sauce));
+    return sauces.data
+      .map((sauce) => this._normalize(sauce))
+      .slice()
+      .sort((a, b) => b.name - a.name);
   }
 }
 
@@ -187,42 +193,31 @@ export class AddressesApiService extends CrudApiService {
     super("addresses", notifier);
   }
 
-  // _normalize(task) {
-  //   return {
-  //     ...task,
-  //     ticks: task.ticks ? task.ticks : [],
-  //     dueDate: task.dueDate ? new Date(task.dueDate) : null,
-  //     status: task.statusId ? taskStatuses[task.statusId] : '',
-  //     timeStatus: TaskApiService.getTimeStatus(task.dueDate)
-  //   };
-  // }
-
-  // _createRequest(task) {
-  //   const { ticks, comments, status, timeStatus, user, ...request } = task;
-  //   return request;
-  // }
-
-  // async query(config = {}) {
-  //   const tasks = await super.query(config);
-  //   return tasks.map(task => this._normalize(task));
-  // }
+  _normalize(address) {
+    return {
+      building: address.building ? address.building : "",
+      comment: address.comment ? address.comment : "",
+      flat: address.flat ? address.flat : "",
+      id: address.id,
+      name: address.name ? address.name : "",
+      street: address.street ? address.street : "",
+      userId: address.userId,
+    };
+  }
 
   async get(config = {}) {
     const { data } = await axios.get(`addresses`, config);
-    // return this._normalize(data);
-    return data;
+    return data.map((address) => this._normalize(address));
   }
 
   async post(address) {
     const { data: newAddress } = await axios.post("addresses", address);
-    // return this._normalize(newAddress);
-    return newAddress;
+    return this._normalize(newAddress);
   }
 
   async put(address) {
-    await axios.put(`addresses/${address.id}`, address);
-    // return this._normalize(address);
-    return address;
+    const data = await axios.put(`addresses/${address.id}`, address);
+    return this._normalize(data);
   }
 
   async delete(address) {
@@ -232,56 +227,38 @@ export class AddressesApiService extends CrudApiService {
   }
 }
 
-// export class TaskApiService extends CrudApiService {
-//   constructor(notifier) {
-//     super('tasks', notifier);
-//   }
+export class OrdersApiService extends CrudApiService {
+  constructor(notifier) {
+    super("orders", notifier);
+  }
 
-//   static getTimeStatus(dueDate) {
-//     if (!dueDate) {
-//       return '';
-//     }
-//     const currentTime = +new Date();
-//     const taskTime = Date.parse(dueDate);
-//     const timeDelta = taskTime - currentTime;
-//     if (timeDelta > DAY_IN_MILLISEC) {
-//       return '';
-//     }
-//     return timeDelta < 0 ? timeStatuses.DEADLINE : timeStatuses.EXPIRED;
-//   }
+  _normalize(order) {
+    return {
+      // ...order,
+      addressId: order.addressId,
+      id: order.id,
+      orderAddress: order.orderAddress || null,
+      orderMisc: order.orderMisc || [],
+      orderPizzas: order.orderPizzas,
+      userId: order.userId,
+    };
+  }
 
-//   _normalize(task) {
-//     return {
-//       ...task,
-//       ticks: task.ticks ? task.ticks : [],
-//       dueDate: task.dueDate ? new Date(task.dueDate) : null,
-//       status: task.statusId ? taskStatuses[task.statusId] : '',
-//       timeStatus: TaskApiService.getTimeStatus(task.dueDate)
-//     };
-//   }
+  async get(config = {}) {
+    const { data } = await axios.get(`orders`, config);
+    return data.map((order) => this._normalize(order));
+    // return data;
+  }
 
-//   _createRequest(task) {
-//     const { ticks, comments, status, timeStatus, user, ...request } = task;
-//     return request;
-//   }
+  async post(order) {
+    const { data: newOrder } = await axios.post(`orders`, order);
+    // return this._normalize(newOrder);
+    return newOrder;
+  }
 
-//   async query(config = {}) {
-//     const tasks = await super.query(config);
-//     return tasks.map(task => this._normalize(task));
-//   }
-
-//   async get(id, config = {}) {
-//     const { data } = await axios.get(`tasks/${id}`, config);
-//     return this._normalize(data);
-//   }
-
-//   async post(task) {
-//     const { data: newTask } =
-//       await axios.post("tasks", this._createRequest(task));
-//     return this._normalize(newTask);
-//   }
-//   async put(task) {
-//     await axios.put(`tasks/${task.id}`, this._createRequest(task));
-//     return this._normalize(task);
-//   }
-// }
+  async delete(order) {
+    await axios.delete(`orders/${order.id}`, order);
+    // return this._normalize(order);
+    return order;
+  }
+}

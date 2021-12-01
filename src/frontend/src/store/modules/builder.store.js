@@ -11,14 +11,6 @@ import {
   UPDATE_TOTAL_PRICE,
   RESET_BUILDER,
 } from "@/store/mutation-types";
-// import {
-//   normalizeDough,
-//   normalizeSizes,
-//   normalizeSauces,
-//   normalizeIngredients,
-//   // capitalize,
-// } from "@/common/helpers";
-// import jsonPizza from "@/static/pizza.json";
 
 // const entity = "builder";
 // const module = capitalize(entity);
@@ -43,7 +35,7 @@ export default {
         multiplier: 2,
       },
       sauce: {
-        id: 2,
+        id: 1,
         value: "tomato",
         price: 50,
       },
@@ -83,29 +75,42 @@ export default {
 
   mutations: {
     [CHANGE_DOUGH]: (state, payload) => {
-      let price;
+      let price, id;
       state.doughs.filter((item) => {
         if (item.type == payload.value) {
           price = item.price;
+          id = item.id;
         }
       });
       state.composition.dough.value = payload.value;
       state.composition.dough.price = price;
+      state.composition.dough.id = id;
     },
 
     [CHANGE_SIZE]: (state, payload) => {
-      let multiplier;
+      let multiplier, id;
       state.sizes.filter((item) => {
         if (item.size == payload.value) {
           multiplier = item.multiplier;
+          id = item.id;
         }
       });
       state.composition.size.value = payload.value;
       state.composition.size.multiplier = multiplier;
+      state.composition.size.id = id;
     },
 
     [CHANGE_SAUCE]: (state, payload) => {
-      state.composition.sauce = payload;
+      let price, id;
+      state.sauces.filter((item) => {
+        if (item.value == payload.value) {
+          id = item.id;
+          price = item.price;
+        }
+      });
+      state.composition.sauce.value = payload.value;
+      state.composition.sauce.price = price;
+      state.composition.sauce.id = id;
     },
 
     [SWITCH_CLASS_PIZZA]: (state) => {
@@ -201,18 +206,6 @@ export default {
   },
 
   actions: {
-    // query({ commit }) {
-    //   const data = jsonPizza.map((task) => normalizeDough(task));
-    //   commit(
-    //     SET_ENTITY,
-    //     {
-    //       ...namespace,
-    //       value: data,
-    //     },
-    //     { root: true }
-    //   );
-    // },
-
     async queryDough({ commit }) {
       const data = await this.$api.dough.query();
       commit(
@@ -301,7 +294,6 @@ export default {
         CHANGE_SAUCE,
         {
           value: data.value,
-          price: data.price,
         },
         { root: false }
       );
