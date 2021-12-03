@@ -3,7 +3,6 @@ import {
   DOUGH_TYPES,
   SIZES,
   SAUCES_VALUE,
-  // INGREDIENTS_CLASS,
 } from "@/common/constants";
 import axios from "@/plugins/axios";
 
@@ -222,7 +221,6 @@ export class AddressesApiService extends CrudApiService {
 
   async delete(address) {
     await axios.delete(`addresses/${address.id}`, address);
-    // return this._normalize(address);
     return address;
   }
 }
@@ -234,7 +232,6 @@ export class OrdersApiService extends CrudApiService {
 
   _normalize(order) {
     return {
-      // ...order,
       addressId: order.addressId,
       id: order.id,
       orderAddress: order.orderAddress || null,
@@ -247,7 +244,6 @@ export class OrdersApiService extends CrudApiService {
   async get(config = {}) {
     const { data } = await axios.get(`orders`, config);
     return data.map((order) => this._normalize(order));
-    // return data;
   }
 
   async post(order) {
@@ -258,7 +254,6 @@ export class OrdersApiService extends CrudApiService {
 
   async delete(order) {
     await axios.delete(`orders/${order.id}`, order);
-    // return this._normalize(order);
     return order;
   }
 }

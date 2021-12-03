@@ -16,8 +16,24 @@
     </label>
     <label class="input input--big-label">
       <span>Контактный телефон:</span>
+      <validation-provider
+        v-if="recipientOrder === 'myself'"
+        name="Phone"
+        rules="required"
+        v-slot="{ errors }"
+      >
+        <AppInput
+          v-model="phoneUser"
+          type="tel"
+          name="tel"
+          class="input"
+          placeholder="+7 999-999-99-99"
+          :errorText="errors[0]"
+        />
+      </validation-provider>
       <AppInput
-        :value="phone"
+        v-else
+        v-model="phoneUser"
         type="tel"
         name="tel"
         class="input"
@@ -36,7 +52,23 @@
       <div class="cart-form__input">
         <label class="input">
           <span>Улица*</span>
+          <validation-provider
+            v-if="recipientOrder === 'new'"
+            name="Street"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <AppInput
+              type="text"
+              name="street"
+              class="input"
+              placeholder="ул.Ленина"
+              v-model="streetAddress"
+              :errorText="errors[0]"
+            />
+          </validation-provider>
           <AppInput
+            v-else
             type="text"
             name="street"
             class="input"
@@ -49,7 +81,23 @@
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Дом*</span>
+          <validation-provider
+            v-if="recipientOrder === 'new'"
+            name="House"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <AppInput
+              type="text"
+              name="house"
+              class="input"
+              placeholder="100"
+              v-model="houseAddress"
+              :errorText="errors[0]"
+            />
+          </validation-provider>
           <AppInput
+            v-else
             type="text"
             name="house"
             class="input"
@@ -79,17 +127,18 @@
 <script>
 import AppInput from "@/common/components/AppInput";
 import { mapState, mapActions, mapGetters } from "vuex";
+import { ValidationProvider, extend, localize } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
+import ru from "vee-validate/dist/locale/ru.json";
+
+localize("ru", ru);
+extend("required", required);
 
 export default {
   name: "CartForm",
   components: {
     AppInput,
-  },
-  props: {
-    phone: {
-      type: String,
-      default: "",
-    },
+    ValidationProvider,
   },
   computed: {
     ...mapState("Auth", {
@@ -98,10 +147,19 @@ export default {
     }),
     ...mapState("Cart", {
       recipient: (state) => state.recipient,
+      phone: (state) => state.phone,
     }),
 
-    phoneUser() {
-      return this.user.phone;
+    phoneUser: {
+      get() {
+        return this.phone;
+      },
+      set(newPhone) {
+        let payload = {
+          phone: newPhone,
+        };
+        this.updatePhone(payload);
+      },
     },
 
     ...mapGetters({
@@ -186,6 +244,7 @@ export default {
       "updateUserAddress",
       "updateUserRecipient",
       "resetUserAddress",
+      "updatePhone",
     ]),
   },
 
@@ -201,5 +260,11 @@ export default {
 
 .select {
   max-width: 150px;
+}
+.input--big-label {
+  max-width: 397px;
+}
+.input--big-label .input {
+  max-width: 216px;
 }
 </style>

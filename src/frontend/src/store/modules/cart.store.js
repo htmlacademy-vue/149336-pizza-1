@@ -2,8 +2,6 @@ import uniqueId from "lodash/uniqueId";
 import cloneDeep from "lodash/cloneDeep";
 import {
   SET_ENTITY,
-  // ADD_ENTITY,
-  // DELETE_ENTITY,
   CREATE_PIZZA,
   UPDATE_PIZZA,
   UPDATE_TOTAL_PRICE_ORDER,
@@ -11,6 +9,7 @@ import {
   UPDATE_USER_ADDRESS,
   UPDATE_RECIPIENT,
   RESET_USER_ADDRESS,
+  UPDATE_PHONE,
 } from "@/store/mutation-types";
 
 // const entity = "cart";
@@ -20,6 +19,7 @@ import {
 export default {
   namespaced: true,
   state: {
+    phone: "",
     pizzas: [],
     misc: [],
     totalPriceOrder: 0,
@@ -124,6 +124,10 @@ export default {
     [UPDATE_RECIPIENT]: (state, payload) => {
       state.recipient = payload.data.recipient;
     },
+
+    [UPDATE_PHONE]: (state, payload) => {
+      state.phone = payload.data.phone;
+    },
   },
   actions: {
     async query({ commit }) {
@@ -198,6 +202,16 @@ export default {
 
     resetUserAddress({ commit }) {
       commit(RESET_USER_ADDRESS, { root: false });
+    },
+
+    updatePhone({ commit }, data) {
+      commit(
+        UPDATE_PHONE,
+        {
+          data,
+        },
+        { root: false }
+      );
     },
   },
 };

@@ -45,7 +45,7 @@
     <p class="order__address" v-if="order.orderAddress">
       {{ orderAddressText }}
     </p>
-    <p class="order__address" v-else>Адрес был удален</p>
+    <p class="order__address" v-else>Адрес был удален или не указан</p>
   </div>
 </template>
 
@@ -81,19 +81,23 @@ export default {
       } else if (ord[0].orderAddress.name === null) {
         str += `${ord[0].orderAddress.street}, д.${ord[0].orderAddress.building}, кв.${ord[0].orderAddress.flat}`;
       } else if (!ord[0].orderAddress) {
-        str = "Адрес был удален";
+        str = "Адрес был удален или не указан";
       }
       return str;
     },
 
     totalPriceOrder() {
       let sum = 0;
-      this.order.orderPizzas.forEach((pizza) => {
-        sum += pizza.totalPricePizza * pizza.quantity;
-      });
-      this.order.orderMisc.forEach((misc) => {
-        sum += misc.price * misc.quantity;
-      });
+      if (this.order.orderPizzas.length) {
+        this.order.orderPizzas.forEach((pizza) => {
+          sum += pizza.totalPricePizza * pizza.quantity;
+        });
+      }
+      if (this.order.orderMisc.length) {
+        this.order.orderMisc.forEach((misc) => {
+          sum += misc.price * misc.quantity;
+        });
+      }
       return sum;
     },
   },
