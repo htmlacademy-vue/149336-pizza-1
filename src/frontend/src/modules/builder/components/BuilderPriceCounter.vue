@@ -2,6 +2,7 @@
   <div class="content__result">
     <p>Итого: {{ totalPrice }} ₽</p>
     <button
+      v-if="!composition.id"
       type="button"
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
@@ -9,6 +10,16 @@
       @click="createPizzaMethod"
     >
       Готовьте!
+    </button>
+    <button
+      v-else
+      type="button"
+      class="button"
+      :class="{ 'button--disabled': isEmptyNamePizza }"
+      :disabled="isEmptyNamePizza"
+      @click="createPizzaMethod"
+    >
+      Сохранить
     </button>
   </div>
 </template>
@@ -25,6 +36,7 @@ export default {
     }),
 
     ...mapState("Builder", {
+      composition: (state) => state.composition,
       totalPrice: (state) => state.composition.totalPrice,
     }),
 

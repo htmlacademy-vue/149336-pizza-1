@@ -1,9 +1,5 @@
 import JwtService from "@/services/jwt.service";
-import {
-  DOUGH_TYPES,
-  SIZES,
-  SAUCES_VALUE,
-} from "@/common/constants";
+import { DOUGH_TYPES, SIZES, SAUCES_VALUE } from "@/common/constants";
 import axios from "@/plugins/axios";
 
 class BaseApiService {

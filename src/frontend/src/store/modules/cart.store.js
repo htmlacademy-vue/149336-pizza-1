@@ -3,6 +3,7 @@ import cloneDeep from "lodash/cloneDeep";
 import {
   SET_ENTITY,
   CREATE_PIZZA,
+  REPEAT_PIZZA,
   UPDATE_PIZZA,
   UPDATE_TOTAL_PRICE_ORDER,
   RESET_PIZZAS,
@@ -75,6 +76,151 @@ export default {
       };
       state.pizzas.push(pizza);
     },
+    [REPEAT_PIZZA]: (state, payload) => {
+      const data = cloneDeep(payload.data);
+
+      data.orderPizzas.forEach((item) => {
+        //class Pizza
+        let myClass = "pizza--foundation--";
+        switch (item.doughId) {
+          case 1:
+            myClass += "small";
+            break;
+          case 3:
+            myClass += "big";
+            break;
+        }
+        switch (item.sauceId) {
+          case 1:
+            myClass += "-tomato";
+            break;
+          case 2:
+            myClass += "-creamy";
+            break;
+        }
+
+        //dough
+        let myDough = payload.rootData.Builder.doughs
+          .filter((dough) => {
+            return dough.id === item.doughId;
+          })
+          .map((item) => {
+            item = {
+              id: item.id,
+              price: item.price,
+              value: item.type,
+            };
+            return item;
+          });
+
+        //ingr
+        let myIngr = payload.rootData.Builder.ingredients.filter((ingr) => {
+          item.ingredients.forEach((item) => {
+            if (ingr.id === item.ingredientId) {
+              ingr.count = item.quantity;
+            }
+          });
+          return ingr;
+        });
+
+        //sauce
+        let mySauce = payload.rootData.Builder.sauces
+          .filter((sauce) => {
+            return sauce.id === item.sauceId;
+          })
+          .map((item) => {
+            item = {
+              id: item.id,
+              price: item.price,
+              value: item.value,
+            };
+            return item;
+          });
+
+        //size
+        let mySize = payload.rootData.Builder.sizes
+          .filter((size) => {
+            return size.id === item.sizeId;
+          })
+          .map((item) => {
+            item = {
+              id: item.id,
+              multiplier: item.multiplier,
+              value: item.size,
+            };
+            return item;
+          });
+
+        //filing
+        let myFilling = myIngr
+          .filter((ingr) => {
+            return ingr.count > 0;
+          })
+          .map((item) => {
+            item = {
+              id: item.id,
+              count: item.count,
+              name: item.label,
+              title: item.name.toLowerCase(),
+            };
+            return item;
+          });
+
+        let fillings = "";
+        myFilling.forEach((item) => {
+          fillings += `${item.title}, `;
+        });
+
+        let myComposition = {
+          id: item.id,
+          classPizza: myClass,
+          dough: myDough[0],
+          ingr: myIngr,
+          namePizza: item.name,
+          pizzaFilling: myFilling,
+          sauce: mySauce[0],
+          size: mySize[0],
+          totalPrice: item.totalPricePizza,
+        };
+
+        console.log(payload);
+        let pizza = {
+          composition: myComposition,
+          id: +uniqueId(),
+          count: item.quantity,
+          title: item.name,
+          size:
+            item.sizeMultiplier === 2
+              ? 32
+              : item.sizeMultiplier === 3
+              ? 45
+              : 23,
+          dough: myDough.value === "large" ? "толстом" : "тонком",
+          sauce: mySauce.value === "tomato" ? "томатный" : "сливочный",
+          fillings: fillings.slice(0, -2),
+          price: item.totalPricePizza,
+        };
+        state.pizzas.push(pizza);
+      });
+
+      //miscs
+      if (data.orderMisc.length) {
+        let myMiscs = payload.rootData.Cart.misc.map((item) => {
+          let n = data.orderMisc
+            .filter((misc) => {
+              return item.id === misc.miscId;
+            })
+            .map((misc) => {
+              let i = { ...item, count: misc.quantity };
+              return i;
+            });
+          return n.length ? n[0] : item;
+        });
+        // state.misc.splice(0, state.misc.length);
+        // state.misc.push(myMiscs);
+        state.misc = myMiscs;
+      }
+    },
     [UPDATE_PIZZA]: (state, payload) => {
       payload.rootData.Builder.composition = payload.data.composition;
     },
@@ -146,6 +292,17 @@ export default {
     createPizza({ commit, rootState }, data) {
       commit(
         CREATE_PIZZA,
+        {
+          data,
+          rootData: rootState,
+        },
+        { root: false }
+      );
+    },
+
+    repeatPizza({ commit, rootState }, data) {
+      commit(
+        REPEAT_PIZZA,
         {
           data,
           rootData: rootState,

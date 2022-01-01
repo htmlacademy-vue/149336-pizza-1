@@ -122,7 +122,7 @@ export default {
     },
   },
   created: function () {
-    this.query();
+    // this.query();
   },
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),

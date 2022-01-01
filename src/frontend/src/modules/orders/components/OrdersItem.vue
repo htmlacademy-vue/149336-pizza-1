@@ -19,7 +19,9 @@
         </button>
       </div>
       <div class="order__button">
-        <button type="button" class="button">Повторить</button>
+        <button type="button" class="button" @click="repeatPizzaMethod(order)">
+          Повторить
+        </button>
       </div>
     </div>
 
@@ -105,9 +107,15 @@ export default {
   mounted() {},
   methods: {
     ...mapActions("Orders", ["queryOrders", "newOrder", "deleteOrder"]),
+    ...mapActions("Cart", ["repeatPizza"]),
 
     deleteOrderMethod(order) {
       this.deleteOrder(order);
+    },
+
+    repeatPizzaMethod(order) {
+      this.repeatPizza(order);
+      this.$router.push({ name: "Cart" });
     },
   },
 };
