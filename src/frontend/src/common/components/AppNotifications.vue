@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="notifications.length"
-    class="notification__wrapper"
-  >
+  <div v-if="notifications.length" class="notification__wrapper">
     <div
       v-for="({ text, type }, i) in notifications"
       :key="i"
@@ -19,8 +16,8 @@ import { mapState } from "vuex";
 export default {
   name: "Notifications",
   computed: {
-    ...mapState(["notifications"])
-  }
+    ...mapState(["notifications"]),
+  },
 };
 </script>
 
@@ -33,7 +30,7 @@ export default {
 
   text-align: center;
 
-  color: $white-900;
+  color: $white;
   border-bottom: 2px solid transparent;
 
   &__wrapper {
