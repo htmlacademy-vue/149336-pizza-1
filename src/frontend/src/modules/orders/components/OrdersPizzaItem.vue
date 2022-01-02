@@ -50,10 +50,10 @@ export default {
           size = 23;
           break;
         case 2:
-          size = 45;
+          size = 32;
           break;
         case 3:
-          size = 32;
+          size = 45;
           break;
       }
       let dough;

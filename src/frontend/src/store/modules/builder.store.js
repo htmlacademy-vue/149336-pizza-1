@@ -30,7 +30,7 @@ export default {
         price: 300,
       },
       size: {
-        id: 3,
+        id: 2,
         value: "normal",
         multiplier: 2,
       },
@@ -283,7 +283,7 @@ export default {
         CHANGE_SIZE,
         {
           value: data.value,
-          multiplier: data.multiplier,
+          //multiplier: data.multiplier,
         },
         { root: false }
       );

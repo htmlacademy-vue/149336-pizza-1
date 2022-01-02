@@ -51,7 +51,6 @@ export default {
       payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
-
       let pizza = {
         composition: data,
         id: uniqueId(),
@@ -86,7 +85,7 @@ export default {
           case 1:
             myClass += "small";
             break;
-          case 3:
+          case 2:
             myClass += "big";
             break;
         }
@@ -105,12 +104,12 @@ export default {
             return dough.id === item.doughId;
           })
           .map((item) => {
-            item = {
+            let dough = {
               id: item.id,
               price: item.price,
               value: item.type,
             };
-            return item;
+            return dough;
           });
 
         //ingr
@@ -129,12 +128,12 @@ export default {
             return sauce.id === item.sauceId;
           })
           .map((item) => {
-            item = {
+            let sauce = {
               id: item.id,
               price: item.price,
               value: item.value,
             };
-            return item;
+            return sauce;
           });
 
         //size
@@ -143,12 +142,12 @@ export default {
             return size.id === item.sizeId;
           })
           .map((item) => {
-            item = {
+            let size = {
               id: item.id,
               multiplier: item.multiplier,
               value: item.size,
             };
-            return item;
+            return size;
           });
 
         //filing
@@ -157,13 +156,13 @@ export default {
             return ingr.count > 0;
           })
           .map((item) => {
-            item = {
+            let filling = {
               id: item.id,
               count: item.count,
               name: item.label,
               title: item.name.toLowerCase(),
             };
-            return item;
+            return filling;
           });
 
         let fillings = "";
@@ -183,7 +182,6 @@ export default {
           totalPrice: item.totalPricePizza,
         };
 
-        console.log(payload);
         let pizza = {
           composition: myComposition,
           id: +uniqueId(),
@@ -289,11 +287,11 @@ export default {
       );
     },
 
-    createPizza({ commit, rootState }, data) {
+    createPizza({ commit, rootState }) {
       commit(
         CREATE_PIZZA,
         {
-          data,
+          //data,
           rootData: rootState,
         },
         { root: false }
