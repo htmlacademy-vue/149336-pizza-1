@@ -1,6 +1,5 @@
 import {
   SET_ENTITY,
-  // DELETE_ENTITY,
   SET_LONG_ENTITY,
   CHANGE_DOUGH,
   CHANGE_SIZE,
@@ -24,21 +23,9 @@ export default {
     sauces: [],
     ingredients: [],
     composition: {
-      dough: {
-        id: 1,
-        value: "light",
-        price: 300,
-      },
-      size: {
-        id: 2,
-        value: "normal",
-        multiplier: 2,
-      },
-      sauce: {
-        id: 1,
-        value: "tomato",
-        price: 50,
-      },
+      dough: {},
+      size: {},
+      sauce: {},
       ingr: [],
       totalPrice: 0,
       classPizza: "pizza--foundation--small-tomato",
@@ -76,7 +63,7 @@ export default {
   mutations: {
     [CHANGE_DOUGH]: (state, payload) => {
       let price, id;
-      state.doughs.filter((item) => {
+      state.doughs.forEach((item) => {
         if (item.type == payload.value) {
           price = item.price;
           id = item.id;
@@ -89,7 +76,7 @@ export default {
 
     [CHANGE_SIZE]: (state, payload) => {
       let multiplier, id;
-      state.sizes.filter((item) => {
+      state.sizes.forEach((item) => {
         if (item.size == payload.value) {
           multiplier = item.multiplier;
           id = item.id;
@@ -102,7 +89,7 @@ export default {
 
     [CHANGE_SAUCE]: (state, payload) => {
       let price, id;
-      state.sauces.filter((item) => {
+      state.sauces.forEach((item) => {
         if (item.value == payload.value) {
           id = item.id;
           price = item.price;
@@ -135,7 +122,7 @@ export default {
     },
 
     [CHANGE_COUNTER]: (state, payload) => {
-      state.composition.ingr.filter((item, index) => {
+      state.composition.ingr.forEach((item, index) => {
         if (item.id == payload.id) {
           state.composition.ingr[index].count = +payload.newCount;
 
@@ -201,6 +188,7 @@ export default {
       state.composition.classPizza = "pizza--foundation--small-tomato";
       state.composition.pizzaFilling = [];
       state.composition.namePizza = "";
+      state.composition.id = null;
       state.ingredients.forEach((item) => (item.count = 0));
     },
   },
@@ -217,6 +205,21 @@ export default {
         },
         { root: true }
       );
+      const dough = {
+        id: data[0].id,
+        value: data[0].type,
+        price: data[0].price,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "dough",
+          value: dough,
+        },
+        { root: true }
+      );
     },
 
     async querySizes({ commit }) {
@@ -230,6 +233,21 @@ export default {
         },
         { root: true }
       );
+      const size = {
+        id: data[1].id,
+        value: data[1].size,
+        multiplier: data[1].multiplier,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "size",
+          value: size,
+        },
+        { root: true }
+      );
     },
 
     async querySauces({ commit }) {
@@ -240,6 +258,21 @@ export default {
           module: "Builder",
           entity: "sauces",
           value: data,
+        },
+        { root: true }
+      );
+      const sauce = {
+        id: data[0].id,
+        value: data[0].value,
+        price: data[0].price,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "sauce",
+          value: sauce,
         },
         { root: true }
       );

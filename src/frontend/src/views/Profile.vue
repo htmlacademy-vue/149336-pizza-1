@@ -77,12 +77,12 @@ export default {
     return {
       visibleForm: false,
       editableAddress: {
-        addrId: null,
-        addrName: "",
-        addrStreet: "",
-        addrHouse: "",
-        addrApartment: "",
-        addrComment: "",
+        id: null,
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
       },
     };
   },
@@ -110,12 +110,12 @@ export default {
 
     resetAddress() {
       this.editableAddress = {
-        addrId: null,
-        addrName: "",
-        addrStreet: "",
-        addrHouse: "",
-        addrApartment: "",
-        addrComment: "",
+        id: null,
+        name: "",
+        street: "",
+        building: "",
+        flat: "",
+        comment: "",
       };
     },
   },

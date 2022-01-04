@@ -60,6 +60,7 @@ export default {
         id: active.id,
       };
       this.changeCounter(payload);
+      this.changeTotalPrice();
       let ingredientsToUpdate = this.composition.ingr;
       this.$emit("updateIngredients", ingredientsToUpdate);
     },

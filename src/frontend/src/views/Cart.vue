@@ -187,17 +187,21 @@ export default {
         misc: myMisc,
         address: myAddress,
       };
-      this.pizzas.forEach((pizza) => {
-        let newPizza = {
-          name: pizza.composition.namePizza,
-          sauceId: pizza.composition.sauce.id,
-          doughId: pizza.composition.dough.id,
-          sizeId: pizza.composition.size.id,
-          quantity: pizza.count,
-          ingredients: myIngr,
-        };
-        order.pizzas.push(newPizza);
-      });
+      this.pizzas
+        .filter((pizza) => {
+          return pizza.count > 0;
+        })
+        .forEach((pizza) => {
+          let newPizza = {
+            name: pizza.composition.namePizza,
+            sauceId: pizza.composition.sauce.id,
+            doughId: pizza.composition.dough.id,
+            sizeId: pizza.composition.size.id,
+            quantity: pizza.count,
+            ingredients: myIngr,
+          };
+          order.pizzas.push(newPizza);
+        });
       this.newOrder(order);
       this.$router.push({ name: "Popup" });
     },

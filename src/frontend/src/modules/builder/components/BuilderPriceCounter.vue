@@ -17,7 +17,7 @@
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
-      @click="createPizzaMethod"
+      @click="editPizzaMethod"
     >
       Сохранить
     </button>
@@ -46,11 +46,16 @@ export default {
   },
   methods: {
     ...mapActions("Auth", ["queryAddresses"]),
-    ...mapActions("Cart", ["query", "createPizza"]),
+    ...mapActions("Cart", ["query", "createPizza", "editPizza"]),
 
     createPizzaMethod() {
       this.createPizza();
       this.queryAddresses();
+      this.$router.push({ name: "Cart" });
+    },
+
+    editPizzaMethod() {
+      this.editPizza();
       this.$router.push({ name: "Cart" });
     },
   },

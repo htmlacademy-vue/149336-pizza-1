@@ -3,6 +3,7 @@ import cloneDeep from "lodash/cloneDeep";
 import {
   SET_ENTITY,
   CREATE_PIZZA,
+  EDIT_PIZZA,
   REPEAT_PIZZA,
   UPDATE_PIZZA,
   UPDATE_TOTAL_PRICE_ORDER,
@@ -51,9 +52,10 @@ export default {
       payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
+      let newId = +uniqueId();
       let pizza = {
         composition: data,
-        id: uniqueId(),
+        id: newId,
         count: 1,
         title: payload.rootData.Builder.composition.namePizza,
         size:
@@ -73,7 +75,37 @@ export default {
         fillings: fillings.slice(0, -2),
         price: payload.rootData.Builder.composition.totalPrice,
       };
+      pizza.composition.id = newId;
       state.pizzas.push(pizza);
+    },
+    [EDIT_PIZZA]: (state, payload) => {
+      const data = cloneDeep(payload.rootData.Builder.composition);
+      let pizzaId = payload.rootData.Builder.composition.id;
+      let fillings = "";
+      payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
+        fillings += `${item.title}, `;
+      });
+      state.pizzas
+        .filter((pizza) => {
+          return pizza.id === pizzaId;
+        })
+        .forEach((item) => {
+          item.composition = data;
+          item.title = data.namePizza;
+          item.size =
+            data.size.value === "normal"
+              ? 32
+              : data.size.value === "big"
+              ? 45
+              : 23;
+          item.dough = data.dough.value === "large" ? "толстом" : "тонком";
+          item.sauce =
+            payload.rootData.Builder.composition.sauce.value === "tomato"
+              ? "томатный"
+              : "сливочный";
+          item.fillings = fillings.slice(0, -2);
+          item.price = data.totalPrice;
+        });
     },
     [REPEAT_PIZZA]: (state, payload) => {
       const data = cloneDeep(payload.data);
@@ -169,9 +201,9 @@ export default {
         myFilling.forEach((item) => {
           fillings += `${item.title}, `;
         });
-
+        let uniqId = +uniqueId();
         let myComposition = {
-          id: item.id,
+          id: uniqId,
           classPizza: myClass,
           dough: myDough[0],
           ingr: myIngr,
@@ -184,7 +216,7 @@ export default {
 
         let pizza = {
           composition: myComposition,
-          id: +uniqueId(),
+          id: uniqId,
           count: item.quantity,
           title: item.name,
           size:
@@ -193,8 +225,8 @@ export default {
               : item.sizeMultiplier === 3
               ? 45
               : 23,
-          dough: myDough.value === "large" ? "толстом" : "тонком",
-          sauce: mySauce.value === "tomato" ? "томатный" : "сливочный",
+          dough: myDough[0].value === "large" ? "толстом" : "тонком",
+          sauce: mySauce[0].value === "tomato" ? "томатный" : "сливочный",
           fillings: fillings.slice(0, -2),
           price: item.totalPricePizza,
         };
@@ -291,7 +323,16 @@ export default {
       commit(
         CREATE_PIZZA,
         {
-          //data,
+          rootData: rootState,
+        },
+        { root: false }
+      );
+    },
+
+    editPizza({ commit, rootState }) {
+      commit(
+        EDIT_PIZZA,
+        {
           rootData: rootState,
         },
         { root: false }

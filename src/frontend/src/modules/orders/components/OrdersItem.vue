@@ -19,7 +19,7 @@
         </button>
       </div>
       <div class="order__button">
-        <button type="button" class="button" @click="repeatPizzaMethod(order)">
+        <button type="button" class="button" @click="repeatPizzaMethod()">
           Повторить
         </button>
       </div>
@@ -113,8 +113,8 @@ export default {
       this.deleteOrder(order);
     },
 
-    repeatPizzaMethod(order) {
-      this.repeatPizza(order);
+    repeatPizzaMethod() {
+      this.repeatPizza(this.order);
       this.$router.push({ name: "Cart" });
     },
   },
