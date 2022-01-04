@@ -3,38 +3,121 @@
     <label class="cart-form__select">
       <span class="cart-form__label">Получение заказа:</span>
       <select name="test" class="select" v-model="recipientOrder">
-        <option value="1">Заберу сам</option>
-        <option value="2">Новый адрес</option>
-        <option value="3" v-if="user">Дом</option>
+        <option value="myself">Заберу сам</option>
+        <option value="new" v-if="user">Новый адрес</option>
+        <option
+          v-for="(address, index) in addresses"
+          :key="address.id"
+          :value="address.id"
+        >
+          {{ address.comment || `Адрес ${index + 1}` }}
+        </option>
       </select>
     </label>
     <label class="input input--big-label">
       <span>Контактный телефон:</span>
-      <input
-        type="text"
-        name="tel"
-        placeholder="+7 999-999-99-99"
+      <validation-provider
+        v-if="recipientOrder === 'myself'"
+        name="Phone"
+        rules="required"
+        v-slot="{ errors }"
+      >
+        <AppInput
+          v-model="phoneUser"
+          type="tel"
+          name="tel"
+          class="input"
+          placeholder="+7 999-999-99-99"
+          :errorText="errors[0]"
+        />
+      </validation-provider>
+      <AppInput
+        v-else
         v-model="phoneUser"
+        type="tel"
+        name="tel"
+        class="input"
+        placeholder="+7 999-999-99-99"
       />
     </label>
-    <div class="cart-form__address" v-if="recipientOrder !== '1'">
-      <span class="cart-form__label">Новый адрес:</span>
+    <div class="cart-form__address" v-if="recipientOrder !== 'myself'">
+      <span class="cart-form__label" v-if="recipientOrder == 'new'"
+        >Новый адрес:</span
+      >
+      <span
+        class="cart-form__label"
+        v-if="recipientOrder !== 'myself' && recipientOrder !== 'new'"
+        >Ранее сохраненный адрес:</span
+      >
       <div class="cart-form__input">
         <label class="input">
           <span>Улица*</span>
-          <input type="text" name="street" v-model="streetAddress" />
+          <validation-provider
+            v-if="recipientOrder === 'new'"
+            name="Street"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <AppInput
+              type="text"
+              name="street"
+              class="input"
+              placeholder="ул.Ленина"
+              v-model="streetAddress"
+              :errorText="errors[0]"
+            />
+          </validation-provider>
+          <AppInput
+            v-else
+            type="text"
+            name="street"
+            class="input"
+            placeholder=""
+            v-model="streetAddress"
+            :disabled="savedAddress"
+          />
         </label>
       </div>
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Дом*</span>
-          <input type="text" name="house" v-model="houseAddress" />
+          <validation-provider
+            v-if="recipientOrder === 'new'"
+            name="House"
+            rules="required"
+            v-slot="{ errors }"
+          >
+            <AppInput
+              type="text"
+              name="house"
+              class="input"
+              placeholder="100"
+              v-model="houseAddress"
+              :errorText="errors[0]"
+            />
+          </validation-provider>
+          <AppInput
+            v-else
+            type="text"
+            name="house"
+            class="input"
+            placeholder=""
+            v-model="houseAddress"
+            :disabled="savedAddress"
+          />
         </label>
       </div>
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Квартира</span>
-          <input type="text" name="apartment" v-model="apartmentAddress" />
+          <AppInput
+            type="text"
+            name="apartment"
+            class=""
+            placeholder=""
+            v-model="apartmentAddress"
+            :disabled="savedAddress"
+          />
         </label>
       </div>
     </div>
@@ -42,36 +125,82 @@
 </template>
 
 <script>
+import AppInput from "@/common/components/AppInput";
 import { mapState, mapActions, mapGetters } from "vuex";
+import { ValidationProvider, extend, localize } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
+import ru from "vee-validate/dist/locale/ru.json";
+
+localize("ru", ru);
+extend("required", required);
 
 export default {
   name: "CartForm",
-  components: {},
-  data() {
-    return {
-      recipientOrder: "1",
-    };
+  components: {
+    AppInput,
+    ValidationProvider,
   },
   computed: {
-    ...mapState({
+    ...mapState("Auth", {
       user: (state) => state.user,
+      addresses: (state) => state.addresses,
+    }),
+    ...mapState("Cart", {
+      recipient: (state) => state.recipient,
+      phone: (state) => state.phone,
     }),
 
     phoneUser: {
       get() {
-        return this.user.phone;
+        return this.phone;
       },
       set(newPhone) {
         let payload = {
-          value: newPhone,
+          phone: newPhone,
         };
-        this.changeUserPhone(payload);
+        this.updatePhone(payload);
       },
     },
 
     ...mapGetters({
       address: "Cart/address",
     }),
+
+    recipientOrder: {
+      get() {
+        return this.recipient;
+      },
+      set(newRecipient) {
+        let payload = {
+          recipient: newRecipient,
+        };
+        this.updateUserRecipient(payload);
+        if (newRecipient === "new") {
+          this.resetUserAddress();
+        }
+        if (newRecipient !== "myself" && newRecipient !== "new") {
+          let address = this.addresses.filter((address) => {
+            return address.id == newRecipient;
+          });
+          let newPayload2 = {
+            street: address[0].street,
+            house: address[0].building,
+            apartment: address[0].flat,
+          };
+          this.updateUserAddress(newPayload2);
+        }
+      },
+    },
+
+    savedAddress() {
+      let boolVal =
+        this.recipientOrder === "myself"
+          ? false
+          : this.recipientOrder === "new"
+          ? false
+          : true;
+      return boolVal;
+    },
 
     streetAddress: {
       get() {
@@ -111,7 +240,16 @@ export default {
   },
   methods: {
     ...mapActions("Auth", ["changeUserPhone"]),
-    ...mapActions("Cart", ["updateUserAddress"]),
+    ...mapActions("Cart", [
+      "updateUserAddress",
+      "updateUserRecipient",
+      "resetUserAddress",
+      "updatePhone",
+    ]),
+  },
+
+  mounted() {
+    // this.$refs.phone.$refs.input.focus();
   },
 };
 </script>
@@ -119,4 +257,14 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/cart-form.scss";
+
+.select {
+  max-width: 150px;
+}
+.input--big-label {
+  max-width: 397px;
+}
+.input--big-label .input {
+  max-width: 216px;
+}
 </style>

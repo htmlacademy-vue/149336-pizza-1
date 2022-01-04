@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     ...mapState("Builder", {
-      ingridients: (state) => state.composition.ingr,
+      ingridients: (state) => state.ingredients,
       sauces: (state) => state.sauces,
       sauce: (state) => state.composition.sauce.value,
     }),

@@ -1,5 +1,6 @@
 <template>
   <div class="app-layout-default">
+    <AppNotifications />
     <AppLayoutHeader />
     <slot />
   </div>
@@ -7,11 +8,13 @@
 
 <script>
 import AppLayoutHeader from "@/layouts/AppLayoutHeader";
+import AppNotifications from "@/common/components/AppNotifications";
 
 export default {
   name: "AppLayoutDefault",
   components: {
     AppLayoutHeader,
+    AppNotifications,
   },
 };
 </script>

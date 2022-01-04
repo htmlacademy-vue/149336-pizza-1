@@ -6,37 +6,94 @@
     <div class="sign-form__title">
       <h1 class="title title--small">Авторизуйтесь на сайте</h1>
     </div>
-    <form action="" method="post">
-      <div class="sign-form__input">
-        <label class="input">
-          <span>E-mail</span>
-          <input type="email" name="email" placeholder="example@mail.ru" />
-        </label>
-      </div>
+    <validation-observer v-slot="{ invalid }">
+      <form @submit.prevent="login">
+        <div class="sign-form__input">
+          <label class="input">
+            <span>E-mail</span>
+            <validation-provider
+              name="E-mail"
+              rules="required|email"
+              v-slot="{ errors }"
+            >
+              <AppInput
+                v-model="email"
+                type="email"
+                name="email"
+                class="input"
+                placeholder="example@mail.ru"
+                :errorText="errors[0]"
+              />
+            </validation-provider>
+          </label>
+        </div>
 
-      <div class="sign-form__input">
-        <label class="input">
-          <span>Пароль</span>
-          <input type="password" name="pass" placeholder="***********" />
-        </label>
-      </div>
-      <button type="submit" class="button">Авторизоваться</button>
-    </form>
+        <div class="sign-form__input">
+          <label class="input">
+            <span>Пароль</span>
+            <validation-provider
+              name="Пароль"
+              rules="required"
+              v-slot="{ errors }"
+            >
+              <AppInput
+                v-model="password"
+                type="password"
+                name="pass"
+                class="input"
+                placeholder="***********"
+                :errorText="errors[0]"
+              />
+            </validation-provider>
+          </label>
+        </div>
+        <button type="submit" class="button" :disabled="invalid">
+          Авторизоваться
+        </button>
+      </form>
+    </validation-observer>
   </div>
 </template>
 
 <script>
+import AppInput from "@/common/components/AppInput";
+import {
+  ValidationProvider,
+  ValidationObserver,
+  extend,
+  localize,
+} from "vee-validate";
+import { required, email } from "vee-validate/dist/rules";
+import ru from "vee-validate/dist/locale/ru.json";
+
+localize("ru", ru);
+
+extend("email", email);
+extend("required", required);
+
 export default {
   name: "Login",
-  components: {},
-  props: [],
-  data() {
-    return {};
+  components: {
+    AppInput,
+    ValidationProvider,
+    ValidationObserver,
   },
-  computed: {},
-  watch: {},
-  created() {},
-  methods: {},
+  data: () => ({
+    email: "",
+    password: "",
+  }),
+  mounted() {
+    // this.$refs.email.$refs.input.focus();
+  },
+  methods: {
+    async login() {
+      await this.$store.dispatch("Auth/login", {
+        email: this.email,
+        password: this.password,
+      });
+      await this.$router.push("/");
+    },
+  },
 };
 </script>
 

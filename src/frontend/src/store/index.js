@@ -1,46 +1,64 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VuexPlugins from "@/plugins/vuexPlugins";
 import modules from "@/store/modules";
 import {
+  ADD_NOTIFICATION,
+  DELETE_NOTIFICATION,
   SET_ENTITY,
   ADD_ENTITY,
   UPDATE_ENTITY,
   DELETE_ENTITY,
+  SET_LONG_ENTITY,
 } from "@/store/mutation-types";
-import jsonUsers from "@/static/user.json";
 import uniqueId from "lodash/uniqueId";
+import { MESSAGE_LIVE_TIME } from "@/common/constants";
 
 Vue.use(Vuex);
 
 const state = () => ({
-  order: [],
-  user: [],
+  notifications: [],
 });
 
-const getters = {
-  user: (state) => {
-    return state.user;
-  },
-};
+const getters = {};
 
 const actions = {
   async init({ dispatch }) {
-    dispatch("fetchUsers");
+    dispatch("Builder/queryDough");
+    dispatch("Builder/querySizes");
+    dispatch("Builder/querySauces");
+    dispatch("Builder/queryIngridients");
     dispatch("Cart/query");
   },
-  fetchUsers({ commit }) {
-    const user = jsonUsers; // TODO: Add api call
-    commit(SET_ENTITY, {
-      module: null,
-      entity: "user",
-      value: { ...user, userId: uniqueId() },
-    });
+
+  async createNotification({ commit }, { ...notification }) {
+    const uniqueNotification = {
+      ...notification,
+      id: uniqueId(),
+    };
+    commit(ADD_NOTIFICATION, uniqueNotification);
+    setTimeout(
+      () => commit(DELETE_NOTIFICATION, uniqueNotification.id),
+      MESSAGE_LIVE_TIME
+    );
   },
 };
 
 const mutations = {
+  [ADD_NOTIFICATION](state, notification) {
+    state.notifications = [...state.notifications, notification];
+  },
+  [DELETE_NOTIFICATION](state, id) {
+    state.notifications = state.notifications.filter(
+      (notification) => notification.id !== id
+    );
+  },
   [SET_ENTITY](state, { module, entity, value }) {
     module ? (state[module][entity] = value) : (state[entity] = value);
+  },
+
+  [SET_LONG_ENTITY](state, { module, path, entity, value }) {
+    state[module][path][entity] = value;
   },
 
   [ADD_ENTITY](state, { module, entity, value }) {
@@ -88,5 +106,6 @@ export default new Vuex.Store({
   getters,
   actions,
   mutations,
+  plugins: [VuexPlugins],
   modules,
 });

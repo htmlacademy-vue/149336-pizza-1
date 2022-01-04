@@ -45,16 +45,11 @@ export default {
   computed: {
     ...mapState("Builder", ["composition"]),
   },
-  mounted: function () {
+  mounted() {
     this.changeTotalPrice();
-    // this.resetBuilder();
   },
   methods: {
-    ...mapActions("Builder", [
-      "changeTotalPrice",
-      "changeCounter",
-      // "resetBuilder",
-    ]),
+    ...mapActions("Builder", ["changeTotalPrice", "changeCounter"]),
 
     moveIngridient(active) {
       if (active.count > 2) {
@@ -65,6 +60,7 @@ export default {
         id: active.id,
       };
       this.changeCounter(payload);
+      this.changeTotalPrice();
       let ingredientsToUpdate = this.composition.ingr;
       this.$emit("updateIngredients", ingredientsToUpdate);
     },

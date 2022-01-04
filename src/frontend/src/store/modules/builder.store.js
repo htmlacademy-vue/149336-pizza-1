@@ -1,6 +1,6 @@
 import {
-  // SET_ENTITY,
-  // DELETE_ENTITY,
+  SET_ENTITY,
+  SET_LONG_ENTITY,
   CHANGE_DOUGH,
   CHANGE_SIZE,
   CHANGE_SAUCE,
@@ -10,14 +10,6 @@ import {
   UPDATE_TOTAL_PRICE,
   RESET_BUILDER,
 } from "@/store/mutation-types";
-import {
-  normalizeDough,
-  normalizeSizes,
-  normalizeSauces,
-  normalizeIngredients,
-  // capitalize,
-} from "@/common/helpers";
-import jsonPizza from "@/static/pizza.json";
 
 // const entity = "builder";
 // const module = capitalize(entity);
@@ -26,30 +18,15 @@ import jsonPizza from "@/static/pizza.json";
 export default {
   namespaced: true,
   state: {
-    doughs: jsonPizza.dough.map((item) => normalizeDough(item)),
-    sizes: jsonPizza.sizes.map((item) => normalizeSizes(item)),
-    sauces: jsonPizza.sauces.map((item) => normalizeSauces(item)),
-    ingredients: jsonPizza.ingredients.map((item) =>
-      normalizeIngredients(item)
-    ),
+    doughs: [],
+    sizes: [],
+    sauces: [],
+    ingredients: [],
     composition: {
-      dough: {
-        id: jsonPizza.dough.map((item) => normalizeDough(item))[0].id,
-        value: jsonPizza.dough.map((item) => normalizeDough(item))[0].type,
-        price: jsonPizza.dough.map((item) => normalizeDough(item))[0].price,
-      },
-      size: {
-        id: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].id,
-        value: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].size,
-        multiplier: jsonPizza.sizes.map((item) => normalizeSizes(item))[1]
-          .multiplier,
-      },
-      sauce: {
-        id: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].id,
-        value: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].value,
-        price: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].price,
-      },
-      ingr: jsonPizza.ingredients.map((item) => normalizeIngredients(item)),
+      dough: {},
+      size: {},
+      sauce: {},
+      ingr: [],
       totalPrice: 0,
       classPizza: "pizza--foundation--small-tomato",
       pizzaFilling: [],
@@ -85,29 +62,42 @@ export default {
 
   mutations: {
     [CHANGE_DOUGH]: (state, payload) => {
-      let price;
-      state.doughs.filter((item) => {
+      let price, id;
+      state.doughs.forEach((item) => {
         if (item.type == payload.value) {
           price = item.price;
+          id = item.id;
         }
       });
       state.composition.dough.value = payload.value;
       state.composition.dough.price = price;
+      state.composition.dough.id = id;
     },
 
     [CHANGE_SIZE]: (state, payload) => {
-      let multiplier;
-      state.sizes.filter((item) => {
+      let multiplier, id;
+      state.sizes.forEach((item) => {
         if (item.size == payload.value) {
           multiplier = item.multiplier;
+          id = item.id;
         }
       });
       state.composition.size.value = payload.value;
       state.composition.size.multiplier = multiplier;
+      state.composition.size.id = id;
     },
 
     [CHANGE_SAUCE]: (state, payload) => {
-      state.composition.sauce = payload;
+      let price, id;
+      state.sauces.forEach((item) => {
+        if (item.value == payload.value) {
+          id = item.id;
+          price = item.price;
+        }
+      });
+      state.composition.sauce.value = payload.value;
+      state.composition.sauce.price = price;
+      state.composition.sauce.id = id;
     },
 
     [SWITCH_CLASS_PIZZA]: (state) => {
@@ -132,7 +122,7 @@ export default {
     },
 
     [CHANGE_COUNTER]: (state, payload) => {
-      state.composition.ingr.filter((item, index) => {
+      state.composition.ingr.forEach((item, index) => {
         if (item.id == payload.id) {
           state.composition.ingr[index].count = +payload.newCount;
 
@@ -179,45 +169,137 @@ export default {
     },
 
     [RESET_BUILDER]: (state) => {
-      let start = {
-        dough: {
-          id: jsonPizza.dough.map((item) => normalizeDough(item))[0].id,
-          value: jsonPizza.dough.map((item) => normalizeDough(item))[0].type,
-          price: jsonPizza.dough.map((item) => normalizeDough(item))[0].price,
-        },
-        size: {
-          id: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].id,
-          value: jsonPizza.sizes.map((item) => normalizeSizes(item))[1].size,
-          multiplier: jsonPizza.sizes.map((item) => normalizeSizes(item))[1]
-            .multiplier,
-        },
-        sauce: {
-          id: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].id,
-          value: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].value,
-          price: jsonPizza.sauces.map((item) => normalizeSauces(item))[0].price,
-        },
-        ingr: jsonPizza.ingredients.map((item) => normalizeIngredients(item)),
-        totalPrice: 0,
-        classPizza: "pizza--foundation--small-tomato",
-        pizzaFilling: [],
-        namePizza: "",
+      state.composition.dough = {
+        id: 1,
+        value: "light",
+        price: 300,
       };
-      state.composition = start;
+      state.composition.size = {
+        id: 3,
+        value: "normal",
+        multiplier: 2,
+      };
+      state.composition.sauce = {
+        id: 2,
+        value: "tomato",
+        price: 50,
+      };
+      state.composition.totalPrice = 0;
+      state.composition.classPizza = "pizza--foundation--small-tomato";
+      state.composition.pizzaFilling = [];
+      state.composition.namePizza = "";
+      state.composition.id = null;
+      state.ingredients.forEach((item) => (item.count = 0));
     },
   },
 
   actions: {
-    // query({ commit }) {
-    //   const data = jsonPizza.map((task) => normalizeDough(task));
-    //   commit(
-    //     SET_ENTITY,
-    //     {
-    //       ...namespace,
-    //       value: data,
-    //     },
-    //     { root: true }
-    //   );
-    // },
+    async queryDough({ commit }) {
+      const data = await this.$api.dough.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Builder",
+          entity: "doughs",
+          value: data,
+        },
+        { root: true }
+      );
+      const dough = {
+        id: data[0].id,
+        value: data[0].type,
+        price: data[0].price,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "dough",
+          value: dough,
+        },
+        { root: true }
+      );
+    },
+
+    async querySizes({ commit }) {
+      const data = await this.$api.sizes.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Builder",
+          entity: "sizes",
+          value: data,
+        },
+        { root: true }
+      );
+      const size = {
+        id: data[1].id,
+        value: data[1].size,
+        multiplier: data[1].multiplier,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "size",
+          value: size,
+        },
+        { root: true }
+      );
+    },
+
+    async querySauces({ commit }) {
+      const data = await this.$api.sauces.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Builder",
+          entity: "sauces",
+          value: data,
+        },
+        { root: true }
+      );
+      const sauce = {
+        id: data[0].id,
+        value: data[0].value,
+        price: data[0].price,
+      };
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "sauce",
+          value: sauce,
+        },
+        { root: true }
+      );
+    },
+
+    async queryIngridients({ commit }) {
+      const data = await this.$api.ingredients.query();
+      commit(
+        SET_ENTITY,
+        {
+          module: "Builder",
+          entity: "ingredients",
+          value: data,
+        },
+        { root: true }
+      );
+      commit(
+        SET_LONG_ENTITY,
+        {
+          module: "Builder",
+          path: "composition",
+          entity: "ingr",
+          value: data,
+        },
+        { root: true }
+      );
+    },
 
     changeDough({ commit }, data) {
       commit(
@@ -234,7 +316,7 @@ export default {
         CHANGE_SIZE,
         {
           value: data.value,
-          multiplier: data.multiplier,
+          //multiplier: data.multiplier,
         },
         { root: false }
       );
@@ -245,7 +327,6 @@ export default {
         CHANGE_SAUCE,
         {
           value: data.value,
-          price: data.price,
         },
         { root: false }
       );
