@@ -48,6 +48,5 @@ export default {
 .slide-enter,
 .slide-leave-to {
   opacity: 0;
-  transform: translateX(-30%);
 }
 </style>
