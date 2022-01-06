@@ -13,7 +13,7 @@
 
     <div class="content__constructor">
       <div class="pizza" :class="classPizza">
-        <div class="pizza__wrapper">
+        <transition-group class="pizza__wrapper" name="filling" tag="div">
           <div
             v-for="item in pizzaFilling"
             :key="item.id"
@@ -26,7 +26,7 @@
               `pizza__filling--${item.name}`,
             ]"
           ></div>
-        </div>
+        </transition-group>
       </div>
     </div>
 
@@ -63,4 +63,17 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/pizza.scss";
+
+/*Transitions*/
+.filling-enter-active,
+.filling-leave-active {
+  transition: all $animationSpeed ease;
+}
+
+.filling-enter,
+.filling-leave-to {
+  transform: scale(1.1);
+
+  opacity: 0;
+}
 </style>
