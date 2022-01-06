@@ -2,7 +2,9 @@
   <div class="app-layout-main">
     <AppNotifications />
     <AppLayoutHeader />
-    <slot />
+    <transition name="slide" mode="out-in">
+      <slot />
+    </transition>
   </div>
 </template>
 
@@ -25,5 +27,14 @@ export default {
   flex-direction: column;
 
   height: 100vh;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: all $animationSpeed;
+}
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(5%);
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <main class="content">
     <form action="#" method="post">
-      <AppDrop class="content__wrapper" @drop="moveIngridient">
+      <div class="content__wrapper">
         <h1 class="title title--big">Конструктор пиццы</h1>
         <div class="content__dough">
           <BuilderDoughSelector />
@@ -16,9 +16,11 @@
         </div>
 
         <div class="content__pizza">
-          <BuilderPizzaView />
+          <AppDrop @drop="moveIngridient">
+            <BuilderPizzaView />
+          </AppDrop>
         </div>
-      </AppDrop>
+      </div>
     </form>
     <router-view />
   </main>

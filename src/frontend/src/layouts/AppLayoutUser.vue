@@ -5,7 +5,9 @@
     <main class="layout">
       <AppLayoutUserSidebar />
       <div class="layout__content">
-        <slot />
+        <transition name="slide" mode="out-in">
+          <slot />
+        </transition>
       </div>
     </main>
   </div>
@@ -25,3 +27,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.slide-enter-active,
+.slide-leave-active {
+  transition: all $animationSpeed;
+}
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+  transform: translateX(5%);
+}
+</style>
