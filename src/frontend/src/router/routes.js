@@ -12,7 +12,7 @@ export default [
         name: "Login",
         component: () => import("../views/Login.vue"),
         meta: {
-          layout: "AppLayoutDefault",
+          layout: "AppLayoutPopup",
           middlewares: [isLoggedIn],
         },
       },
@@ -28,7 +28,7 @@ export default [
         path: "/popup",
         name: "Popup",
         component: () => import("../views/Popup.vue"),
-        meta: { layout: "AppLayoutDefault" },
+        meta: { layout: "AppLayoutPopup" },
       },
     ],
   },

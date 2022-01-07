@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const defaultLayout = "AppLayoutDefault";
+const defaultLayout = "AppLayoutMain";
 
 export default {
   name: "AppLayout",

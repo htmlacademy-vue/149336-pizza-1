@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <AppLayout>
-      <transition name="slide" mode="out-in">
-        <router-view />
-      </transition>
+      <router-view />
     </AppLayout>
   </div>
 </template>
@@ -40,13 +38,5 @@ export default {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: all $animationSpeed;
-}
-.slide-enter,
-.slide-leave-to {
-  opacity: 0;
 }
 </style>
