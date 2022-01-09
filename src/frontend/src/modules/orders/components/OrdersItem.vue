@@ -90,12 +90,18 @@ export default {
 
     totalPriceOrder() {
       let sum = 0;
-      if (this.order.orderPizzas.length) {
+      if (
+        this.order.orderPizzas !== "underfined" &&
+        this.order.orderPizzas.length
+      ) {
         this.order.orderPizzas.forEach((pizza) => {
           sum += pizza.totalPricePizza * pizza.quantity;
         });
       }
-      if (this.order.orderMisc.length) {
+      if (
+        this.order.orderMisc !== "underfined" &&
+        this.order.orderMisc.length
+      ) {
         this.order.orderMisc.forEach((misc) => {
           sum += misc.price * misc.quantity;
         });

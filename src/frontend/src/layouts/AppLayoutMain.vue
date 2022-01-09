@@ -6,8 +6,8 @@
       mode="out-in"
       appear
       name="profile"
-      enter-active-class="animate__animated animate__fadeInDown"
-      leave-active-class="animate__animated animate__fadeOutDown"
+      enter-active-class="animate__animated animate__slideInDown"
+      leave-active-class="animate__animated animate__slideOutDown"
     >
       <slot />
     </transition>
