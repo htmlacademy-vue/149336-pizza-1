@@ -70,9 +70,7 @@ export default {
       this.done = done;
       el.classList.add("animate__animated", "animate__zoomIn");
 
-      el.addEventListener("animationend", () => {
-        console.log("enter end");
-      });
+      el.addEventListener("animationend", () => {});
       done();
     },
 
@@ -87,7 +85,6 @@ export default {
         this.element.classList.remove("animate__zoomIn");
         this.element.classList.add("animate__zoomOut");
         this.element.addEventListener("animationend", () => {
-          console.log("leave end");
           this.element.classList.remove(
             "animate__animated",
             "animate__zoomOut"
@@ -99,7 +96,6 @@ export default {
         el.classList.remove("animate__zoomIn");
         el.classList.add("animate__zoomOut");
         el.addEventListener("animationend", () => {
-          console.log("leave end");
           el.classList.remove("animate__animated", "animate__zoomOut");
           this.closePopupMethod();
         });
@@ -109,7 +105,6 @@ export default {
 
     afterLeave: function (el) {
       el.style.visibility = "hidden";
-      console.log("afterLeave");
     },
   },
 };
