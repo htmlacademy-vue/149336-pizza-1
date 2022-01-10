@@ -13,20 +13,20 @@
 
     <div class="content__constructor">
       <div class="pizza" :class="classPizza">
-        <div class="pizza__wrapper">
+        <transition-group class="pizza__wrapper" name="filling" tag="div">
           <div
-            v-for="item in pizzaFilling"
+            v-for="item in fillings"
             :key="item.id"
             class="pizza__filling"
             :class="[
               {
-                'pizza__filling--second': item.count === 2,
-                'pizza__filling--third': item.count === 3,
+                'pizza__filling--second': `${item.id}`.slice(-1) === '1',
+                'pizza__filling--third': `${item.id}`.slice(-1) === '2',
               },
               `pizza__filling--${item.name}`,
             ]"
           ></div>
-        </div>
+        </transition-group>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -49,6 +49,25 @@ export default {
       pizzaFilling: (state) => state.composition.pizzaFilling,
       namePizza: (state) => state.composition.namePizza,
     }),
+
+    ...mapGetters({
+      pizzaFil: "Builder/pizzaFilling",
+    }),
+
+    fillings() {
+      let arr = [];
+      this.pizzaFil.forEach((element) => {
+        for (let i = 0; i < element.count; i++) {
+          let newEl = {
+            id: +`${element.id}${i}`,
+            name: element.name,
+            title: element.title,
+          };
+          arr.push(newEl);
+        }
+      });
+      return arr;
+    },
   },
   methods: {
     ...mapActions("Builder", ["changeNamePizza"]),
@@ -63,4 +82,17 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/pizza.scss";
+
+/*Transitions*/
+.filling-enter-active,
+.filling-leave-active {
+  transition: all $animationSpeed ease;
+}
+
+.filling-enter,
+.filling-leave-to {
+  transform: scale(1.1);
+
+  opacity: 0;
+}
 </style>

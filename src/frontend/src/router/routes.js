@@ -5,14 +5,14 @@ export default [
     path: "/",
     name: "IndexHome",
     component: () => import("../views/Index.vue"),
-    meta: { layout: "AppLayoutMain" },
+    meta: { layout: () => import(`@/layouts/AppLayoutMain.vue`) },
     children: [
       {
         path: "/login",
         name: "Login",
         component: () => import("../views/Login.vue"),
         meta: {
-          layout: "AppLayoutDefault",
+          layout: () => import(`@/layouts/AppLayoutPopup.vue`),
           middlewares: [isLoggedIn],
         },
       },
@@ -22,13 +22,13 @@ export default [
     path: "/cart",
     name: "Cart",
     component: () => import("../views/Cart.vue"),
-    meta: { layout: "AppLayoutMain" },
+    meta: { layout: () => import(`@/layouts/AppLayoutMain.vue`) },
     children: [
       {
         path: "/popup",
         name: "Popup",
         component: () => import("../views/Popup.vue"),
-        meta: { layout: "AppLayoutDefault" },
+        meta: { layout: () => import(`@/layouts/AppLayoutPopup.vue`) },
       },
     ],
   },
@@ -37,7 +37,7 @@ export default [
     name: "Orders",
     component: () => import("../views/Orders.vue"),
     meta: {
-      layout: "AppLayoutUser",
+      layout: () => import(`@/layouts/AppLayoutUser.vue`),
       middlewares: [auth],
     },
   },
@@ -46,7 +46,7 @@ export default [
     name: "Profile",
     component: () => import("../views/Profile.vue"),
     meta: {
-      layout: "AppLayoutUser",
+      layout: () => import(`@/layouts/AppLayoutUser.vue`),
       middlewares: [auth],
     },
   },

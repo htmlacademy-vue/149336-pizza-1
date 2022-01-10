@@ -5,7 +5,15 @@
     <main class="layout">
       <AppLayoutUserSidebar />
       <div class="layout__content">
-        <slot />
+        <transition
+          mode="out-in"
+          appear
+          name="profile"
+          enter-active-class="animate__animated animate__fadeInDown"
+          leave-active-class="animate__animated animate__fadeOutDown"
+        >
+          <slot />
+        </transition>
       </div>
     </main>
   </div>
@@ -25,3 +33,5 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped></style>

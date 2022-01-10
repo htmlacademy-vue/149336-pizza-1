@@ -2,7 +2,15 @@
   <div class="app-layout-main">
     <AppNotifications />
     <AppLayoutHeader />
-    <slot />
+    <transition
+      mode="out-in"
+      appear
+      name="profile"
+      enter-active-class="animate__animated animate__slideInDown"
+      leave-active-class="animate__animated animate__slideOutDown"
+    >
+      <slot />
+    </transition>
   </div>
 </template>
 

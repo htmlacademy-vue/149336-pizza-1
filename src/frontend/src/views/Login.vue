@@ -1,57 +1,66 @@
 <template>
-  <div class="sign-form">
-    <router-link :to="{ name: 'IndexHome' }" class="close close--white">
-      <span class="visually-hidden">Закрыть форму авторизации</span>
-    </router-link>
-    <div class="sign-form__title">
-      <h1 class="title title--small">Авторизуйтесь на сайте</h1>
-    </div>
-    <validation-observer v-slot="{ invalid }">
-      <form @submit.prevent="login">
-        <div class="sign-form__input">
-          <label class="input">
-            <span>E-mail</span>
-            <validation-provider
-              name="E-mail"
-              rules="required|email"
-              v-slot="{ errors }"
-            >
-              <AppInput
-                v-model="email"
-                type="email"
-                name="email"
-                class="input"
-                placeholder="example@mail.ru"
-                :errorText="errors[0]"
-              />
-            </validation-provider>
-          </label>
+  <div class="wrapper">
+    <transition
+      mode="out-in"
+      appear
+      enter-active-class="animate__animated animate__zoomIn"
+      leave-active-class="animate__animated animate__zoomOut"
+    >
+      <div class="sign-form">
+        <router-link :to="{ name: 'IndexHome' }" class="close close--white">
+          <span class="visually-hidden">Закрыть форму авторизации</span>
+        </router-link>
+        <div class="sign-form__title">
+          <h1 class="title title--small">Авторизуйтесь на сайте</h1>
         </div>
+        <validation-observer v-slot="{ invalid }">
+          <form @submit.prevent="login">
+            <div class="sign-form__input">
+              <label class="input">
+                <span>E-mail</span>
+                <validation-provider
+                  name="E-mail"
+                  rules="required|email"
+                  v-slot="{ errors }"
+                >
+                  <AppInput
+                    v-model="email"
+                    type="email"
+                    name="email"
+                    class="input"
+                    placeholder="example@mail.ru"
+                    :errorText="errors[0]"
+                  />
+                </validation-provider>
+              </label>
+            </div>
 
-        <div class="sign-form__input">
-          <label class="input">
-            <span>Пароль</span>
-            <validation-provider
-              name="Пароль"
-              rules="required"
-              v-slot="{ errors }"
-            >
-              <AppInput
-                v-model="password"
-                type="password"
-                name="pass"
-                class="input"
-                placeholder="***********"
-                :errorText="errors[0]"
-              />
-            </validation-provider>
-          </label>
-        </div>
-        <button type="submit" class="button" :disabled="invalid">
-          Авторизоваться
-        </button>
-      </form>
-    </validation-observer>
+            <div class="sign-form__input">
+              <label class="input">
+                <span>Пароль</span>
+                <validation-provider
+                  name="Пароль"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <AppInput
+                    v-model="password"
+                    type="password"
+                    name="pass"
+                    class="input"
+                    placeholder="***********"
+                    :errorText="errors[0]"
+                  />
+                </validation-provider>
+              </label>
+            </div>
+            <button type="submit" class="button" :disabled="invalid">
+              Авторизоваться
+            </button>
+          </form>
+        </validation-observer>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -100,4 +109,23 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/layout/sign-form.scss";
+
+.wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.sign-form {
+  margin: auto;
+  position: relative;
+  transform: none;
+  top: 0;
+  left: 0;
+}
 </style>
