@@ -63,4 +63,39 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.text-field {
+  position: relative;
+
+  &__input {
+    display: block;
+
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 12px 16px;
+
+    color: $gray-900;
+    border: 1px solid $white-800;
+    border-radius: 6px;
+
+    &--error {
+      border-color: $red-600;
+    }
+
+    &:focus {
+      border-color: $blue-600;
+    }
+  }
+
+  &__text {
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+
+    color: $red-600;
+
+    @include r-s10-h12;
+  }
+}
+</style>
