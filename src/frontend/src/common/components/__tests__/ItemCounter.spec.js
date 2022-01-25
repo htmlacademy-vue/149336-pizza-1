@@ -78,20 +78,10 @@ describe('ItemCounter', () => {
   // атрибут disabled
   it('Check that the disabled attribute is added to the buttons', async () => {
     createComponent({ propsData });
-    let input = wrapper.find('input');
-    input.element.value = 3;
-    await input.trigger('input');
-    expect(wrapper.emitted().input[0][0]).toEqual(3);
-    let btn = wrapper.find('.counter__button--plus');
-    // expect(btn.attributes('disabled')).toBe('disabled');
-    wrapper.vm.$nextTick(() => {
-      expect(wrapper.find(".counter__button--plus[disabled]").exists()).toBe(true);
-      done();
-    });
-    // wrapper.vm.nextTick().then(function(){
-    //   expect(wrapper.find(".counter__button--plus[disabled='disabled']").exists()).toBe(true);
-    // })
-    console.log(btn.attributes());
+    await wrapper.setProps({value:3})
+    let btnPlus = wrapper.find('.counter__button--plus');
+    await wrapper.vm.$nextTick();
+    expect(btnPlus.attributes('disabled')).toBe('disabled');
   });
 
   // проверяем, добавляется ли класс на обертку
