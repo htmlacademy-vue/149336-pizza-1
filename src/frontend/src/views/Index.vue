@@ -12,7 +12,10 @@
         </div>
 
         <div class="content__ingridients">
-          <BuilderIngredientsSelector @drop="moveIngridient($event)" />
+          <BuilderIngredientsSelector
+            @drop="moveIngridient($event)"
+            data-test="changeTotalPrice"
+          />
         </div>
 
         <div class="content__pizza">

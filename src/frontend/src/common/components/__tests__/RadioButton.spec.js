@@ -49,27 +49,12 @@ describe('RadioButton', () => {
 
   // проверяем, что добавляется атрибут checked
   it('Check that the checked attribute is added to the radio buttons', async () => {
-    // createComponent({ propsData });
-    // let input = wrapper.find('input[type="radio"]');
-    // await wrapper.setProps({checked: '1'})
-    // await wrapper.setChecked(true);
-    let localThis = {
-      ...propsData,
-      checked: '1',
-    };
-    expect(RadioButton.computed.isChecked.call(localThis)).toBe(true);
-    localThis = {
-      ...propsData,
-      checked: '2',
-    };
-    expect(RadioButton.computed.isChecked.call(localThis)).toBe(false);
-    // input.element.checked = true;
-    // input.trigger('click');
-    // input.trigger('change');
-    // await wrapper.vm.$nextTick();
-    // console.log(input.attributes());
-    // expect(wrapper.vm.checked).toBe('checked')
-    // expect(input.attributes('checked')).toBe('checked');
+    createComponent({ propsData });
+    let input = wrapper.find('input[type="radio"]');
+    await wrapper.setProps({checked: 'type1', value: 'type1'})
+    expect(input.element.checked).toBe(true);
+    await wrapper.setProps({checked: 'type2'})
+    expect(input.element.checked).toBe(false);
   });
 
   // проверяем, добавляется ли класс на обертку

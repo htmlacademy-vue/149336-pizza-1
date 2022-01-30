@@ -4,12 +4,12 @@ import { mutations } from '@/store';
 import modules from '@/store/modules';
 import Vuex from 'vuex';
 
-import users from '@/static/users';
+import user from '@/static/user';
 import VuexPlugins from '@/plugins/vuexPlugins';
 
 const initState = () => ({
   notifications: [],
-  users
+  user
 });
 
 export const generateMockStore = actions => {
