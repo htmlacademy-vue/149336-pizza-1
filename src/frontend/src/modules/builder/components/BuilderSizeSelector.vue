@@ -41,12 +41,11 @@ export default {
           value: newSize,
         };
         this.changeSize(payload);
-        this.changeTotalPrice();
       },
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeSize", "changeTotalPrice"]),
+    ...mapActions("Builder", ["changeSize" /*, "changeTotalPrice"*/]),
   },
 };
 </script>

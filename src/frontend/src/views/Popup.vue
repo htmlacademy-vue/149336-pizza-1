@@ -112,7 +112,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/layout/popup.scss";
 @import "~@/assets/scss/blocks/close.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .wrapper {
   position: fixed;

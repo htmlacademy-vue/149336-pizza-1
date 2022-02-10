@@ -11,9 +11,7 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }"
-        >{{ total_price_order }} ₽</router-link
-      >
+      <router-link :to="{ name: 'Cart' }">{{ totalPriceOrder }} ₽</router-link>
     </div>
     <div v-if="isAuthenticated" class="header__user">
       <router-link :to="{ name: 'Profile' }">
@@ -59,7 +57,7 @@ export default {
   computed: {
     ...mapState(["Auth"]),
     ...mapState("Cart", {
-      total_price_order: (state) => state.totalPriceOrder,
+      totalPriceOrder: (state) => state.totalPriceOrder,
     }),
 
     user() {
@@ -75,4 +73,5 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/layout/header.scss";
+@import "~@/assets/scss/blocks/logo.scss";
 </style>

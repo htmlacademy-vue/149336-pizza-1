@@ -58,6 +58,27 @@ export default {
     namePizza: (state) => {
       return state.composition.namePizza;
     },
+
+    getTotalPrice: (state) => {
+      let multi;
+      let newArr = [];
+      state.composition.pizzaFilling.forEach((element) => {
+        newArr.push(element.count * element.price);
+      });
+      if (newArr.length !== 0) {
+        multi = newArr.reduce((sum, current) => sum + current, 0);
+      } else {
+        multi = 0;
+      }
+      // (Основа + Соус + Добавки) * размер
+      let newTotalPrice =
+        (state.composition.dough.price +
+          state.composition.sauce.price +
+          multi) *
+        state.composition.size.multiplier;
+      state.composition.totalPrice = newTotalPrice;
+      return state.composition.totalPrice;
+    },
   },
 
   mutations: {
@@ -135,6 +156,7 @@ export default {
                 id: item.id,
                 count: item.count,
                 name: item.label,
+                price: item.price,
                 title: item.name.toLowerCase(),
               };
               return item;
@@ -184,7 +206,7 @@ export default {
         value: "tomato",
         price: 50,
       };
-      state.composition.totalPrice = 0;
+      state.composition.totalPrice = 700;
       state.composition.classPizza = "pizza--foundation--small-tomato";
       state.composition.pizzaFilling = [];
       state.composition.namePizza = "";

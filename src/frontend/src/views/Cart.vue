@@ -220,6 +220,8 @@ export default {
 @import "~@/assets/scss/blocks/cart.scss";
 @import "~@/assets/scss/blocks/additional-list.scss";
 @import "~@/assets/scss/blocks/footer.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .wrap {
   display: flex;

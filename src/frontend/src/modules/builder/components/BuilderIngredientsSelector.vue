@@ -75,7 +75,6 @@ export default {
           value: newSauce,
         };
         this.changeSauce(payload);
-        this.changeTotalPrice();
         this.switchClassPizza();
       },
     },
@@ -84,7 +83,6 @@ export default {
     ...mapActions("Builder", [
       "changeSauce",
       "changeCounter",
-      "changeTotalPrice",
       "switchClassPizza",
     ]),
 
@@ -94,7 +92,6 @@ export default {
         id,
       };
       this.changeCounter(payload);
-      this.changeTotalPrice();
     },
     changeSouceMethod(newSauce, newPrice) {
       let payload = {
@@ -102,7 +99,6 @@ export default {
         price: newPrice,
       };
       this.changeSauce(payload);
-      this.changeTotalPrice();
       this.switchClassPizza();
     },
   },

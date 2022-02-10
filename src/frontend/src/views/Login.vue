@@ -7,7 +7,11 @@
       leave-active-class="animate__animated animate__zoomOut"
     >
       <div class="sign-form">
-        <router-link :to="{ name: 'IndexHome' }" class="close close--white">
+        <router-link
+          :to="{ name: 'IndexHome' }"
+          class="close close--white"
+          data-test="close-button"
+        >
           <span class="visually-hidden">Закрыть форму авторизации</span>
         </router-link>
         <div class="sign-form__title">
@@ -30,6 +34,7 @@
                     class="input"
                     placeholder="example@mail.ru"
                     :errorText="errors[0]"
+                    data-test="email-component"
                   />
                 </validation-provider>
               </label>
@@ -50,6 +55,7 @@
                     class="input"
                     placeholder="***********"
                     :errorText="errors[0]"
+                    data-test="password-component"
                   />
                 </validation-provider>
               </label>
@@ -109,6 +115,10 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/layout/sign-form.scss";
+@import "~@/assets/scss/blocks/close.scss";
+@import "~@/assets/scss/blocks/input.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .wrapper {
   position: fixed;

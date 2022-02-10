@@ -43,17 +43,12 @@ export default {
           value: newDough,
         };
         this.changeDough(payload);
-        this.changeTotalPrice();
         this.switchClassPizza();
       },
     },
   },
   methods: {
-    ...mapActions("Builder", [
-      "changeDough",
-      "changeTotalPrice",
-      "switchClassPizza",
-    ]),
+    ...mapActions("Builder", ["changeDough", "switchClassPizza"]),
 
     changeDoughMethod(newDough, newPrice) {
       let payload = {
@@ -61,7 +56,6 @@ export default {
         price: newPrice,
       };
       this.changeDough(payload);
-      this.changeTotalPrice();
       this.switchClassPizza();
     },
   },

@@ -125,6 +125,9 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/user.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
+@import "~@/assets/scss/layout/layout.scss";
 
 .layout__content {
   .layout__content {

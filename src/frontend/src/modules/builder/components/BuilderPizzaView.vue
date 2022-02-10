@@ -82,6 +82,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/pizza.scss";
+@import "~@/assets/scss/blocks/input.scss";
 
 /*Transitions*/
 .filling-enter-active,

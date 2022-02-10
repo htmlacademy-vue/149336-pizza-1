@@ -59,13 +59,13 @@ describe('Index', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  it ('calls changeTotalPrice action', () => {
+  it ('calls changeCounter action', () => {
     createComponent({ localVue, store, stubs });
-    const columnHtml = wrapper.find('[data-test="changeTotalPrice"]');
-    columnHtml.vm.$emit('drop', {});
-    expect(actions.Builder.changeTotalPrice).toHaveBeenCalledWith(
+    const ingredients = wrapper.findComponent('[data-test="changeCounter"]');
+    ingredients.vm.$emit('drop', {id: 1, count: 0 });
+    expect(actions.Builder.changeCounter).toHaveBeenCalledWith(
       expect.any(Object), // The Vuex context
-      {}
+      {id: 1, newCount: 1 }
     );
   });
 });
@@ -75,10 +75,11 @@ describe('Index', () => {
 /*
   + @drop="moveIngridient($event)"
   + @drop="moveIngridient"
-  + ...mapActions("Builder", ["changeTotalPrice", "changeCounter"]),
+  + ...mapActions("Builder", ["changeCounter"]),
 */
 
 // Данные из тест хранилища
 /*
   ...mapState("Builder", ["composition"]),
+  ...mapGetters('Builder', ['getTotalPrice']),
  */
