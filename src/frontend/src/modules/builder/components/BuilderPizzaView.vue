@@ -36,7 +36,7 @@
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -46,12 +46,8 @@ export default {
   computed: {
     ...mapState("Builder", {
       classPizza: (state) => state.composition.classPizza,
-      pizzaFilling: (state) => state.composition.pizzaFilling,
+      pizzaFil: (state) => state.composition.pizzaFilling,
       namePizza: (state) => state.composition.namePizza,
-    }),
-
-    ...mapGetters({
-      pizzaFil: "Builder/pizzaFilling",
     }),
 
     fillings() {

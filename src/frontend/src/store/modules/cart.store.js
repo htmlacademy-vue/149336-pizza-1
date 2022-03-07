@@ -47,9 +47,9 @@ export default {
   },
   mutations: {
     [CREATE_PIZZA]: (state, payload) => {
-      const data = cloneDeep(payload.rootData.Builder.composition);
+      const data = cloneDeep(payload.composition);
       let fillings = "";
-      payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
+      payload.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
       let newId = +uniqueId();
@@ -57,32 +57,30 @@ export default {
         composition: data,
         id: newId,
         count: 1,
-        title: payload.rootData.Builder.composition.namePizza,
+        title: payload.composition.namePizza,
         size:
-          payload.rootData.Builder.composition.size.value === "normal"
+          payload.composition.size.value === "normal"
             ? 32
-            : payload.rootData.Builder.composition.size.value === "big"
+            : payload.composition.size.value === "big"
             ? 45
             : 23,
         dough:
-          payload.rootData.Builder.composition.dough.value === "large"
-            ? "толстом"
-            : "тонком",
+          payload.composition.dough.value === "large" ? "толстом" : "тонком",
         sauce:
-          payload.rootData.Builder.composition.sauce.value === "tomato"
+          payload.composition.sauce.value === "tomato"
             ? "томатный"
             : "сливочный",
         fillings: fillings.slice(0, -2),
-        price: payload.rootData.Builder.composition.totalPrice,
+        price: payload.rootGetters["Builder/getTotalPrice"],
       };
       pizza.composition.id = newId;
       state.pizzas.push(pizza);
     },
     [EDIT_PIZZA]: (state, payload) => {
-      const data = cloneDeep(payload.rootData.Builder.composition);
-      let pizzaId = payload.rootData.Builder.composition.id;
+      const data = cloneDeep(payload.composition);
+      let pizzaId = payload.composition.id;
       let fillings = "";
-      payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
+      payload.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
       state.pizzas
@@ -90,6 +88,7 @@ export default {
           return pizza.id === pizzaId;
         })
         .forEach((item) => {
+          debugger;
           item.composition = data;
           item.title = data.namePizza;
           item.size =
@@ -100,11 +99,11 @@ export default {
               : 23;
           item.dough = data.dough.value === "large" ? "толстом" : "тонком";
           item.sauce =
-            payload.rootData.Builder.composition.sauce.value === "tomato"
+            payload.composition.sauce.value === "tomato"
               ? "томатный"
               : "сливочный";
           item.fillings = fillings.slice(0, -2);
-          item.price = data.totalPrice;
+          item.price = payload.rootGetters["Builder/getTotalPrice"];
         });
     },
     [REPEAT_PIZZA]: (state, payload) => {
@@ -192,6 +191,7 @@ export default {
               id: item.id,
               count: item.count,
               name: item.label,
+              price: item.price,
               title: item.name.toLowerCase(),
             };
             return filling;
@@ -214,6 +214,7 @@ export default {
           totalPrice: item.totalPricePizza,
         };
 
+        debugger;
         let pizza = {
           composition: myComposition,
           id: uniqId,
@@ -319,21 +320,25 @@ export default {
       );
     },
 
-    createPizza({ commit, rootState }) {
+    createPizza({ commit, rootState, rootGetters }) {
       commit(
         CREATE_PIZZA,
         {
-          rootData: rootState,
+          // rootData: rootState,
+          composition: rootState.Builder.composition,
+          rootGetters: rootGetters,
         },
         { root: false }
       );
     },
 
-    editPizza({ commit, rootState }) {
+    editPizza({ commit, rootState, rootGetters }) {
       commit(
         EDIT_PIZZA,
         {
-          rootData: rootState,
+          // rootData: rootState,
+          composition: rootState.Builder.composition,
+          rootGetters: rootGetters,
         },
         { root: false }
       );

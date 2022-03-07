@@ -4,7 +4,7 @@
       <span class="cart-form__label">Получение заказа:</span>
       <select name="test" class="select" v-model="recipientOrder">
         <option value="myself">Заберу сам</option>
-        <option value="new" v-if="user">Новый адрес</option>
+        <option value="new">Новый адрес</option>
         <option
           v-for="(address, index) in addresses"
           :key="address.id"

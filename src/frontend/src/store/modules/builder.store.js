@@ -27,7 +27,7 @@ export default {
       size: {},
       sauce: {},
       ingr: [],
-      totalPrice: 0,
+      // totalPrice: 0,
       classPizza: "pizza--foundation--small-tomato",
       pizzaFilling: [],
       namePizza: "",
@@ -35,31 +35,8 @@ export default {
   },
 
   getters: {
-    composition: (state) => {
-      return state.composition;
-    },
-
-    doughs: (state) => {
-      return state.doughs;
-    },
-
-    sizes: (state) => {
-      return state.sizes;
-    },
-
-    sauces: (state) => {
-      return state.sauces;
-    },
-
-    pizzaFilling: (state) => {
-      return state.composition.pizzaFilling;
-    },
-
-    namePizza: (state) => {
-      return state.composition.namePizza;
-    },
-
     getTotalPrice: (state) => {
+      debugger;
       let multi;
       let newArr = [];
       state.composition.pizzaFilling.forEach((element) => {
@@ -76,8 +53,9 @@ export default {
           state.composition.sauce.price +
           multi) *
         state.composition.size.multiplier;
-      state.composition.totalPrice = newTotalPrice;
-      return state.composition.totalPrice;
+      // state.composition.totalPrice = newTotalPrice;
+      // return state.composition.totalPrice;
+      return newTotalPrice;
     },
   },
 
@@ -193,11 +171,11 @@ export default {
     [RESET_BUILDER]: (state) => {
       state.composition.dough = {
         id: 1,
-        value: "light",
+        value: "large",
         price: 300,
       };
       state.composition.size = {
-        id: 3,
+        id: 2,
         value: "normal",
         multiplier: 2,
       };

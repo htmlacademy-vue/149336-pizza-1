@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ totalPrice }} ₽</p>
+    <p>Итого: {{ getTotalPrice }} ₽</p>
     <button
       v-if="!composition.id"
       type="button"
@@ -25,19 +25,23 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
   computed: {
-    ...mapGetters({
-      namePizza: "Builder/namePizza",
-      pizzaFilling: "Builder/pizzaFilling",
+    ...mapState("Auth", {
+      isAuthenticated: (state) => state.isAuthenticated,
     }),
 
     ...mapState("Builder", {
       composition: (state) => state.composition,
-      totalPrice: (state) => state.composition.totalPrice,
+      namePizza: (state) => state.composition.namePizza,
+      pizzaFilling: (state) => state.composition.pizzaFilling,
+    }),
+
+    ...mapGetters({
+      getTotalPrice: "Builder/getTotalPrice",
     }),
 
     isEmptyNamePizza() {
@@ -50,7 +54,6 @@ export default {
 
     createPizzaMethod() {
       this.createPizza();
-      this.queryAddresses();
       this.$router.push({ name: "Cart" });
     },
 

@@ -243,9 +243,10 @@ export class OrdersApiService extends CrudApiService {
   }
 
   async post(order) {
-    const { data: newOrder } = await axios.post(`orders`, order);
+    await axios.post(`orders`, order);
+    // const { data: newOrder } = await axios.post(`orders`, order);
     // return this._normalize(newOrder);
-    return newOrder;
+    // return newOrder;
   }
 
   async delete(order) {

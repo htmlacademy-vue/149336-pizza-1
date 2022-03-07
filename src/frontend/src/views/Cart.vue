@@ -21,7 +21,7 @@
           </ul>
 
           <div class="cart__additional">
-            <ul class="additional-list" v-if="pizzas.length & misc.length">
+            <ul class="additional-list" v-if="pizzas.length && misc.length">
               <li
                 is="cart-additional-item"
                 v-for="(item, index) in misc"
@@ -88,6 +88,7 @@ export default {
   computed: {
     ...mapState("Auth", {
       user: (state) => state.user,
+      isAuthenticated: (state) => state.isAuthenticated,
     }),
     ...mapState("Builder", {
       composition: (state) => state.composition,
@@ -122,9 +123,12 @@ export default {
     },
   },
   created: function () {
-    // this.query();
+    if (this.isAuthenticated) {
+      this.queryAddresses();
+    }
   },
   methods: {
+    ...mapActions("Auth", ["queryAddresses"]),
     ...mapActions("Builder", ["resetBuilder"]),
     ...mapActions("Cart", [
       "query",
@@ -167,7 +171,9 @@ export default {
             flat: this.address.apartment,
             comment: "",
           };
-          this.newAddresses(myAddress);
+          if (this.isAuthenticated) {
+            this.newAddresses(myAddress);
+          }
           break;
         default:
           myAddress = {
@@ -200,6 +206,7 @@ export default {
             quantity: pizza.count,
             ingredients: myIngr,
           };
+          debugger;
           order.pizzas.push(newPizza);
         });
       this.newOrder(order);
