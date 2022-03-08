@@ -28,7 +28,7 @@ export default {
       sauce: {},
       ingr: [],
       // totalPrice: 0,
-      classPizza: "pizza--foundation--small-tomato",
+      classPizza: "pizza--foundation--small-creamy",
       pizzaFilling: [],
       namePizza: "",
     },
@@ -36,7 +36,6 @@ export default {
 
   getters: {
     getTotalPrice: (state) => {
-      debugger;
       let multi;
       let newArr = [];
       state.composition.pizzaFilling.forEach((element) => {
@@ -181,11 +180,11 @@ export default {
       };
       state.composition.sauce = {
         id: 2,
-        value: "tomato",
+        value: "creamy",
         price: 50,
       };
       state.composition.totalPrice = 700;
-      state.composition.classPizza = "pizza--foundation--small-tomato";
+      state.composition.classPizza = "pizza--foundation--small-creamy";
       state.composition.pizzaFilling = [];
       state.composition.namePizza = "";
       state.composition.id = null;

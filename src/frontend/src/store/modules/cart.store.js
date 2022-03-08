@@ -88,7 +88,6 @@ export default {
           return pizza.id === pizzaId;
         })
         .forEach((item) => {
-          debugger;
           item.composition = data;
           item.title = data.namePizza;
           item.size =
@@ -112,22 +111,21 @@ export default {
       data.orderPizzas.forEach((item) => {
         //class Pizza
         let myClass = "pizza--foundation--";
-        switch (item.doughId) {
-          case 1:
+        let d = payload.rootData.Builder.doughs.filter((dough) => {
+          return dough.id === item.doughId;
+        })[0].type;
+        switch (d) {
+          case "light":
             myClass += "small";
             break;
-          case 2:
+          case "large":
             myClass += "big";
             break;
         }
-        switch (item.sauceId) {
-          case 1:
-            myClass += "-tomato";
-            break;
-          case 2:
-            myClass += "-creamy";
-            break;
-        }
+        myClass += "-";
+        myClass += payload.rootData.Builder.sauces.filter((sauce) => {
+          return sauce.id === item.sauceId;
+        })[0].value;
 
         //dough
         let myDough = payload.rootData.Builder.doughs
@@ -214,7 +212,6 @@ export default {
           totalPrice: item.totalPricePizza,
         };
 
-        debugger;
         let pizza = {
           composition: myComposition,
           id: uniqId,

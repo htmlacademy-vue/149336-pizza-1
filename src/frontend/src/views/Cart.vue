@@ -206,7 +206,6 @@ export default {
             quantity: pizza.count,
             ingredients: myIngr,
           };
-          debugger;
           order.pizzas.push(newPizza);
         });
       this.newOrder(order);

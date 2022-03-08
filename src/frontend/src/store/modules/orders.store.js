@@ -32,7 +32,6 @@ export default {
 
     async newOrder({ commit }, order) {
       const data = await this.$api.orders.post(order);
-      debugger;
       commit(
         ADD_ENTITY,
         {
