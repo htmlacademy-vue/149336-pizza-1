@@ -126,7 +126,7 @@
 
 <script>
 import AppInput from "@/common/components/AppInput";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
 import { ValidationProvider, extend, localize } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import ru from "vee-validate/dist/locale/ru.json";
@@ -148,6 +148,7 @@ export default {
     ...mapState("Cart", {
       recipient: (state) => state.recipient,
       phone: (state) => state.phone,
+      address: (state) => state.address,
     }),
 
     phoneUser: {
@@ -161,10 +162,6 @@ export default {
         this.updatePhone(payload);
       },
     },
-
-    ...mapGetters({
-      address: "Cart/address",
-    }),
 
     recipientOrder: {
       get() {

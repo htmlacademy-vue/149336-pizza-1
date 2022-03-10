@@ -49,7 +49,7 @@
           Перейти к конструктору<br />чтоб собрать ещё одну пиццу
         </p>
         <div class="footer__price">
-          <b>Итого: {{ totalPriceOrder }} ₽</b>
+          <b>Итого: {{ getTotalPriceOrder }} ₽</b>
         </div>
         <div class="footer__submit">
           <button
@@ -69,7 +69,7 @@
 import CartProductItem from "@/modules/cart/components/CartProductItem";
 import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
 import CartForm from "@/modules/cart/components/CartForm";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import { ValidationObserver, extend, localize } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import ru from "vee-validate/dist/locale/ru.json";
@@ -101,26 +101,9 @@ export default {
       phone: (state) => state.phone,
     }),
 
-    totalPriceOrder() {
-      let pizzasPrice = 0,
-        miscsPrice = 0;
-      this.pizzas
-        .filter((pizza) => {
-          return pizza.count > 0;
-        })
-        .forEach((pizza) => {
-          pizzasPrice += pizza.count * pizza.price;
-        });
-      this.misc
-        .filter((misc) => {
-          return misc.count > 0;
-        })
-        .forEach((misc) => {
-          miscsPrice += misc.count * misc.price;
-        });
-      this.updateTotalPriceOrder();
-      return pizzasPrice + miscsPrice;
-    },
+    ...mapGetters({
+      getTotalPriceOrder: "Cart/getTotalPriceOrder",
+    }),
   },
   created: function () {
     if (this.isAuthenticated) {
@@ -130,12 +113,7 @@ export default {
   methods: {
     ...mapActions("Auth", ["queryAddresses"]),
     ...mapActions("Builder", ["resetBuilder"]),
-    ...mapActions("Cart", [
-      "query",
-      "createPizza",
-      "updatePizza",
-      "updateTotalPriceOrder",
-    ]),
+    ...mapActions("Cart", ["query", "createPizza", "updatePizza"]),
 
     ...mapActions("Auth", ["newAddresses"]),
     ...mapActions("Orders", ["newOrder"]),

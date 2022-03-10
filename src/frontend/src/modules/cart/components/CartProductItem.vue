@@ -22,7 +22,6 @@
       v-model="pizza.count"
       :parentClass="`cart-list__counter`"
       :colorBtn="`counter__button--orange`"
-      @input="changePriceOrderMethod($event)"
     />
 
     <div class="cart-list__price">
@@ -57,15 +56,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["updatePizza", "updateTotalPriceOrder"]),
+    ...mapActions("Cart", ["updatePizza"]),
 
     changePizzaMethod(pizza) {
       this.updatePizza(pizza);
       this.$router.push({ name: "IndexHome" });
-    },
-
-    changePriceOrderMethod() {
-      this.updateTotalPriceOrder();
     },
   },
 };

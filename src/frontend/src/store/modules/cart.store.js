@@ -6,7 +6,7 @@ import {
   EDIT_PIZZA,
   REPEAT_PIZZA,
   UPDATE_PIZZA,
-  UPDATE_TOTAL_PRICE_ORDER,
+  // UPDATE_TOTAL_PRICE_ORDER,
   RESET_PIZZAS,
   UPDATE_USER_ADDRESS,
   UPDATE_RECIPIENT,
@@ -43,6 +43,26 @@ export default {
 
     address: (state) => {
       return state.address;
+    },
+
+    getTotalPriceOrder: (state) => {
+      let pizzasPrice = 0,
+        miscsPrice = 0;
+      state.pizzas
+        .filter((pizza) => {
+          return pizza.count > 0;
+        })
+        .forEach((pizza) => {
+          pizzasPrice += pizza.count * pizza.price;
+        });
+      state.misc
+        .filter((misc) => {
+          return misc.count > 0;
+        })
+        .forEach((misc) => {
+          miscsPrice += misc.count * misc.price;
+        });
+      return pizzasPrice + miscsPrice;
     },
   },
   mutations: {
@@ -252,25 +272,6 @@ export default {
     [UPDATE_PIZZA]: (state, payload) => {
       payload.rootData.Builder.composition = payload.data.composition;
     },
-    [UPDATE_TOTAL_PRICE_ORDER]: (state, payload) => {
-      let pizzasPrice = 0,
-        miscsPrice = 0;
-      payload.rootData.Cart.pizzas
-        .filter((pizza) => {
-          return pizza.count > 0;
-        })
-        .forEach((pizza) => {
-          pizzasPrice += pizza.count * pizza.price;
-        });
-      payload.rootData.Cart.misc
-        .filter((misc) => {
-          return misc.count > 0;
-        })
-        .forEach((misc) => {
-          miscsPrice += misc.count * misc.price;
-        });
-      state.totalPriceOrder = pizzasPrice + miscsPrice;
-    },
     [RESET_PIZZAS]: (state) => {
       state.misc.forEach((misc) => (misc.count = 0));
       state.pizzas = [];
@@ -357,16 +358,6 @@ export default {
         UPDATE_PIZZA,
         {
           data,
-          rootData: rootState,
-        },
-        { root: false }
-      );
-    },
-
-    updateTotalPriceOrder({ commit, rootState }) {
-      commit(
-        UPDATE_TOTAL_PRICE_ORDER,
-        {
           rootData: rootState,
         },
         { root: false }

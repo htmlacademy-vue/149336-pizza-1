@@ -51,7 +51,6 @@ describe('Cart', () => {
   +   "query",
   +   "createPizza",
   +   "updatePizza",
-  +   "updateTotalPriceOrder",
   + ]),
 
     ...mapActions("Auth", ["newAddresses"]),
