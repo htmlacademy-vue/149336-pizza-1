@@ -220,10 +220,6 @@ export default {
       this.$emit("changeVisibleForm");
     },
   },
-  beforeDestroy() {
-    // event.target.reset();
-    // alert("beforeDestroy");
-  },
 };
 </script>
 

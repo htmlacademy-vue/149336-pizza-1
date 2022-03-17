@@ -230,9 +230,9 @@ export class OrdersApiService extends CrudApiService {
     return {
       addressId: order.addressId,
       id: order.id,
-      orderAddress: order.orderAddress || null,
+      orderAddress: order.orderAddress || {},
       orderMisc: order.orderMisc || [],
-      orderPizzas: order.orderPizzas,
+      orderPizzas: order.orderPizzas || {},
       userId: order.userId,
     };
   }
@@ -243,10 +243,9 @@ export class OrdersApiService extends CrudApiService {
   }
 
   async post(order) {
-    await axios.post(`orders`, order);
-    // const { data: newOrder } = await axios.post(`orders`, order);
-    // return this._normalize(newOrder);
-    // return newOrder;
+    // await axios.post(`orders`, order);
+    const { data: newOrder } = await axios.post(`orders`, order);
+    return this._normalize(newOrder);
   }
 
   async delete(order) {

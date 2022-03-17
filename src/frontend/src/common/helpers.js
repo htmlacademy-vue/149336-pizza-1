@@ -46,7 +46,6 @@ export const capitalize = (string) =>
   `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
 export const totalPrice = (order, store) => {
-  debugger;
   const ingrs = store.Builder.ingredients;
   order.orderPizzas.forEach((pizza) => {
     let newIngrs = [];
