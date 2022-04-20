@@ -11,6 +11,7 @@ import {
   OrdersApiService,
 } from "@/services/api.service";
 import { SET_ENTITY } from "@/store/mutation-types";
+import user from "@/static/user";
 
 export const createResources = (notifier) => {
   return {
@@ -116,4 +117,26 @@ export const totalPrice = (order, store) => {
   });
 
   return order;
+};
+
+// Вспомогательный метод для аутентификации пользователя
+export const authenticateUser = (store) => {
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "user",
+      value: user[0],
+    },
+    { root: true }
+  );
+  store.commit(
+    SET_ENTITY,
+    {
+      module: "Auth",
+      entity: "isAuthenticated",
+      value: true,
+    },
+    { root: true }
+  );
 };

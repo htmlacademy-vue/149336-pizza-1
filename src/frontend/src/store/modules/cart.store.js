@@ -91,7 +91,7 @@ export default {
             ? "томатный"
             : "сливочный",
         fillings: fillings.slice(0, -2),
-        price: payload.rootGetters["Builder/getTotalPrice"],
+        price: payload.getTotalPrice,
       };
       pizza.composition.id = newId;
       state.pizzas.push(pizza);
@@ -322,9 +322,8 @@ export default {
       commit(
         CREATE_PIZZA,
         {
-          // rootData: rootState,
           composition: rootState.Builder.composition,
-          rootGetters: rootGetters,
+          getTotalPrice: rootGetters["Builder/getTotalPrice"],
         },
         { root: false }
       );

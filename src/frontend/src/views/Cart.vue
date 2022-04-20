@@ -41,6 +41,7 @@
             href="#"
             class="button button--border button--arrow"
             @click="oneMorePizza"
+            data-test="resetBuilder"
           >
             Хочу еще одну
           </a>
@@ -56,6 +57,7 @@
             type="submit"
             class="button"
             :disabled="!pizzas.length || invalid"
+            data-test="new-addresses"
           >
             Оформить заказ
           </button>

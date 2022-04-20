@@ -1,28 +1,12 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { generateMockStore } from '@/store/mocks';
-// import { SET_ENTITY } from '@/store/mutations-types';
-// import user from '@/static/user';
 import Index from '@/views/Index.vue';
 
 // Создаём локальный тестовый экземпляр Vue.
 const localVue = createLocalVue();
 // Добавляем в него Vuex.
 localVue.use(Vuex);
-
-// Создаём вспомогательный метод для аутентификации пользователя
-// const authenticateUser = store => {
-//   store.commit(SET_ENTITY, {
-//     module: 'Auth',
-//     entity: 'user',
-//     value: user[0]
-//   });
-//   store.commit(SET_ENTITY, {
-//     module: 'Auth',
-//     entity: 'isAuthenticated',
-//     value: true
-//   });
-// };
 
 // Начало блока тестов
 describe('Index', () => {
@@ -42,7 +26,6 @@ describe('Index', () => {
   beforeEach(() => {
     actions = {
       Builder: {
-        changeTotalPrice: jest.fn(),
         changeCounter: jest.fn(),
       }
     };
@@ -81,5 +64,7 @@ describe('Index', () => {
 // Данные из тест хранилища
 /*
   ...mapState("Builder", ["composition"]),
-  ...mapGetters('Builder', ['getTotalPrice']),
+  ...mapGetters({
+    getTotalPrice: "Builder/getTotalPrice",
+  }),
  */
