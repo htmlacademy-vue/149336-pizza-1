@@ -132,21 +132,32 @@ describe('Cart', () => {
       expect(wrapper.exists()).toBeTruthy();
     });
 
+    it ('is empty cart', () => {
+      createComponent({ localVue, store, stubs });
+      expect(wrapper.find('.cart__empty').text()).toBe('В корзине нет ни одного товара');
+    });
+
     it ('calls newAddresses action', async () => {
       authenticateUser(store);
       createPizza(store);
       addPhone(store);
       createComponent({ localVue, store, stubs });
       await wrapper.vm.$nextTick();
+      // const spyOnMutation = jest.spyOn(wrapper.vm, 'CREATE_PIZZA');
       const addr = wrapper.find('[data-test="new-addresses"]');
       // console.log(store.state.Cart.pizzas[0]);
-      console.log(addr.element.value);
       await addr.trigger('click');
-      expect(wrapper.find("button[type='submit']").attributes('disabled'));
-      expect(actions.Auth.newAddresses).toHaveBeenCalledWith(
-        expect.any(Object), // The Vuex context
-        { }
-      );
+      expect(actions.Auth.newAddresses).toHaveBeenCalled();
+      // expect(actions.Auth.newAddresses).toHaveBeenCalledWith(
+      //   expect.any(Object), // The Vuex context
+      //   { }
+      // );
+      // expect(spyOnMutation).toHaveBeenCalledWith(
+      //   { 
+      //     composition: pizza.composition,
+      //     getTotalPrice: pizza.price,
+      //   }
+      // );
     });
 });
 
