@@ -1,7 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 // import user from '@/static/user';
-import { CREATE_PIZZA } from '@/store/mutation-types';
+import { CREATE_PIZZA, ADD_ENTITY } from '@/store/mutation-types';
 import { generateMockStore } from '@/store/mocks';
 import Cart from '@/views/Cart.vue';
 import { authenticateUser } from '@/common/helpers';
@@ -64,30 +64,33 @@ const pizza = {
 };
 
 const createPizza = store => {
-  // store.commit(
-  //   SET_ENTITY,
-  //   {
-  //     module: 'Cart',
-  //     entity: 'pizzas',
-  //     value: pizza,
-  //   }
-  // );
-
-  store.state.Cart.pizzas.push(pizza);
+  // store.state.Cart.pizzas.push(pizza);
   
-  // store.commit(
-  //   CREATE_PIZZA,
-  //   {
-  //     composition: pizza.composition,
-  //     getTotalPrice: pizza.price,
-  //   },
-  //   { root: false }
-  // );
+  store.commit(
+    "Cart/" + CREATE_PIZZA,
+    {
+      composition: pizza.composition,
+      getTotalPrice: pizza.price,
+    }
+  );
 };
 
-const addPhone = store => {
-  store.state.Cart.phone = "+7 999-999-99-99";
-}
+// let url = '';
+// let body = {};
+// let mockError = false;
+
+// jest.mock('axios', () => ({
+//   post: (_url, _body) => { 
+//     return new Promise((resolve) => {
+//       if (mockError) 
+//         throw Error("Mock error")
+
+//       url = _url
+//       body = _body
+//       resolve(true)
+//     })
+//   }
+// }));
 
 // Начало блока тестов
 describe('Cart', () => {
@@ -117,7 +120,12 @@ describe('Cart', () => {
           query: jest.fn(),
           createPizza: jest.fn(),
           updatePizza: jest.fn(),
+          updateUserRecipient: jest.fn(),
+          resetUserAddress: jest.fn(),
         },
+        Orders: {
+          newOrder:jest.fn(),
+        }
       };
       store = generateMockStore(actions);
     });
@@ -140,14 +148,31 @@ describe('Cart', () => {
     it ('calls newAddresses action', async () => {
       authenticateUser(store);
       createPizza(store);
-      addPhone(store);
+      // const address = {
+      //   street:"Молодежная",
+      //   house:"9",
+      //   apartment:"2"
+      // };
       createComponent({ localVue, store, stubs });
       await wrapper.vm.$nextTick();
-      // const spyOnMutation = jest.spyOn(wrapper.vm, 'CREATE_PIZZA');
+      // const select = wrapper.find('.select').element;
+      // select.value = 'new';
+      // select.dispatchEvent(new Event('change'));
+      const options = wrapper.find('.select').findAll('option');
+      await options.at(1).setSelected();
+      expect(wrapper.find('option:checked').element.value).toBe('new');
+      await wrapper.vm.$nextTick();
+      console.log(wrapper.html());
+      
+      let input = wrapper.find('input[name="street"]');
+      input.element.value = 'Абракадабра';
+      await input.trigger('input');
+        
       const addr = wrapper.find('[data-test="new-addresses"]');
-      // console.log(store.state.Cart.pizzas[0]);
+      // console.log(store.state.Cart.pizzas.length);
       await addr.trigger('click');
-      expect(actions.Auth.newAddresses).toHaveBeenCalled();
+      console.log(input.html());
+      // expect(actions.Auth.newAddresses).toHaveBeenCalled();
       // expect(actions.Auth.newAddresses).toHaveBeenCalledWith(
       //   expect.any(Object), // The Vuex context
       //   { }
@@ -158,6 +183,36 @@ describe('Cart', () => {
       //     getTotalPrice: pizza.price,
       //   }
       // );
+    });
+
+    it ('calls newOrder action', async () => {
+      authenticateUser(store);
+      createPizza(store);
+      createComponent({ localVue, store, stubs });
+
+      const commit = jest.fn();
+      const order = {
+        userId: null,
+        phone: "",
+        pizzas: [],
+        misc: [],
+        address: {
+          id: null,
+          name: `ул., д., кв.`,
+          street: "",
+          building: "",
+          flat: "",
+          comment: "",
+        }
+      };
+
+      await actions.Orders.newOrder({ commit }, { order })
+
+      // expect(url).toBe("/api/orders")
+      // expect(body).toEqual({ order })
+      // expect(commit).toHaveBeenCalledWith(
+      //   ADD_ENTITY, true
+      // )
     });
 });
 
