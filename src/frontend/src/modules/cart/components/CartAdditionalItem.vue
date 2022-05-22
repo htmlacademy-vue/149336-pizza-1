@@ -1,7 +1,7 @@
 <template>
   <div class="additional-list__item sheet">
     <p class="additional-list__description">
-      <img :src="item.image" width="39" height="60" alt="item.name" />
+      <img :src="item.image" width="39" height="60" :alt="item.name" />
       <span>{{ item.name }}</span>
     </p>
 
@@ -13,7 +13,7 @@
       />
 
       <div class="additional-list__price">
-        <b>{{ item.price }} ₽</b>
+        <b data-test="price">{{ item.price }} ₽</b>
       </div>
     </div>
   </div>
