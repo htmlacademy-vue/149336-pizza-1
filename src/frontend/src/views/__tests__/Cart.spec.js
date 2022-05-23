@@ -1,6 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-// import user from '@/static/user';
 import {
   CREATE_PIZZA,
   UPDATE_RECIPIENT,
@@ -149,14 +148,14 @@ const order = {
     {
       doughId: 1,
       ingredients: [
-        {
-          ingredientId: 3,
-          quantity: 1,
-        },
-        {
-          ingredientId: 4,
-          quantity: 1,
-        }
+        // {
+        //   ingredientId: 3,
+        //   quantity: 1,
+        // },
+        // {
+        //   ingredientId: 4,
+        //   quantity: 1,
+        // }
       ],
       name: "любимая",
       quantity: 1,
@@ -169,10 +168,16 @@ const order = {
     building: "204",
     comment: "",
     flat: "70",
-    id: 1,
+    id: '1',
     name: "ул.Дзержинского, д.204, кв.70",
     street: "Дзержинского",
     userId: "5492bfcb-a8a5-4a83-902e-6d3ab66b9f98",
+  },
+};
+
+const mocks = {
+  $router: {
+    push: jest.fn()
   },
 };
 
@@ -262,28 +267,26 @@ document.body.appendChild(div);
       createPizza(store);
       saveAddress(store);
       wrapper = mount(Cart, {
-        attachTo: document.getElementById('root'), //'#root',
+        attachTo: document.getElementById('root'),
         localVue,
         store,
         stubs,
+        mocks,
       });
       selectSavedAddress(store);
       setAddress(store);
       const options = wrapper.find('.select').findAll('option');
       await options.at(2).setSelected();
       expect(wrapper.find('option:checked').element.value).toBe('1'); 
-      // console.log(wrapper.html());
-      // console.log(wrapper.find('input[name="street"]').element.value);
-      // console.log(store.state.Cart.address.street);
       const addr = wrapper.find('[data-test="new-addresses"]');
       await addr.trigger('click');
       // expect(actions.Orders.newOrder).toHaveBeenCalled();
-      // expect(actions.Orders.newOrder).toHaveBeenCalledWith(
-      //   expect.any(Object), // The Vuex context
-      //   {
-      //     ...order,
-      //   }
-      // );
+      expect(actions.Orders.newOrder).toHaveBeenCalledWith(
+        expect.any(Object), // The Vuex context
+        {
+          ...order,
+        }
+      );
     });
 });
 

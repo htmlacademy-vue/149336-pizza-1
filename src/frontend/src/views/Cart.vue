@@ -188,7 +188,6 @@ export default {
           };
           order.pizzas.push(newPizza);
         });
-      console.log(order);
       this.newOrder(order);
       this.$router.push({ name: "Popup" });
     },

@@ -1,7 +1,8 @@
-{
+[{
   "name": "Вася Пупкин",
   "email": "user@example.com",
   "password": "user@example.com",
   "avatar": "/public/img/users/user.jpg",
-  "phone": "+777 777 777"
-}
+  "phone": "+777 777 777",
+  "id": "5492bfcb-a8a5-4a83-902e-6d3ab66b9f98"
+}]
