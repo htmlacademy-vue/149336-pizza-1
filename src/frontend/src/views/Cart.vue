@@ -113,11 +113,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions("Auth", ["queryAddresses"]),
+    ...mapActions("Auth", ["queryAddresses", "newAddresses"]),
     ...mapActions("Builder", ["resetBuilder"]),
-    ...mapActions("Cart", ["query", "createPizza", "updatePizza"]),
-
-    ...mapActions("Auth", ["newAddresses"]),
     ...mapActions("Orders", ["newOrder"]),
 
     createOrderMethod() {

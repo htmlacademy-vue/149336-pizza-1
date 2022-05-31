@@ -7,21 +7,24 @@
         width="56"
         height="56"
         :alt="pizza.name"
+        data-test="alt"
       />
       <div class="product__text">
-        <h2>{{ pizza.name }}</h2>
+        <h2 data-test="name">{{ pizza.name }}</h2>
         <ul>
-          <li>{{ doughSizeText }}</li>
-          <li>{{ sauceText }}</li>
-          <li>{{ ingridientsText }}</li>
+          <li data-test="doughSizeText">{{ doughSizeText }}</li>
+          <li data-test="sauceText">{{ sauceText }}</li>
+          <li data-test="ingridientsText">{{ ingridientsText }}</li>
         </ul>
       </div>
     </div>
 
-    <p class="order__price" v-if="pizza.quantity > 1">
+    <p class="order__price" v-if="pizza.quantity > 1" data-test="quantity">
       {{ pizza.quantity }} х {{ pizza.totalPricePizza }} ₽
     </p>
-    <p class="order__price" v-else>{{ pizza.totalPricePizza }} ₽</p>
+    <p class="order__price" v-else data-test="price">
+      {{ pizza.totalPricePizza }} ₽
+    </p>
   </li>
 </template>
 

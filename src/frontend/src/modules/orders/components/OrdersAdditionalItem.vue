@@ -5,10 +5,11 @@
       width="20"
       height="30"
       :alt="miscItemInfo[0].name"
+      data-test="img"
     />
     <p>
-      <span>{{ miscItemInfo[0].name }}</span>
-      <b>{{ miscItemInfo[0].sum }} ₽</b>
+      <span data-test="name">{{ miscItemInfo[0].name }}</span>
+      <b data-test="sum">{{ miscItemInfo[0].sum }} ₽</b>
     </p>
   </li>
 </template>

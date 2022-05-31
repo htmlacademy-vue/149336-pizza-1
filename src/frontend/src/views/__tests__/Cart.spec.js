@@ -186,9 +186,9 @@ describe('Cart', () => {
     // Заглушка вместо реального router-view
     const stubs = ['router-view'];
 
-const div = document.createElement('div');
-div.id = 'root';
-document.body.appendChild(div);
+    const div = document.createElement('div');
+    div.id = 'root';
+    document.body.appendChild(div);
 
     // Переменные, которые будут переопределяться заново для каждого теста
     let actions;
@@ -210,9 +210,6 @@ document.body.appendChild(div);
           resetBuilder: jest.fn(),
         },
         Cart: {
-          query: jest.fn(),
-          createPizza: jest.fn(),
-          updatePizza: jest.fn(),
           updateUserRecipient: jest.fn(),
           updateUserAddress: jest.fn(),
           resetUserAddress: jest.fn(),
@@ -280,7 +277,6 @@ document.body.appendChild(div);
       expect(wrapper.find('option:checked').element.value).toBe('1'); 
       const addr = wrapper.find('[data-test="new-addresses"]');
       await addr.trigger('click');
-      // expect(actions.Orders.newOrder).toHaveBeenCalled();
       expect(actions.Orders.newOrder).toHaveBeenCalledWith(
         expect.any(Object), // The Vuex context
         {
@@ -288,18 +284,22 @@ document.body.appendChild(div);
         }
       );
     });
+
+    //проверяем корректность вызова экшена resetBuilder (сброс конструктора пицц)
+    it ('calls resetBuilder action', async () => {
+      authenticateUser(store);
+      createPizza(store);
+      createComponent({ localVue, store, stubs, mocks });
+      const resetBtn = wrapper.find('[data-test="resetBuilder"]');
+      await resetBtn.trigger('click');
+      expect(actions.Builder.resetBuilder).toHaveBeenCalled();
+    });
 });
 
 
 // Список элементов для тестирования
 /*
   + ...mapActions("Builder", ["resetBuilder"]),
-  + ...mapActions("Cart", [
-  +   "query",
-  +   "createPizza",
-  +   "updatePizza",
-  + ]),
-
   +  ...mapActions("Auth", ["queryAddresses", "newAddresses"]),
   +  ...mapActions("Orders", ["newOrder"]),
 */
