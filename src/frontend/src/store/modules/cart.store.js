@@ -367,12 +367,11 @@ export default {
       commit(RESET_PIZZAS);
     },
 
-    updateUserAddress({ commit, rootState }, data) {
+    updateUserAddress({ commit }, data) {
       commit(
         UPDATE_USER_ADDRESS,
         {
           data,
-          rootData: rootState,
         },
         { root: false }
       );

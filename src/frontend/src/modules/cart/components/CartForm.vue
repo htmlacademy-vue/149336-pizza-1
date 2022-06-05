@@ -2,15 +2,20 @@
   <div class="cart-form">
     <label class="cart-form__select">
       <span class="cart-form__label">Получение заказа:</span>
-      <select name="test" class="select" v-model="recipientOrder">
+      <select
+        name="test"
+        class="select"
+        v-model="recipientOrder"
+        data-test="recipient"
+      >
         <option value="myself">Заберу сам</option>
         <option value="new">Новый адрес</option>
         <option
-          v-for="(address, index) in addresses"
-          :key="address.id"
-          :value="address.id"
+          v-for="(addr, index) in addresses"
+          :key="addr.id"
+          :value="addr.id"
         >
-          {{ address.comment || `Адрес ${index + 1}` }}
+          {{ addr.comment || `Адрес ${index + 1}` }}
         </option>
       </select>
     </label>
@@ -29,6 +34,7 @@
           class="input"
           placeholder="+7 999-999-99-99"
           :errorText="errors[0]"
+          data-test="phone"
         />
       </validation-provider>
       <AppInput
@@ -38,9 +44,14 @@
         name="tel"
         class="input"
         placeholder="+7 999-999-99-99"
+        data-test="phone"
       />
     </label>
-    <div class="cart-form__address" v-if="recipientOrder !== 'myself'">
+    <div
+      class="cart-form__address"
+      v-if="recipientOrder !== 'myself'"
+      data-test="address"
+    >
       <span class="cart-form__label" v-if="recipientOrder == 'new'"
         >Новый адрес:</span
       >
@@ -65,6 +76,7 @@
               placeholder="ул.Ленина"
               v-model="streetAddress"
               :errorText="errors[0]"
+              data-test="street"
             />
           </validation-provider>
           <AppInput
@@ -75,6 +87,7 @@
             placeholder=""
             v-model="streetAddress"
             :disabled="savedAddress"
+            data-test="street"
           />
         </label>
       </div>
@@ -94,6 +107,7 @@
               placeholder="100"
               v-model="houseAddress"
               :errorText="errors[0]"
+              data-test="house"
             />
           </validation-provider>
           <AppInput
@@ -104,6 +118,7 @@
             placeholder=""
             v-model="houseAddress"
             :disabled="savedAddress"
+            data-test="house"
           />
         </label>
       </div>
@@ -117,6 +132,7 @@
             placeholder=""
             v-model="apartmentAddress"
             :disabled="savedAddress"
+            data-test="apartment"
           />
         </label>
       </div>
@@ -172,7 +188,7 @@ export default {
           recipient: newRecipient,
         };
         this.updateUserRecipient(payload);
-        if (newRecipient === "new") {
+        if (newRecipient === "new" || newRecipient === "myself") {
           this.resetUserAddress();
         }
         if (newRecipient !== "myself" && newRecipient !== "new") {
@@ -236,7 +252,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Auth", ["changeUserPhone"]),
+    // ...mapActions("Auth", ["changeUserPhone"]),
     ...mapActions("Cart", [
       "updateUserAddress",
       "updateUserRecipient",
