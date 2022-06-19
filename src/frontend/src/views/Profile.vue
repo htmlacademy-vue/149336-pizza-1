@@ -63,8 +63,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import ProfileAddressEdit from "../modules/profile/ProfileAddressEdit.vue";
-import ProfileAddressView from "../modules/profile/ProfileAddressView.vue";
+import ProfileAddressEdit from "../modules/profile/components/ProfileAddressEdit.vue";
+import ProfileAddressView from "../modules/profile/components/ProfileAddressView.vue";
 
 export default {
   name: "Profile",

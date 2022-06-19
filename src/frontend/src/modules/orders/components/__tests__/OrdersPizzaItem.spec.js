@@ -1,4 +1,3 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { SET_ENTITY } from '@/store/mutation-types';
@@ -245,10 +244,7 @@ const getSizes = (store) => {
 };
 
 // Указываем название блока тестов — соответствует названию компонента.
-describe('OrdersPizzaItem', () => {
-  // Заглушка вместо реального router-view
-  const stubs = ['router-view'];
-  
+describe('OrdersPizzaItem', () => {  
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
@@ -310,7 +306,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     expect(wrapper.exists()).toBeTruthy();
   });
 
@@ -321,7 +317,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let alt = wrapper.find('[data-test="alt"]');
     expect(alt.attributes('alt')).toBe(propsData.pizza.name);
   });
@@ -333,7 +329,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let name = wrapper.find('[data-test="name"]');
     expect(name.text()).toBe(propsData.pizza.name);
   });
@@ -345,7 +341,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let dough = wrapper.find('[data-test="doughSizeText"]');
     expect(dough.text()).toBe('32 см, на тонком тесте');
   });
@@ -357,7 +353,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let sauce = wrapper.find('[data-test="sauceText"]');
     expect(sauce.text()).toBe('Соус: сливочный');
   });
@@ -369,7 +365,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let ingredients = wrapper.find('[data-test="ingridientsText"]');
     expect(ingredients.text()).toBe('Начинка: салями, томаты');
   });
@@ -381,7 +377,7 @@ describe('OrdersPizzaItem', () => {
     getDough(store);
     getIngridients(store);
     getSauces(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let price = wrapper.find('[data-test="price"]');
     expect(price.text()).toContain(`${propsData.pizza.totalPricePizza} ₽`);
   });
@@ -424,7 +420,7 @@ describe('OrdersPizzaItem', () => {
         totalPricePizza: 854,
       }
     };
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let quantity = wrapper.find('[data-test="quantity"]');
     expect(quantity.text()).toContain(`${propsData.pizza.quantity} х ${propsData.pizza.totalPricePizza} ₽`);
   });

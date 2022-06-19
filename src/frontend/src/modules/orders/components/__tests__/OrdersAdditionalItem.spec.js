@@ -1,4 +1,3 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { SET_ENTITY } from '@/store/mutation-types';

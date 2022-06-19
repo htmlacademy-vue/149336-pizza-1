@@ -1,23 +1,10 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
-import { mount /*, createLocalVue*/ } from '@vue/test-utils';
-// import Vuex from 'vuex';
-// import { generateMockStore } from '@/store/mocks';
+import { mount } from '@vue/test-utils';
 // Импортируем сам компонент.
 import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
 
-// Создаём локальный тестовый экземпляр Vue.
-// const localVue = createLocalVue();
-// Добавляем в него Vuex.
-// localVue.use(Vuex);
-
 // Указываем название блока тестов — соответствует названию компонента.
 describe('CartAdditionalItem', () => {
-  // Заглушка вместо реального router-view
-  // const stubs = ['router-view'];
-
   // Переменные, которые будут переопределяться заново для каждого теста
-  // let actions;
-  // let store;
   let wrapper;
   // Определяем входные параметры по умолчанию и заглушки.
   const propsData = {

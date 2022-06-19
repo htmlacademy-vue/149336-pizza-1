@@ -1,18 +1,26 @@
 <template>
   <div class="sheet address-form">
     <div class="address-form__header">
-      <b v-if="address.name">{{ address.name }}</b>
-      <b v-else>Адрес №{{ address.id }}.</b>
+      <b v-if="address.name" data-test="name">{{ address.name }}</b>
+      <b v-else data-test="alternate">Адрес №{{ address.id }}.</b>
       <div class="address-form__edit">
-        <button type="button" class="icon" @click="putAddress" title="Изменить">
+        <button
+          type="button"
+          class="icon"
+          @click="putAddress"
+          title="Изменить"
+          data-test="put"
+        >
           <span class="visually-hidden">Изменить адрес</span>
         </button>
       </div>
     </div>
-    <p>
+    <p data-test="street">
       {{ address.street }}, д. {{ address.building }}, кв. {{ address.flat }}
     </p>
-    <small v-if="address.comment">{{ address.comment }}</small>
+    <small v-if="address.comment" data-test="comment">
+      {{ address.comment }}
+    </small>
   </div>
 </template>
 

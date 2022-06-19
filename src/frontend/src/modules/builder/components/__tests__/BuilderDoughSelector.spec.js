@@ -1,7 +1,6 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import { SET_ENTITY } from '@/store/mutation-types';
+import { SET_ENTITY, CHANGE_DOUGH } from '@/store/mutation-types';
 import { generateMockStore } from '@/store/mocks';
 // Импортируем сам компонент.
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
@@ -15,10 +14,8 @@ const dough = "light";
 
 const setDough = (store) => {
   store.commit(
-    SET_ENTITY,
+    "Builder/" + CHANGE_DOUGH,
     {
-      module: "Builder",
-      entity: "dough",
       value: dough,
     },
   );
@@ -58,9 +55,6 @@ const getDough = (store) => {
 
 // Указываем название блока тестов — соответствует названию компонента.
 describe('BuilderDoughSelector', () => {
-  // Заглушка вместо реального router-view
-  const stubs = ['router-view'];
-
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
@@ -85,17 +79,35 @@ describe('BuilderDoughSelector', () => {
 
   //проверяем, что компонент рендерится
   it ('is rendered', () => {
-    createComponent({ localVue, store, stubs });
+    createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  //проверяем, что
-  it ('...', () => {
+  //проверяем, что компонент выводит название теста
+  it ('It displays the name of the test', () => {
     setDough(store);
     getDough(store);
-    console.log(store.state.Builder.doughs[0].isChecked);
-    createComponent({ localVue, store, stubs });
-    console.log(wrapper.html());
+    createComponent({ localVue, store });
+    let name = wrapper.find('[data-test="name"]:first-of-type');
+    expect(name.text()).toBe(doughs[0].name);
+  });
+
+  //проверяем, что компонент выводит описание теста
+  it ('It displays the description of the test', () => {
+    setDough(store);
+    getDough(store);
+    createComponent({ localVue, store });
+    let description = wrapper.find('[data-test="description"]:first-of-type');
+    expect(description.text()).toBe(doughs[0].description);
+  });
+
+  //проверяем, что в компоненте выводится правильное количество видов теста
+  it ('The correct number of test types is displayed in the component', () => {
+    setDough(store);
+    getDough(store);
+    createComponent({ localVue, store });
+    let radioBtns = wrapper.findAll('[data-test="radio"]');
+    expect(radioBtns.length).toBe(doughs.length);
   });
 });
 

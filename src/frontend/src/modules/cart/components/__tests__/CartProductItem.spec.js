@@ -1,4 +1,3 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import { generateMockStore } from '@/store/mocks';
@@ -18,9 +17,6 @@ const mocks = {
 
 // Указываем название блока тестов — соответствует названию компонента.
 describe('CartProductItem', () => {
-  // Заглушка вместо реального router-view
-  const stubs = ['router-view'];
-
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
@@ -220,7 +216,7 @@ describe('CartProductItem', () => {
 
   //проверяем, что компонент рендерится
   it ('is rendered', () => {
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     expect(wrapper.exists()).toBeTruthy();
   });
 
@@ -275,7 +271,7 @@ describe('CartProductItem', () => {
 
   //проверяем, что компонент вызывает экшн изменения пиццы
   it('It calls the pizza change action', async () => {
-    createComponent({ localVue, store, stubs, propsData, mocks });
+    createComponent({ localVue, store, propsData, mocks });
     let btn = wrapper.find('[data-test="change"]');
     await btn.trigger('click');
     expect(actions.Cart.updatePizza).toHaveBeenCalledWith(
@@ -288,7 +284,7 @@ describe('CartProductItem', () => {
 
   //проверяем, что компонент вызывает переход на страницу
   it('It causes a transition to the page', async () => {
-    createComponent({ localVue, store, stubs, propsData, mocks });
+    createComponent({ localVue, store, propsData, mocks });
     let btn = wrapper.find('[data-test="change"]');
     await btn.trigger('click');
     expect(mocks.$router.push).toHaveBeenCalled();

@@ -63,38 +63,38 @@ describe('Login', () => {
       await wrapper.find('form').trigger('submit');
       expect(dispatch).toHaveBeenCalled();
       expect(routerPush).toHaveBeenCalledWith('/');
-    });
+  });
 
-    it(
-      'disabled button, when invalid form',
-      async () => {
-        createComponent({ localVue, mocks, stubs });
-        const emailInput = wrapper
-          .find('[data-test="email-component"]')
-          .find('input');
-        emailInput.setValue('user');
-        await wrapper.vm.$nextTick();
-        await emailInput.trigger('input');
-        await flushPromises();
-        expect(wrapper.find('button[type="submit"]').attributes().disabled).toBeUndefined();
-      }
-    );
+  it(
+    'disabled button, when invalid form',
+    async () => {
+      createComponent({ localVue, mocks, stubs });
+      const emailInput = wrapper
+        .find('[data-test="email-component"]')
+        .find('input');
+      emailInput.setValue('user');
+      await wrapper.vm.$nextTick();
+      await emailInput.trigger('input');
+      await flushPromises();
+      expect(wrapper.find('button[type="submit"]').attributes().disabled).toBeUndefined();
+    }
+  );
 
-    it(
-      'show eror message, when invalid form',
-      async () => {
-        createComponent({ localVue, mocks, stubs });
-        const emailInput = wrapper
-          .find('[data-test="email-component"]')
-          .find('input');
-        emailInput.setValue('user');
-        await wrapper.vm.$nextTick();
-        await emailInput.trigger('input');
-        await flushPromises();
-        const errorSpan = wrapper.find('.text-field__text');
-        expect(errorSpan.text()).toBe('Поле E-mail должно быть действительным электронным адресом');
-      }
-    );
+  it(
+    'show eror message, when invalid form',
+    async () => {
+      createComponent({ localVue, mocks, stubs });
+      const emailInput = wrapper
+        .find('[data-test="email-component"]')
+        .find('input');
+      emailInput.setValue('user');
+      await wrapper.vm.$nextTick();
+      await emailInput.trigger('input');
+      await flushPromises();
+      const errorSpan = wrapper.find('.text-field__text');
+      expect(errorSpan.text()).toBe('Поле E-mail должно быть действительным электронным адресом');
+    }
+  );
 });
 
 // Список элементов для тестирования

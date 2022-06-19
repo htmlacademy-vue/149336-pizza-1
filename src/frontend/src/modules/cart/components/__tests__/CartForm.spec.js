@@ -1,4 +1,3 @@
-// Карточка дополнительных товаров — это ... компонент. Монтируем её с помощью ... .
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import {
@@ -94,9 +93,6 @@ const updateAddress = (store) => {
 
 // Указываем название блока тестов — соответствует названию компонента.
 describe('CartForm', () => {
-  // Заглушка вместо реального router-view
-  const stubs = ['router-view'];
-
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
@@ -131,14 +127,14 @@ describe('CartForm', () => {
 
   //проверяем, что компонент рендерится
   it ('is rendered', () => {
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   //проверяем, что компонент устанавливает начальное значение модели
   it ('It sets the initial model value', () => {
     selectMyself(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     expect(wrapper.find('[data-test="recipient"]').element.value).toBe('myself');
   });
 
@@ -146,7 +142,7 @@ describe('CartForm', () => {
   it ('It sets the value of the option', () => {
     saveAddress(store);
     updateAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let saved = wrapper.find('[data-test="recipient"] option[value="1"]');
     expect(saved.element.value).toBe('1');
   });
@@ -157,7 +153,7 @@ describe('CartForm', () => {
   address`, () => {
     saveAddress(store);
     selectSavedAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let fieldStreet = wrapper.find('[data-test="street"] input');
     let fieldHouse = wrapper.find('[data-test="house"] input');
     let fieldFlat = wrapper.find('[data-test="apartment"] input');
@@ -172,7 +168,7 @@ describe('CartForm', () => {
   new address`, () => {
     saveAddress(store);
     selectNewAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let fieldStreet = wrapper.find('[data-test="street"] input');
     let fieldHouse = wrapper.find('[data-test="house"] input');
     let fieldFlat = wrapper.find('[data-test="apartment"] input');
@@ -188,7 +184,7 @@ describe('CartForm', () => {
     saveAddress(store);
     selectNewAddress(store);
     updateAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let form = wrapper.find('[data-test="address"]');
     expect(form).not.toBeNull();
   });
@@ -198,7 +194,7 @@ describe('CartForm', () => {
     saveAddress(store);
     selectNewAddress(store);
     updateAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let street = wrapper.find('[data-test="street"] input');
     expect(street.element.value).toBe(newAddress.street);
   });
@@ -208,7 +204,7 @@ describe('CartForm', () => {
     saveAddress(store);
     selectNewAddress(store);
     updateAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let house = wrapper.find('[data-test="house"] input');
     expect(house.element.value).toBe(newAddress.house);
   });
@@ -218,7 +214,7 @@ describe('CartForm', () => {
     saveAddress(store);
     selectNewAddress(store);
     updateAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let apartment = wrapper.find('[data-test="apartment"] input');
     expect(apartment.element.value).toBe(newAddress.apartment);
   });
@@ -226,7 +222,7 @@ describe('CartForm', () => {
   //проверяем, что компонент вызывает экшн обновления телефона
   it ('It calls the phone change action', async () => {
     selectMyself(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let input = wrapper.find('[data-test="phone"] input');
     input.element.value = '+7 918 436-22-02';
     await input.trigger('input');
@@ -242,7 +238,7 @@ describe('CartForm', () => {
   it ('It calls the reset address action', async () => {
     saveAddress(store);
     selectSavedAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let select = wrapper.find('[data-test="recipient"]');
     const options = select.findAll('option');
     await options.at(0).setSelected();
@@ -261,7 +257,7 @@ describe('CartForm', () => {
   updateUserAddress action`, async () => {
     saveAddress(store);
     selectNewAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let street = wrapper.find('[data-test="street"] input');
     street.element.value = 'Гостагаевская';
     await street.trigger('input');
@@ -279,7 +275,7 @@ describe('CartForm', () => {
   updateUserRecipient action`, async () => {
     saveAddress(store);
     selectNewAddress(store);
-    createComponent({ localVue, store, stubs, propsData });
+    createComponent({ localVue, store, propsData });
     let select = wrapper.find('[data-test="recipient"]');
     const options = select.findAll('option');
     await options.at(0).setSelected();

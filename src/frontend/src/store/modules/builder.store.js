@@ -315,7 +315,6 @@ export default {
         CHANGE_SIZE,
         {
           value: data.value,
-          //multiplier: data.multiplier,
         },
         { root: false }
       );

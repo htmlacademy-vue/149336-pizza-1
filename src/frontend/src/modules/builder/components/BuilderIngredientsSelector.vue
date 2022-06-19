@@ -12,6 +12,7 @@
           v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
           @change="changeSouceMethod($event, item.price)"
+          data-test="sauce"
         >
           <span>{{ item.name }}</span>
         </RadioButton>
@@ -35,6 +36,7 @@
               v-model="item.count"
               :parentClass="`ingridients__counter`"
               @input="changeCounterMethod($event, item.id)"
+              data-test="counter"
             />
           </li>
         </ul>

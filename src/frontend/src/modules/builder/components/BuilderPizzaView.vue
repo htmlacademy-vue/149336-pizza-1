@@ -8,6 +8,7 @@
         :value="namePizza"
         placeholder="Введите название пиццы"
         @input="updatePizzaName($event.target.value)"
+        data-test="name"
       />
     </label>
 
@@ -25,6 +26,7 @@
               },
               `pizza__filling--${item.name}`,
             ]"
+            data-test="fillings"
           ></div>
         </transition-group>
       </div>

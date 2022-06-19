@@ -10,9 +10,10 @@
         v-model="checkedDough"
         :classRadioBtn="`dough__input dough__input--${item.type}`"
         :classRadioInput="`visually-hidden`"
+        data-test="radio"
       >
-        <b>{{ item.name }}</b>
-        <span>{{ item.description }}</span>
+        <b data-test="name">{{ item.name }}</b>
+        <span data-test="description">{{ item.description }}</span>
       </RadioButton>
     </div>
   </div>

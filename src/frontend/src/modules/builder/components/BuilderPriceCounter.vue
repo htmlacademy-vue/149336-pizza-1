@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ getTotalPrice }} ₽</p>
+    <p data-test="price">Итого: {{ getTotalPrice || 0 }} ₽</p>
     <button
       v-if="!composition.id"
       type="button"
@@ -8,6 +8,7 @@
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
       @click="createPizzaMethod"
+      data-test="create"
     >
       Готовьте!
     </button>
@@ -18,6 +19,7 @@
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
       @click="editPizzaMethod"
+      data-test="edit"
     >
       Сохранить
     </button>
@@ -49,8 +51,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Auth", ["queryAddresses"]),
-    ...mapActions("Cart", ["query", "createPizza", "editPizza"]),
+    ...mapActions("Cart", ["createPizza", "editPizza"]),
 
     createPizzaMethod() {
       this.createPizza();

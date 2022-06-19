@@ -122,7 +122,7 @@ export default {
               ? "томатный"
               : "сливочный";
           item.fillings = fillings.slice(0, -2);
-          item.price = payload.rootGetters["Builder/getTotalPrice"];
+          item.price = payload.getTotalPrice;
         });
     },
     [REPEAT_PIZZA]: (state, payload) => {
@@ -335,7 +335,8 @@ export default {
         {
           // rootData: rootState,
           composition: rootState.Builder.composition,
-          rootGetters: rootGetters,
+          // rootGetters: rootGetters,
+          getTotalPrice: rootGetters["Builder/getTotalPrice"],
         },
         { root: false }
       );
