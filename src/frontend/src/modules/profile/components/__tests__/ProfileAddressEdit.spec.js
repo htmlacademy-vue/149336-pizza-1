@@ -99,23 +99,23 @@ describe('ProfileAddressEdit', () => {
   it (`It adds the disabled attribute to the submit button of the incorrectly
   completed form`, async () => {
     // /** 1 */
-    // let propsData = {
-    //   adr: {
-    //     id: null,
-    //     name: "Дом2",
-    //     street: "Хворостянского",
-    //     building: "",
-    //     flat: "",
-    //     comment: "",
-    //     userId: "5492bfcb-a8a5-4a83-902e-6d3ab66b9f98"
-    //   }
-    // };
-    // authenticateUser(store);
-    // createComponent({ localVue, store, propsData });
-    // console.log(wrapper.html());
-    // console.log(wrapper.find('[data-test="name"] input').element.value);
-    // let submit = wrapper.find('[data-test="save"]');
-    // expect(submit.attributes('disabled')).toBe('disabled');
+    let propsData = {
+      adr: {
+        id: null,
+        name: "Дом2",
+        street: "Хворостянского",
+        building: "",
+        flat: "",
+        comment: "",
+        userId: "5492bfcb-a8a5-4a83-902e-6d3ab66b9f98"
+      }
+    };
+    authenticateUser(store);
+    createComponent({ localVue, store, propsData });
+    console.log(wrapper.html());
+    console.log(wrapper.find('[data-test="name"] input').element.value);
+    let submit = wrapper.find('[data-test="save"]');
+    expect(submit.attributes('disabled')).toBe('disabled');
 
     // /** 2 */
     // authenticateUser(store);
