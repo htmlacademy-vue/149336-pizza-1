@@ -23,7 +23,9 @@
         </div>
         <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
         <div class="popup__button">
-          <a href="" class="button" @click.prevent="leave" data-test="ok">Отлично, я жду!</a>
+          <a href="" class="button" @click.prevent="leave" data-test="ok"
+            >Отлично, я жду!</a
+          >
         </div>
       </div>
     </transition>
