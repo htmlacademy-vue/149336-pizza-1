@@ -1,10 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import {
-  // UPDATE_RECIPIENT,
-  SET_ENTITY,
-  // UPDATE_USER_ADDRESS
-} from '@/store/mutation-types';
+import { SET_ENTITY } from '@/store/mutation-types';
 import { generateMockStore } from '@/store/mocks';
 import { authenticateUser } from '@/common/helpers';
 // Импортируем сам компонент.
@@ -67,40 +63,51 @@ describe('Profile', () => {
     saveAddress(store);
     createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();
-    // console.log(wrapper.html());
   });
 
   //проверяем, что компонент выводит изображение пользователя
-  it (`It renders the user's image`, () => {
-    authenticateUser(store);
-    createComponent({ localVue, store });
-  });
+//   it (`It renders the user's image`, () => {
+//     authenticateUser(store);
+//     createComponent({ localVue, store });
+//     console.log(wrapper.html());
+//   });
 
   // //проверяем, что компонент выводит имя пользователя
   it (`It renders the user's name`, () => {
     authenticateUser(store);
     createComponent({ localVue, store });
-    // console.log(wrapper.html());
+    let name = wrapper.find('[data-test="name"]');
+    expect(name.text()).toBe('Вася Пупкин');
   });
 
   // //проверяем, что компонент выводит телефон пользователя
   it (`It renders the user's phone`, () => {
     authenticateUser(store);
     createComponent({ localVue, store });
+    let phone = wrapper.find('[data-test="phone"]');
+    expect(phone.text()).toBe('+777 777 777');
   });
 
   // //проверяем, что компонент выводит список сохраненных адресов
   it (`It displays a list of saved addresses`, () => {
     authenticateUser(store);
+    saveAddress(store);
     createComponent({ localVue, store });
+    let addresses = wrapper.findAll('[data-test="address"]');
+    expect(addresses.length).toBe(savedAddresses.length);
   });
 
   // //проверяем, что компонент при клике по "Добавить новый адрес" показывает
   // //форму добавления адреса
   it (`It when clicking on "Add new address" shows the form for adding an 
-  address`, () => {
+  address`, async () => {
     authenticateUser(store);
     createComponent({ localVue, store });
+    let btn = wrapper.find('[data-test="add"]');
+    await btn.trigger('click');
+    await wrapper.vm.$nextTick();
+    let form = wrapper.find('[data-test="form"]');
+    expect(form).not.toBeUndefined();
   });
 });
 
