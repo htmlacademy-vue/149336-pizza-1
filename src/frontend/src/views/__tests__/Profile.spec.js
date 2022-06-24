@@ -67,41 +67,41 @@ describe('Profile', () => {
     saveAddress(store);
     createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();
-    console.log(wrapper.html());
+    // console.log(wrapper.html());
   });
 
   //проверяем, что компонент выводит изображение пользователя
-  // it (`It renders the user's image`, () => {
-  //   authenticateUser(store);
-  //   createComponent({ localVue, store });
-  // });
+  it (`It renders the user's image`, () => {
+    authenticateUser(store);
+    createComponent({ localVue, store });
+  });
 
   // //проверяем, что компонент выводит имя пользователя
-  // it (`It renders the user's name`, () => {
-  //   authenticateUser(store);
-  //   createComponent({ localVue, store });
-  //   console.log(wrapper.html());
-  // });
+  it (`It renders the user's name`, () => {
+    authenticateUser(store);
+    createComponent({ localVue, store });
+    // console.log(wrapper.html());
+  });
 
   // //проверяем, что компонент выводит телефон пользователя
-  // it (`It renders the user's phone`, () => {
-  //   authenticateUser(store);
-  //   createComponent({ localVue, store });
-  // });
+  it (`It renders the user's phone`, () => {
+    authenticateUser(store);
+    createComponent({ localVue, store });
+  });
 
   // //проверяем, что компонент выводит список сохраненных адресов
-  // it (`It displays a list of saved addresses`, () => {
-  //   authenticateUser(store);
-  //   createComponent({ localVue, store });
-  // });
+  it (`It displays a list of saved addresses`, () => {
+    authenticateUser(store);
+    createComponent({ localVue, store });
+  });
 
   // //проверяем, что компонент при клике по "Добавить новый адрес" показывает
   // //форму добавления адреса
-  // it (`It when clicking on "Add new address" shows the form for adding an 
-  // address`, () => {
-  //   authenticateUser(store);
-  //   createComponent({ localVue, store });
-  // });
+  it (`It when clicking on "Add new address" shows the form for adding an 
+  address`, () => {
+    authenticateUser(store);
+    createComponent({ localVue, store });
+  });
 });
 
 // Список элементов для тестирования

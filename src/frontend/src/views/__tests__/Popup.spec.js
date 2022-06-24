@@ -60,6 +60,7 @@ describe('Popup', () => {
     console.log(wrapper.html());
     let close = wrapper.find('[data-test="close"]');
     await close.trigger('click');
+    await close.trigger('animationend');
     expect(actions.Builder.resetBuilder).toHaveBeenCalled();
     expect(actions.Cart.resetPizzas).toHaveBeenCalled();
   });

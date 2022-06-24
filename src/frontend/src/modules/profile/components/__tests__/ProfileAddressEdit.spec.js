@@ -4,6 +4,7 @@ import { SET_ENTITY } from '@/store/mutation-types';
 import { authenticateUser } from '@/common/helpers';
 import { generateMockStore } from '@/store/mocks';
 import AppInput from '@/common/components/AppInput';
+import flushPromises from 'flush-promises';
 // Импортируем сам компонент.
 import ProfileAddressEdit from "@/modules/profile/components/ProfileAddressEdit";
 
@@ -98,40 +99,23 @@ describe('ProfileAddressEdit', () => {
   //некорректно заполненной формы
   it (`It adds the disabled attribute to the submit button of the incorrectly
   completed form`, async () => {
-    // /** 1 */
-    let propsData = {
-      adr: {
-        id: null,
-        name: "Дом2",
-        street: "Хворостянского",
-        building: "",
-        flat: "",
-        comment: "",
-        userId: "5492bfcb-a8a5-4a83-902e-6d3ab66b9f98"
-      }
-    };
     authenticateUser(store);
-    createComponent({ localVue, store, propsData });
-    console.log(wrapper.html());
-    console.log(wrapper.find('[data-test="name"] input').element.value);
+    createComponent({ localVue, store });
+    let name = wrapper.find('[data-test="name"] input');
+    name.setValue('Дом2');
+    await wrapper.vm.$nextTick();
+    await name.trigger('input');
+    let street = wrapper.find('[data-test="street"] input');
+    street.setValue('Хворостянского');
+    await wrapper.vm.$nextTick();
+    await street.trigger('input');
+    let flat = wrapper.find('[data-test="flat"] input');
+    flat.setValue('8');
+    await wrapper.vm.$nextTick();
+    await flat.trigger('input');
     let submit = wrapper.find('[data-test="save"]');
-    expect(submit.attributes('disabled')).toBe('disabled');
-
-    // /** 2 */
-    // authenticateUser(store);
-    // createComponent({ localVue, store });
-    // let name = wrapper.find('[data-test="name"] input');
-    // name.element.value = 'Дом2';
-    // await name.trigger('input');
-    // let street = wrapper.find('[data-test="street"] input');
-    // street.element.value = 'Хворостянского';
-    // await street.trigger('input');
-    // let flat = wrapper.find('[data-test="flat"] input');
-    // flat.element.value = '8';
-    // await flat.trigger('input');
-    // let submit = wrapper.find('[data-test="save"]');
-    // console.log(submit.html());
-    // expect(submit.attributes('disabled')).toBe('disabled');
+    await flushPromises();
+    expect(submit.attributes().disabled).toBeUndefined();
   });
 
   //проверяем, что компонент вызывает экшн создания адреса newAddrresses
