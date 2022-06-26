@@ -48,7 +48,11 @@ describe('Profile', () => {
   // Перед каждым тестом заменяем хранилище на новое,
   // а также его действия свежими jest-функциями.
   beforeEach(() => {
-    actions = {};
+    actions = {
+        Auth: {
+            queryAddresses: jest.fn(),
+        },
+    };
     store = generateMockStore(actions);
   });
 
@@ -65,14 +69,7 @@ describe('Profile', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  //проверяем, что компонент выводит изображение пользователя
-//   it (`It renders the user's image`, () => {
-//     authenticateUser(store);
-//     createComponent({ localVue, store });
-//     console.log(wrapper.html());
-//   });
-
-  // //проверяем, что компонент выводит имя пользователя
+  //проверяем, что компонент выводит имя пользователя
   it (`It renders the user's name`, () => {
     authenticateUser(store);
     createComponent({ localVue, store });
@@ -80,7 +77,7 @@ describe('Profile', () => {
     expect(name.text()).toBe('Вася Пупкин');
   });
 
-  // //проверяем, что компонент выводит телефон пользователя
+  //проверяем, что компонент выводит телефон пользователя
   it (`It renders the user's phone`, () => {
     authenticateUser(store);
     createComponent({ localVue, store });
@@ -88,7 +85,7 @@ describe('Profile', () => {
     expect(phone.text()).toBe('+777 777 777');
   });
 
-  // //проверяем, что компонент выводит список сохраненных адресов
+  //проверяем, что компонент выводит список сохраненных адресов
   it (`It displays a list of saved addresses`, () => {
     authenticateUser(store);
     saveAddress(store);
@@ -97,8 +94,8 @@ describe('Profile', () => {
     expect(addresses.length).toBe(savedAddresses.length);
   });
 
-  // //проверяем, что компонент при клике по "Добавить новый адрес" показывает
-  // //форму добавления адреса
+  //проверяем, что компонент при клике по "Добавить новый адрес" показывает
+  //форму добавления адреса
   it (`It when clicking on "Add new address" shows the form for adding an 
   address`, async () => {
     authenticateUser(store);

@@ -1,6 +1,6 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import { SET_ENTITY, CREATE_PIZZA, EDIT_PIZZA } from '@/store/mutation-types';
+import { SET_ENTITY, CREATE_PIZZA } from '@/store/mutation-types';
 import { generateMockStore } from '@/store/mocks';
 import { authenticateUser } from '@/common/helpers';
 // Импортируем сам компонент.
@@ -188,7 +188,7 @@ const createPizza = (store) => {
 
 const editPizza = (store) => {
   store.commit(
-    'Cart/' + CREATE_PIZZA, //EDIT_PIZZA , UPDATE_PIZZA, CREATE_PIZZA
+    'Cart/' + CREATE_PIZZA,
     {
       composition: pizza,
       getTotalPrice: totalPrice,

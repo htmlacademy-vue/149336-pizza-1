@@ -1,10 +1,5 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-// import {
-//   UPDATE_RECIPIENT,
-//   SET_ENTITY,
-//   UPDATE_USER_ADDRESS
-// } from '@/store/mutation-types';
 import { generateMockStore } from '@/store/mocks';
 import { authenticateUser } from '@/common/helpers';
 // Импортируем сам компонент.
@@ -14,6 +9,12 @@ import Popup from "@/views/Popup";
 const localVue = createLocalVue();
 // Добавляем в него Vuex.
 localVue.use(Vuex);
+
+const mocks = {
+  $router: {
+    push: jest.fn()
+  },
+};
 
 describe('Popup', () => {
   // Переменные, которые будут переопределяться заново для каждого теста
@@ -56,8 +57,7 @@ describe('Popup', () => {
   it (`It calls the resetBuilder resetPizzas actions when the popup
   closes`, async () => {
     authenticateUser(store);
-    createComponent({ localVue, store });
-    console.log(wrapper.html());
+    createComponent({ localVue, store, mocks, stubs: { transition:false } });
     let close = wrapper.find('[data-test="close"]');
     await close.trigger('click');
     await close.trigger('animationend');
