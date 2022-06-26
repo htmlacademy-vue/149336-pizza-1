@@ -15,7 +15,7 @@
       v-on:after-leave="afterLeave"
     >
       <div class="popup">
-        <a href="" @click.prevent="leave" class="close">
+        <a href="" @click.prevent="leave" class="close" data-test="close">
           <span class="visually-hidden">Закрыть попап</span>
         </a>
         <div class="popup__title">
@@ -23,7 +23,9 @@
         </div>
         <p>Мы начали готовить Ваш заказ, скоро привезём его вам ;)</p>
         <div class="popup__button">
-          <a href="" class="button" @click.prevent="leave">Отлично, я жду!</a>
+          <a href="" class="button" @click.prevent="leave" data-test="ok"
+            >Отлично, я жду!</a
+          >
         </div>
       </div>
     </transition>
@@ -112,7 +114,10 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/layout/popup.scss";
 @import "~@/assets/scss/blocks/close.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .wrapper {
   position: fixed;

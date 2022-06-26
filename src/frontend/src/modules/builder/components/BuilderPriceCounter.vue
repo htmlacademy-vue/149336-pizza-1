@@ -1,6 +1,6 @@
 <template>
   <div class="content__result">
-    <p>Итого: {{ totalPrice }} ₽</p>
+    <p data-test="price">Итого: {{ getTotalPrice || 0 }} ₽</p>
     <button
       v-if="!composition.id"
       type="button"
@@ -8,6 +8,7 @@
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
       @click="createPizzaMethod"
+      data-test="create"
     >
       Готовьте!
     </button>
@@ -18,6 +19,7 @@
       :class="{ 'button--disabled': isEmptyNamePizza }"
       :disabled="isEmptyNamePizza"
       @click="editPizzaMethod"
+      data-test="edit"
     >
       Сохранить
     </button>
@@ -25,19 +27,23 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "BuilderPriceCounter",
   computed: {
-    ...mapGetters({
-      namePizza: "Builder/namePizza",
-      pizzaFilling: "Builder/pizzaFilling",
+    ...mapState("Auth", {
+      isAuthenticated: (state) => state.isAuthenticated,
     }),
 
     ...mapState("Builder", {
       composition: (state) => state.composition,
-      totalPrice: (state) => state.composition.totalPrice,
+      namePizza: (state) => state.composition.namePizza,
+      pizzaFilling: (state) => state.composition.pizzaFilling,
+    }),
+
+    ...mapGetters({
+      getTotalPrice: "Builder/getTotalPrice",
     }),
 
     isEmptyNamePizza() {
@@ -45,12 +51,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Auth", ["queryAddresses"]),
-    ...mapActions("Cart", ["query", "createPizza", "editPizza"]),
+    ...mapActions("Cart", ["createPizza", "editPizza"]),
 
     createPizzaMethod() {
       this.createPizza();
-      this.queryAddresses();
       this.$router.push({ name: "Cart" });
     },
 
@@ -64,4 +68,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/layout/content.scss";
+@import "~@/assets/scss/blocks/button.scss";
 </style>

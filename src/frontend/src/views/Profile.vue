@@ -24,10 +24,10 @@
         />
       </picture>
       <div class="user__name">
-        <span>{{ user.name }}</span>
+        <span data-test="name">{{ user.name }}</span>
       </div>
       <p class="user__phone">
-        Контактный телефон: <span>{{ user.phone }}</span>
+        Контактный телефон: <span data-test="phone">{{ user.phone }}</span>
       </p>
     </div>
 
@@ -38,10 +38,11 @@
         :key="address.id"
         :address="address"
         @putAddress="putAddress(address)"
+        data-test="address"
       />
     </div>
 
-    <div class="layout__address" v-if="visibleForm">
+    <div class="layout__address" v-if="visibleForm" data-test="form">
       <profile-address-edit
         :adr="editableAddress"
         @resetAddress="resetAddress"
@@ -54,6 +55,7 @@
         type="button"
         class="button button--border"
         @click="visibleForm = !visibleForm"
+        data-test="add"
       >
         Добавить новый адрес
       </button>
@@ -63,8 +65,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import ProfileAddressEdit from "../modules/profile/ProfileAddressEdit.vue";
-import ProfileAddressView from "../modules/profile/ProfileAddressView.vue";
+import ProfileAddressEdit from "../modules/profile/components/ProfileAddressEdit.vue";
+import ProfileAddressView from "../modules/profile/components/ProfileAddressView.vue";
 
 export default {
   name: "Profile",
@@ -125,6 +127,9 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/user.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
+@import "~@/assets/scss/layout/layout.scss";
 
 .layout__content {
   .layout__content {

@@ -10,9 +10,10 @@
         v-model="checkedDough"
         :classRadioBtn="`dough__input dough__input--${item.type}`"
         :classRadioInput="`visually-hidden`"
+        data-test="radio"
       >
-        <b>{{ item.name }}</b>
-        <span>{{ item.description }}</span>
+        <b data-test="name">{{ item.name }}</b>
+        <span data-test="description">{{ item.description }}</span>
       </RadioButton>
     </div>
   </div>
@@ -43,17 +44,12 @@ export default {
           value: newDough,
         };
         this.changeDough(payload);
-        this.changeTotalPrice();
         this.switchClassPizza();
       },
     },
   },
   methods: {
-    ...mapActions("Builder", [
-      "changeDough",
-      "changeTotalPrice",
-      "switchClassPizza",
-    ]),
+    ...mapActions("Builder", ["changeDough", "switchClassPizza"]),
 
     changeDoughMethod(newDough, newPrice) {
       let payload = {
@@ -61,7 +57,6 @@ export default {
         price: newPrice,
       };
       this.changeDough(payload);
-      this.changeTotalPrice();
       this.switchClassPizza();
     },
   },

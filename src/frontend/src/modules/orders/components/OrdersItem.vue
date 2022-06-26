@@ -14,12 +14,18 @@
           type="button"
           class="button button--border"
           @click="deleteOrderMethod(order)"
+          data-test="delete"
         >
           Удалить
         </button>
       </div>
       <div class="order__button">
-        <button type="button" class="button" @click="repeatPizzaMethod()">
+        <button
+          type="button"
+          class="button"
+          @click="repeatPizzaMethod()"
+          data-test="repeat"
+        >
           Повторить
         </button>
       </div>
@@ -112,7 +118,7 @@ export default {
   watch: {},
   mounted() {},
   methods: {
-    ...mapActions("Orders", ["queryOrders", "newOrder", "deleteOrder"]),
+    ...mapActions("Orders", ["deleteOrder"]),
     ...mapActions("Cart", ["repeatPizza"]),
 
     deleteOrderMethod(order) {
@@ -130,4 +136,5 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/order.scss";
+@import "~@/assets/scss/blocks/button.scss";
 </style>

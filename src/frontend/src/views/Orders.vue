@@ -41,6 +41,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/order.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .layout__content {
   .layout__content {

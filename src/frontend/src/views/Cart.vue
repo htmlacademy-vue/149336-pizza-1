@@ -21,7 +21,7 @@
           </ul>
 
           <div class="cart__additional">
-            <ul class="additional-list" v-if="pizzas.length & misc.length">
+            <ul class="additional-list" v-if="pizzas.length && misc.length">
               <li
                 is="cart-additional-item"
                 v-for="(item, index) in misc"
@@ -41,6 +41,7 @@
             href="#"
             class="button button--border button--arrow"
             @click="oneMorePizza"
+            data-test="resetBuilder"
           >
             Хочу еще одну
           </a>
@@ -49,13 +50,14 @@
           Перейти к конструктору<br />чтоб собрать ещё одну пиццу
         </p>
         <div class="footer__price">
-          <b>Итого: {{ totalPriceOrder }} ₽</b>
+          <b>Итого: {{ getTotalPriceOrder }} ₽</b>
         </div>
         <div class="footer__submit">
           <button
             type="submit"
             class="button"
             :disabled="!pizzas.length || invalid"
+            data-test="new-addresses"
           >
             Оформить заказ
           </button>
@@ -69,7 +71,7 @@
 import CartProductItem from "@/modules/cart/components/CartProductItem";
 import CartAdditionalItem from "@/modules/cart/components/CartAdditionalItem";
 import CartForm from "@/modules/cart/components/CartForm";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import { ValidationObserver, extend, localize } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import ru from "vee-validate/dist/locale/ru.json";
@@ -88,6 +90,7 @@ export default {
   computed: {
     ...mapState("Auth", {
       user: (state) => state.user,
+      isAuthenticated: (state) => state.isAuthenticated,
     }),
     ...mapState("Builder", {
       composition: (state) => state.composition,
@@ -100,40 +103,18 @@ export default {
       phone: (state) => state.phone,
     }),
 
-    totalPriceOrder() {
-      let pizzasPrice = 0,
-        miscsPrice = 0;
-      this.pizzas
-        .filter((pizza) => {
-          return pizza.count > 0;
-        })
-        .forEach((pizza) => {
-          pizzasPrice += pizza.count * pizza.price;
-        });
-      this.misc
-        .filter((misc) => {
-          return misc.count > 0;
-        })
-        .forEach((misc) => {
-          miscsPrice += misc.count * misc.price;
-        });
-      this.updateTotalPriceOrder();
-      return pizzasPrice + miscsPrice;
-    },
+    ...mapGetters({
+      getTotalPriceOrder: "Cart/getTotalPriceOrder",
+    }),
   },
   created: function () {
-    // this.query();
+    if (this.isAuthenticated) {
+      this.queryAddresses();
+    }
   },
   methods: {
+    ...mapActions("Auth", ["queryAddresses", "newAddresses"]),
     ...mapActions("Builder", ["resetBuilder"]),
-    ...mapActions("Cart", [
-      "query",
-      "createPizza",
-      "updatePizza",
-      "updateTotalPriceOrder",
-    ]),
-
-    ...mapActions("Auth", ["newAddresses"]),
     ...mapActions("Orders", ["newOrder"]),
 
     createOrderMethod() {
@@ -167,7 +148,9 @@ export default {
             flat: this.address.apartment,
             comment: "",
           };
-          this.newAddresses(myAddress);
+          if (this.isAuthenticated) {
+            this.newAddresses(myAddress);
+          }
           break;
         default:
           myAddress = {
@@ -220,6 +203,8 @@ export default {
 @import "~@/assets/scss/blocks/cart.scss";
 @import "~@/assets/scss/blocks/additional-list.scss";
 @import "~@/assets/scss/blocks/footer.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/title.scss";
 
 .wrap {
   display: flex;

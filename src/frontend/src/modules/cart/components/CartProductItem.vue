@@ -7,13 +7,16 @@
         width="56"
         height="56"
         :alt="pizza.title"
+        data-test="alt"
       />
       <div class="product__text">
-        <h2>{{ pizza.title }}</h2>
+        <h2 data-test="title">{{ pizza.title }}</h2>
         <ul>
-          <li>{{ pizza.size }} см, на {{ pizza.dough }} тесте</li>
-          <li>Соус: {{ pizza.sauce }}</li>
-          <li>Начинка: {{ pizza.fillings }}</li>
+          <li data-test="dough">
+            {{ pizza.size }} см, на {{ pizza.dough }} тесте
+          </li>
+          <li data-test="sauce">Соус: {{ pizza.sauce }}</li>
+          <li data-test="fillings">Начинка: {{ pizza.fillings }}</li>
         </ul>
       </div>
     </div>
@@ -22,11 +25,10 @@
       v-model="pizza.count"
       :parentClass="`cart-list__counter`"
       :colorBtn="`counter__button--orange`"
-      @input="changePriceOrderMethod($event)"
     />
 
     <div class="cart-list__price">
-      <b>{{ pizza.price * pizza.count }} ₽</b>
+      <b data-test="summ">{{ pizza.price * pizza.count }} ₽</b>
     </div>
 
     <div class="cart-list__button">
@@ -34,6 +36,7 @@
         type="button"
         class="cart-list__edit"
         @click="changePizzaMethod(pizza)"
+        data-test="change"
       >
         Изменить
       </button>
@@ -57,15 +60,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions("Cart", ["updatePizza", "updateTotalPriceOrder"]),
+    ...mapActions("Cart", ["updatePizza"]),
 
     changePizzaMethod(pizza) {
       this.updatePizza(pizza);
       this.$router.push({ name: "IndexHome" });
-    },
-
-    changePriceOrderMethod() {
-      this.updateTotalPriceOrder();
     },
   },
 };

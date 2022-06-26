@@ -8,6 +8,7 @@
         :value="namePizza"
         placeholder="Введите название пиццы"
         @input="updatePizzaName($event.target.value)"
+        data-test="name"
       />
     </label>
 
@@ -25,6 +26,7 @@
               },
               `pizza__filling--${item.name}`,
             ]"
+            data-test="fillings"
           ></div>
         </transition-group>
       </div>
@@ -36,7 +38,7 @@
 
 <script>
 import BuilderPriceCounter from "@/modules/builder/components/BuilderPriceCounter";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderPizzaView",
@@ -46,12 +48,8 @@ export default {
   computed: {
     ...mapState("Builder", {
       classPizza: (state) => state.composition.classPizza,
-      pizzaFilling: (state) => state.composition.pizzaFilling,
+      pizzaFil: (state) => state.composition.pizzaFilling,
       namePizza: (state) => state.composition.namePizza,
-    }),
-
-    ...mapGetters({
-      pizzaFil: "Builder/pizzaFilling",
     }),
 
     fillings() {
@@ -82,6 +80,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
 @import "~@/assets/scss/blocks/pizza.scss";
+@import "~@/assets/scss/blocks/input.scss";
 
 /*Transitions*/
 .filling-enter-active,

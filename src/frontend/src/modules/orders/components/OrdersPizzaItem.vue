@@ -7,21 +7,24 @@
         width="56"
         height="56"
         :alt="pizza.name"
+        data-test="alt"
       />
       <div class="product__text">
-        <h2>{{ pizza.name }}</h2>
+        <h2 data-test="name">{{ pizza.name }}</h2>
         <ul>
-          <li>{{ doughSizeText }}</li>
-          <li>{{ sauceText }}</li>
-          <li>{{ ingridientsText }}</li>
+          <li data-test="doughSizeText">{{ doughSizeText }}</li>
+          <li data-test="sauceText">{{ sauceText }}</li>
+          <li data-test="ingridientsText">{{ ingridientsText }}</li>
         </ul>
       </div>
     </div>
 
-    <p class="order__price" v-if="pizza.quantity > 1">
+    <p class="order__price" v-if="pizza.quantity > 1" data-test="quantity">
       {{ pizza.quantity }} х {{ pizza.totalPricePizza }} ₽
     </p>
-    <p class="order__price" v-else>{{ pizza.totalPricePizza }} ₽</p>
+    <p class="order__price" v-else data-test="price">
+      {{ pizza.totalPricePizza }} ₽
+    </p>
   </li>
 </template>
 
@@ -41,43 +44,35 @@ export default {
   },
   computed: {
     ...mapState("Orders", ["orders"]),
-    ...mapState("Builder", ["ingredients"]),
+    ...mapState("Builder", ["ingredients", "sauces", "sizes", "doughs"]),
 
     doughSizeText() {
-      let size;
-      switch (this.pizza.sizeId) {
-        case 1:
-          size = 23;
-          break;
-        case 2:
-          size = 32;
-          break;
-        case 3:
-          size = 45;
-          break;
-      }
+      let size = this.sizes.filter((s) => {
+        return s.id === this.pizza.sizeId;
+      })[0].name;
+
       let dough;
-      switch (this.pizza.doughId) {
-        case 1:
-          dough = "тонком";
-          break;
-        case 2:
+      let typeDough = this.doughs.filter((d) => {
+        return d.id === this.pizza.doughId;
+      })[0].type;
+      switch (typeDough) {
+        case "large":
           dough = "толстом";
           break;
+        case "light":
+          dough = "тонком";
+          break;
       }
-      return `${size}см, на ${dough} тесте`;
+
+      return `${size}, на ${dough} тесте`;
     },
 
     sauceText() {
-      let sauce;
-      switch (this.pizza.sauceId) {
-        case 1:
-          sauce = "томатный";
-          break;
-        case 2:
-          sauce = "сливочный";
-          break;
-      }
+      let sauce = this.sauces
+        .filter((s) => {
+          return s.id === this.pizza.sauceId;
+        })[0]
+        .name.toLowerCase();
       return `Соус: ${sauce}`;
     },
 

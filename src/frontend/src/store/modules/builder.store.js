@@ -27,36 +27,34 @@ export default {
       size: {},
       sauce: {},
       ingr: [],
-      totalPrice: 0,
-      classPizza: "pizza--foundation--small-tomato",
+      // totalPrice: 0,
+      classPizza: "pizza--foundation--small-creamy",
       pizzaFilling: [],
       namePizza: "",
     },
   },
 
   getters: {
-    composition: (state) => {
-      return state.composition;
-    },
-
-    doughs: (state) => {
-      return state.doughs;
-    },
-
-    sizes: (state) => {
-      return state.sizes;
-    },
-
-    sauces: (state) => {
-      return state.sauces;
-    },
-
-    pizzaFilling: (state) => {
-      return state.composition.pizzaFilling;
-    },
-
-    namePizza: (state) => {
-      return state.composition.namePizza;
+    getTotalPrice: (state) => {
+      let multi;
+      let newArr = [];
+      state.composition.pizzaFilling.forEach((element) => {
+        newArr.push(element.count * element.price);
+      });
+      if (newArr.length !== 0) {
+        multi = newArr.reduce((sum, current) => sum + current, 0);
+      } else {
+        multi = 0;
+      }
+      // (Основа + Соус + Добавки) * размер
+      let newTotalPrice =
+        (state.composition.dough.price +
+          state.composition.sauce.price +
+          multi) *
+        state.composition.size.multiplier;
+      // state.composition.totalPrice = newTotalPrice;
+      // return state.composition.totalPrice;
+      return newTotalPrice;
     },
   },
 
@@ -135,6 +133,7 @@ export default {
                 id: item.id,
                 count: item.count,
                 name: item.label,
+                price: item.price,
                 title: item.name.toLowerCase(),
               };
               return item;
@@ -171,21 +170,21 @@ export default {
     [RESET_BUILDER]: (state) => {
       state.composition.dough = {
         id: 1,
-        value: "light",
+        value: "large",
         price: 300,
       };
       state.composition.size = {
-        id: 3,
+        id: 2,
         value: "normal",
         multiplier: 2,
       };
       state.composition.sauce = {
         id: 2,
-        value: "tomato",
+        value: "creamy",
         price: 50,
       };
-      state.composition.totalPrice = 0;
-      state.composition.classPizza = "pizza--foundation--small-tomato";
+      state.composition.totalPrice = 700;
+      state.composition.classPizza = "pizza--foundation--small-creamy";
       state.composition.pizzaFilling = [];
       state.composition.namePizza = "";
       state.composition.id = null;
@@ -316,7 +315,6 @@ export default {
         CHANGE_SIZE,
         {
           value: data.value,
-          //multiplier: data.multiplier,
         },
         { root: false }
       );

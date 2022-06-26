@@ -6,7 +6,7 @@ import {
   EDIT_PIZZA,
   REPEAT_PIZZA,
   UPDATE_PIZZA,
-  UPDATE_TOTAL_PRICE_ORDER,
+  // UPDATE_TOTAL_PRICE_ORDER,
   RESET_PIZZAS,
   UPDATE_USER_ADDRESS,
   UPDATE_RECIPIENT,
@@ -44,12 +44,32 @@ export default {
     address: (state) => {
       return state.address;
     },
+
+    getTotalPriceOrder: (state) => {
+      let pizzasPrice = 0,
+        miscsPrice = 0;
+      state.pizzas
+        .filter((pizza) => {
+          return pizza.count > 0;
+        })
+        .forEach((pizza) => {
+          pizzasPrice += pizza.count * pizza.price;
+        });
+      state.misc
+        .filter((misc) => {
+          return misc.count > 0;
+        })
+        .forEach((misc) => {
+          miscsPrice += misc.count * misc.price;
+        });
+      return pizzasPrice + miscsPrice;
+    },
   },
   mutations: {
     [CREATE_PIZZA]: (state, payload) => {
-      const data = cloneDeep(payload.rootData.Builder.composition);
+      const data = cloneDeep(payload.composition);
       let fillings = "";
-      payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
+      payload.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
       let newId = +uniqueId();
@@ -57,32 +77,30 @@ export default {
         composition: data,
         id: newId,
         count: 1,
-        title: payload.rootData.Builder.composition.namePizza,
+        title: payload.composition.namePizza,
         size:
-          payload.rootData.Builder.composition.size.value === "normal"
+          payload.composition.size.value === "normal"
             ? 32
-            : payload.rootData.Builder.composition.size.value === "big"
+            : payload.composition.size.value === "big"
             ? 45
             : 23,
         dough:
-          payload.rootData.Builder.composition.dough.value === "large"
-            ? "толстом"
-            : "тонком",
+          payload.composition.dough.value === "large" ? "толстом" : "тонком",
         sauce:
-          payload.rootData.Builder.composition.sauce.value === "tomato"
+          payload.composition.sauce.value === "tomato"
             ? "томатный"
             : "сливочный",
         fillings: fillings.slice(0, -2),
-        price: payload.rootData.Builder.composition.totalPrice,
+        price: payload.getTotalPrice,
       };
       pizza.composition.id = newId;
       state.pizzas.push(pizza);
     },
     [EDIT_PIZZA]: (state, payload) => {
-      const data = cloneDeep(payload.rootData.Builder.composition);
-      let pizzaId = payload.rootData.Builder.composition.id;
+      const data = cloneDeep(payload.composition);
+      let pizzaId = payload.composition.id;
       let fillings = "";
-      payload.rootData.Builder.composition.pizzaFilling.forEach((item) => {
+      payload.composition.pizzaFilling.forEach((item) => {
         fillings += `${item.title}, `;
       });
       state.pizzas
@@ -100,11 +118,11 @@ export default {
               : 23;
           item.dough = data.dough.value === "large" ? "толстом" : "тонком";
           item.sauce =
-            payload.rootData.Builder.composition.sauce.value === "tomato"
+            payload.composition.sauce.value === "tomato"
               ? "томатный"
               : "сливочный";
           item.fillings = fillings.slice(0, -2);
-          item.price = data.totalPrice;
+          item.price = payload.getTotalPrice;
         });
     },
     [REPEAT_PIZZA]: (state, payload) => {
@@ -113,22 +131,21 @@ export default {
       data.orderPizzas.forEach((item) => {
         //class Pizza
         let myClass = "pizza--foundation--";
-        switch (item.doughId) {
-          case 1:
+        let d = payload.rootData.Builder.doughs.filter((dough) => {
+          return dough.id === item.doughId;
+        })[0].type;
+        switch (d) {
+          case "light":
             myClass += "small";
             break;
-          case 2:
+          case "large":
             myClass += "big";
             break;
         }
-        switch (item.sauceId) {
-          case 1:
-            myClass += "-tomato";
-            break;
-          case 2:
-            myClass += "-creamy";
-            break;
-        }
+        myClass += "-";
+        myClass += payload.rootData.Builder.sauces.filter((sauce) => {
+          return sauce.id === item.sauceId;
+        })[0].value;
 
         //dough
         let myDough = payload.rootData.Builder.doughs
@@ -192,6 +209,7 @@ export default {
               id: item.id,
               count: item.count,
               name: item.label,
+              price: item.price,
               title: item.name.toLowerCase(),
             };
             return filling;
@@ -254,25 +272,6 @@ export default {
     [UPDATE_PIZZA]: (state, payload) => {
       payload.rootData.Builder.composition = payload.data.composition;
     },
-    [UPDATE_TOTAL_PRICE_ORDER]: (state, payload) => {
-      let pizzasPrice = 0,
-        miscsPrice = 0;
-      payload.rootData.Cart.pizzas
-        .filter((pizza) => {
-          return pizza.count > 0;
-        })
-        .forEach((pizza) => {
-          pizzasPrice += pizza.count * pizza.price;
-        });
-      payload.rootData.Cart.misc
-        .filter((misc) => {
-          return misc.count > 0;
-        })
-        .forEach((misc) => {
-          miscsPrice += misc.count * misc.price;
-        });
-      state.totalPriceOrder = pizzasPrice + miscsPrice;
-    },
     [RESET_PIZZAS]: (state) => {
       state.misc.forEach((misc) => (misc.count = 0));
       state.pizzas = [];
@@ -319,21 +318,25 @@ export default {
       );
     },
 
-    createPizza({ commit, rootState }) {
+    createPizza({ commit, rootState, rootGetters }) {
       commit(
         CREATE_PIZZA,
         {
-          rootData: rootState,
+          composition: rootState.Builder.composition,
+          getTotalPrice: rootGetters["Builder/getTotalPrice"],
         },
         { root: false }
       );
     },
 
-    editPizza({ commit, rootState }) {
+    editPizza({ commit, rootState, rootGetters }) {
       commit(
         EDIT_PIZZA,
         {
-          rootData: rootState,
+          // rootData: rootState,
+          composition: rootState.Builder.composition,
+          // rootGetters: rootGetters,
+          getTotalPrice: rootGetters["Builder/getTotalPrice"],
         },
         { root: false }
       );
@@ -361,26 +364,15 @@ export default {
       );
     },
 
-    updateTotalPriceOrder({ commit, rootState }) {
-      commit(
-        UPDATE_TOTAL_PRICE_ORDER,
-        {
-          rootData: rootState,
-        },
-        { root: false }
-      );
-    },
-
     resetPizzas({ commit }) {
       commit(RESET_PIZZAS);
     },
 
-    updateUserAddress({ commit, rootState }, data) {
+    updateUserAddress({ commit }, data) {
       commit(
         UPDATE_USER_ADDRESS,
         {
           data,
-          rootData: rootState,
         },
         { root: false }
       );

@@ -16,13 +16,13 @@ import { MESSAGE_LIVE_TIME } from "@/common/constants";
 
 Vue.use(Vuex);
 
-const state = () => ({
+export const state = () => ({
   notifications: [],
 });
 
-const getters = {};
+export const getters = {};
 
-const actions = {
+export const actions = {
   async init({ dispatch }) {
     dispatch("Builder/queryDough");
     dispatch("Builder/querySizes");
@@ -44,7 +44,7 @@ const actions = {
   },
 };
 
-const mutations = {
+export const mutations = {
   [ADD_NOTIFICATION](state, notification) {
     state.notifications = [...state.notifications, notification];
   },

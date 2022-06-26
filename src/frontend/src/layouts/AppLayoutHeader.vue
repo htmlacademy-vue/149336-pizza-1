@@ -11,8 +11,8 @@
       </router-link>
     </div>
     <div class="header__cart">
-      <router-link :to="{ name: 'Cart' }"
-        >{{ total_price_order }} ₽</router-link
+      <router-link :to="{ name: 'Cart' }">
+        {{ getTotalPriceOrder }} ₽</router-link
       >
     </div>
     <div v-if="isAuthenticated" class="header__user">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import { logout } from "@/common/mixins";
 
 export default {
@@ -58,8 +58,9 @@ export default {
   mixins: [logout],
   computed: {
     ...mapState(["Auth"]),
-    ...mapState("Cart", {
-      total_price_order: (state) => state.totalPriceOrder,
+
+    ...mapGetters({
+      getTotalPriceOrder: "Cart/getTotalPriceOrder",
     }),
 
     user() {
@@ -75,4 +76,5 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/layout/header.scss";
+@import "~@/assets/scss/blocks/logo.scss";
 </style>

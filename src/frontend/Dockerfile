@@ -1,12 +1,12 @@
-FROM node:10-slim
+FROM node:16-slim
 
 WORKDIR /frontend
 
 COPY package.json package-lock.json ./
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
-RUN npm install @vue/cli@4.3.0 -g
+RUN npm install @vue/cli@4.5.8 -g
 
 COPY . .
 

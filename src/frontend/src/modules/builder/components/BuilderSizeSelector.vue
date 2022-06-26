@@ -10,6 +10,7 @@
         v-model="checkedSize"
         :classRadioBtn="`diameter__input diameter__input--${item.size}`"
         :classRadioInput="`visually-hidden`"
+        data-test="size"
       >
         <span> {{ item.name }}</span>
       </RadioButton>
@@ -41,12 +42,11 @@ export default {
           value: newSize,
         };
         this.changeSize(payload);
-        this.changeTotalPrice();
       },
     },
   },
   methods: {
-    ...mapActions("Builder", ["changeSize", "changeTotalPrice"]),
+    ...mapActions("Builder", ["changeSize"]),
   },
 };
 </script>

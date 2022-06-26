@@ -12,6 +12,7 @@
           v-model="checkedSouce"
           :classRadioBtn="`radio ingridients__input`"
           @change="changeSouceMethod($event, item.price)"
+          data-test="sauce"
         >
           <span>{{ item.name }}</span>
         </RadioButton>
@@ -35,6 +36,7 @@
               v-model="item.count"
               :parentClass="`ingridients__counter`"
               @input="changeCounterMethod($event, item.id)"
+              data-test="counter"
             />
           </li>
         </ul>
@@ -75,7 +77,6 @@ export default {
           value: newSauce,
         };
         this.changeSauce(payload);
-        this.changeTotalPrice();
         this.switchClassPizza();
       },
     },
@@ -84,7 +85,6 @@ export default {
     ...mapActions("Builder", [
       "changeSauce",
       "changeCounter",
-      "changeTotalPrice",
       "switchClassPizza",
     ]),
 
@@ -94,7 +94,6 @@ export default {
         id,
       };
       this.changeCounter(payload);
-      this.changeTotalPrice();
     },
     changeSouceMethod(newSauce, newPrice) {
       let payload = {
@@ -102,7 +101,6 @@ export default {
         price: newPrice,
       };
       this.changeSauce(payload);
-      this.changeTotalPrice();
       this.switchClassPizza();
     },
   },

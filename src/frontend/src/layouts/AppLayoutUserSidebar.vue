@@ -35,6 +35,7 @@ export default {
 
 <style scoped lang="scss">
 @import "~@/assets/scss/layout/header.scss";
+@import "~@/assets/scss/blocks/logo.scss";
 
 .layout__link--active {
   cursor: default;

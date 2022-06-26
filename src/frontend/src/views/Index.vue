@@ -12,7 +12,10 @@
         </div>
 
         <div class="content__ingridients">
-          <BuilderIngredientsSelector @drop="moveIngridient($event)" />
+          <BuilderIngredientsSelector
+            @drop="moveIngridient($event)"
+            data-test="changeCounter"
+          />
         </div>
 
         <div class="content__pizza">
@@ -33,7 +36,7 @@ import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelec
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 import AppDrop from "@/common/components/AppDrop";
 
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "IndexHome",
@@ -46,12 +49,13 @@ export default {
   },
   computed: {
     ...mapState("Builder", ["composition"]),
-  },
-  mounted() {
-    this.changeTotalPrice();
+
+    ...mapGetters({
+      getTotalPrice: "Builder/getTotalPrice",
+    }),
   },
   methods: {
-    ...mapActions("Builder", ["changeTotalPrice", "changeCounter"]),
+    ...mapActions("Builder", ["changeCounter"]),
 
     moveIngridient(active) {
       if (active.count > 2) {
@@ -62,7 +66,6 @@ export default {
         id: active.id,
       };
       this.changeCounter(payload);
-      this.changeTotalPrice();
       let ingredientsToUpdate = this.composition.ingr;
       this.$emit("updateIngredients", ingredientsToUpdate);
     },
@@ -70,4 +73,6 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import "~@/assets/scss/blocks/title.scss";
+</style>

@@ -3,6 +3,7 @@
     <form
       class="address-form address-form--opened sheet"
       @submit.prevent="updateAddress"
+      data-test="form"
     >
       <div class="address-form__header">
         <b v-if="addrId">Адрес №{{ addrId }}</b>
@@ -25,6 +26,7 @@
                 class="input"
                 placeholder="Введите название адреса"
                 :errorText="errors[0]"
+                data-test="name"
               />
             </validation-provider>
           </label>
@@ -44,6 +46,7 @@
                 class="input"
                 placeholder="Введите название улицы"
                 :errorText="errors[0]"
+                data-test="street"
               />
             </validation-provider>
           </label>
@@ -63,6 +66,7 @@
                 class="input"
                 placeholder="Введите номер дома"
                 :errorText="errors[0]"
+                data-test="house"
               />
             </validation-provider>
           </label>
@@ -82,6 +86,7 @@
                 class="input"
                 placeholder="Введите № квартиры"
                 :errorText="errors[0]"
+                data-test="flat"
               />
             </validation-provider>
           </label>
@@ -95,6 +100,7 @@
               name="addr-comment"
               class=""
               placeholder="Введите комментарий"
+              data-test="comment"
             />
           </label>
         </div>
@@ -106,6 +112,7 @@
           class="button button--transparent"
           @click="delAddress"
           v-if="addrId"
+          data-test="delete"
         >
           Удалить
         </button>
@@ -117,7 +124,12 @@
         >
           Отменить
         </button>
-        <button type="submit" class="button" :disabled="invalid">
+        <button
+          type="submit"
+          class="button"
+          :disabled="invalid"
+          data-test="save"
+        >
           Сохранить
         </button>
       </div>
@@ -220,13 +232,12 @@ export default {
       this.$emit("changeVisibleForm");
     },
   },
-  beforeDestroy() {
-    // event.target.reset();
-    // alert("beforeDestroy");
-  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/scss/mixins/mixins.scss";
+@import "~@/assets/scss/blocks/input.scss";
+@import "~@/assets/scss/blocks/button.scss";
+@import "~@/assets/scss/blocks/address-form.scss";
 </style>
