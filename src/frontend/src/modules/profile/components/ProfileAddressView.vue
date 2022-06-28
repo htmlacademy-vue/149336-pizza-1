@@ -27,18 +27,11 @@
 <script>
 export default {
   name: "ProfileAddressView",
-  components: {},
   props: {
     address: {
       type: Object,
     },
   },
-  data() {
-    return {};
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
   methods: {
     putAddress() {
       this.$emit("putAddress");

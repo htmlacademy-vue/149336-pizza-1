@@ -183,7 +183,6 @@ export default {
       addresses: (state) => state.addresses,
     }),
   },
-  watch: {},
   created() {
     if (this.adr) {
       this.addrId = this.adr.id;

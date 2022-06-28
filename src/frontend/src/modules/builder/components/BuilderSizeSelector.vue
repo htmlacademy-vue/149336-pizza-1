@@ -2,7 +2,7 @@
   <div class="sheet">
     <h2 class="title title--small sheet__title">Выберите размер</h2>
     <div class="diameter sheet__content">
-      <RadioButton
+      <AppRadioButton
         v-for="item in sizes"
         :key="item.id"
         name="diameter"
@@ -13,19 +13,19 @@
         data-test="size"
       >
         <span> {{ item.name }}</span>
-      </RadioButton>
+      </AppRadioButton>
     </div>
   </div>
 </template>
 
 <script>
-import RadioButton from "@/common/components/RadioButton";
+import AppRadioButton from "@/common/components/AppRadioButton";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderSizeSelector",
   components: {
-    RadioButton,
+    AppRadioButton,
   },
   computed: {
     ...mapState("Builder", {

@@ -1,13 +1,12 @@
-import { capitalize, totalPrice } from '@/common/helpers';
+import { capitalize, totalPrice } from "@/common/helpers";
 
-describe('test helpers functions', () => {
-
-  it('test capitalize', () => {
-    expect(capitalize('word')).toBe('Word');
-    expect(capitalize('hello world')).toBe('Hello world');
+describe("test helpers functions", () => {
+  it("test capitalize", () => {
+    expect(capitalize("word")).toBe("Word");
+    expect(capitalize("hello world")).toBe("Hello world");
   });
 
-  it('test totalPrice', () => {
+  it("test totalPrice", () => {
     const order = {
       addressId: null,
       id: 1,
@@ -58,7 +57,7 @@ describe('test helpers functions', () => {
         },
       ],
       orderMisc: [],
-      userId: 'abracadabra',
+      userId: "abracadabra",
     };
     const store = {
       Builder: {
@@ -80,7 +79,7 @@ describe('test helpers functions', () => {
             price: 300,
             type: "light",
             isChecked: true,
-          }
+          },
         ],
         sizes: [
           {
@@ -106,7 +105,7 @@ describe('test helpers functions', () => {
             multiplier: 3,
             size: "big",
             isChecked: false,
-          }
+          },
         ],
         sauces: [
           {
@@ -122,7 +121,7 @@ describe('test helpers functions', () => {
             price: 50,
             value: "creamy",
             isChecked: false,
-          }
+          },
         ],
         ingredients: [
           {
@@ -244,13 +243,13 @@ describe('test helpers functions', () => {
             price: 50,
             label: "blue_cheese",
             count: 0,
-          }
+          },
         ],
         composition: {
           dough: {
-              id: 1,
-              value: "large",
-              price: 300,
+            id: 1,
+            value: "large",
+            price: 300,
           },
           size: {
             id: 5,
@@ -357,7 +356,7 @@ describe('test helpers functions', () => {
               image: "/public/img/filling/mozzarella.svg",
               price: 35,
               label: "mozzarella",
-              count: 0
+              count: 0,
             },
             {
               id: 13,
@@ -388,8 +387,8 @@ describe('test helpers functions', () => {
           classPizza: "pizza--foundation--small-tomato",
           pizzaFilling: [],
           namePizza: "",
-        }
-      }
+        },
+      },
     };
     const newOrder = totalPrice(order, store);
     expect(newOrder.orderPizzas[0].totalPricePizza).toBe(1779);

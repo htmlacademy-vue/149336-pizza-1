@@ -1,35 +1,33 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Login from '@/views/Login';
-import AppInput from '@/common/components/AppInput';
-import flushPromises from 'flush-promises';
+import { mount, createLocalVue } from "@vue/test-utils";
+import Login from "@/views/Login";
+import AppInput from "@/common/components/AppInput";
+import flushPromises from "flush-promises";
 
 const localVue = createLocalVue();
-localVue.component('AppInput', AppInput);
+localVue.component("AppInput", AppInput);
 
-describe('Login', () => {
+describe("Login", () => {
   let routerPush;
   let dispatch;
   let login;
 
   const methods = {
-    login
+    login,
   };
 
   const mocks = {
     $router: {
-      push: routerPush
+      push: routerPush,
     },
     $store: {
-      dispatch
+      dispatch,
     },
   };
 
-  const stubs = [
-    'router-link'
-  ];
+  const stubs = ["router-link"];
 
   let wrapper;
-  const createComponent = options => {
+  const createComponent = (options) => {
     wrapper = mount(Login, options);
   };
 
@@ -46,55 +44,51 @@ describe('Login', () => {
     wrapper.destroy();
   });
 
-  it(
-    'calls login and redirects to index if credentials are valid',
-    async () => {
-      createComponent({ localVue, mocks, stubs });
-      const emailInput = wrapper
-        .find('[data-test="email-component"]')
-        .find('input');
-      const passInput = wrapper
-        .find('[data-test="password-component"]')
-        .find('input');
-      emailInput.element.value = 'user@example.com';
-      await emailInput.trigger('input');
-      passInput.element.value = '123456';
-      await passInput.trigger('input');
-      await wrapper.find('form').trigger('submit');
-      expect(dispatch).toHaveBeenCalled();
-      expect(routerPush).toHaveBeenCalledWith('/');
+  it("calls login and redirects to index if credentials are valid", async () => {
+    createComponent({ localVue, mocks, stubs });
+    const emailInput = wrapper
+      .find('[data-test="email-component"]')
+      .find("input");
+    const passInput = wrapper
+      .find('[data-test="password-component"]')
+      .find("input");
+    emailInput.element.value = "user@example.com";
+    await emailInput.trigger("input");
+    passInput.element.value = "123456";
+    await passInput.trigger("input");
+    await wrapper.find("form").trigger("submit");
+    expect(dispatch).toHaveBeenCalled();
+    expect(routerPush).toHaveBeenCalledWith("/");
   });
 
-  it(
-    'disabled button, when invalid form',
-    async () => {
-      createComponent({ localVue, mocks, stubs });
-      const emailInput = wrapper
-        .find('[data-test="email-component"]')
-        .find('input');
-      emailInput.setValue('user');
-      await wrapper.vm.$nextTick();
-      await emailInput.trigger('input');
-      await flushPromises();
-      expect(wrapper.find('button[type="submit"]').attributes().disabled).toBeUndefined();
-    }
-  );
+  it("disabled button, when invalid form", async () => {
+    createComponent({ localVue, mocks, stubs });
+    const emailInput = wrapper
+      .find('[data-test="email-component"]')
+      .find("input");
+    emailInput.setValue("user");
+    await wrapper.vm.$nextTick();
+    await emailInput.trigger("input");
+    await flushPromises();
+    expect(
+      wrapper.find('button[type="submit"]').attributes().disabled
+    ).toBeUndefined();
+  });
 
-  it(
-    'show eror message, when invalid form',
-    async () => {
-      createComponent({ localVue, mocks, stubs });
-      const emailInput = wrapper
-        .find('[data-test="email-component"]')
-        .find('input');
-      emailInput.setValue('user');
-      await wrapper.vm.$nextTick();
-      await emailInput.trigger('input');
-      await flushPromises();
-      const errorSpan = wrapper.find('.text-field__text');
-      expect(errorSpan.text()).toBe('Поле E-mail должно быть действительным электронным адресом');
-    }
-  );
+  it("show eror message, when invalid form", async () => {
+    createComponent({ localVue, mocks, stubs });
+    const emailInput = wrapper
+      .find('[data-test="email-component"]')
+      .find("input");
+    emailInput.setValue("user");
+    await wrapper.vm.$nextTick();
+    await emailInput.trigger("input");
+    await flushPromises();
+    const errorSpan = wrapper.find(".text-field__text");
+    expect(errorSpan.text()).toBe(
+      "Поле E-mail должно быть действительным электронным адресом"
+    );
+  });
 });
 
 // Список элементов для тестирования

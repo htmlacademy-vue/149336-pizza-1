@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <ItemCounter
+    <AppItemCounter
       v-model="pizza.count"
       :parentClass="`cart-list__counter`"
       :colorBtn="`counter__button--orange`"
@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
+import AppItemCounter from "@/common/components/AppItemCounter";
 import { mapActions } from "vuex";
 
 export default {
   name: "CartProductItem",
   components: {
-    ItemCounter,
+    AppItemCounter,
   },
   props: {
     pizza: {

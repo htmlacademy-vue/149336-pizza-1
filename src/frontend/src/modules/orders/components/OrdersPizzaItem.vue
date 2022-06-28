@@ -33,14 +33,10 @@ import { mapState } from "vuex";
 
 export default {
   name: "OrdersPizzaItem",
-  components: {},
   props: {
     pizza: {
       type: Object,
     },
-  },
-  data() {
-    return {};
   },
   computed: {
     ...mapState("Orders", ["orders"]),
@@ -89,9 +85,6 @@ export default {
       return str.slice(0, -2);
     },
   },
-  watch: {},
-  created() {},
-  methods: {},
 };
 </script>
 

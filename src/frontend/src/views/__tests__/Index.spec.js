@@ -1,7 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import { generateMockStore } from '@/store/mocks';
-import Index from '@/views/Index.vue';
+import { mount, createLocalVue } from "@vue/test-utils";
+import Vuex from "vuex";
+import { generateMockStore } from "@/store/mocks";
+import Index from "@/views/Index.vue";
 
 // Создаём локальный тестовый экземпляр Vue.
 const localVue = createLocalVue();
@@ -9,15 +9,15 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 // Начало блока тестов
-describe('Index', () => {
+describe("Index", () => {
   // Заглушка вместо реального router-view
-  const stubs = ['router-view'];
+  const stubs = ["router-view"];
 
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
   let wrapper;
-  const createComponent = options => {
+  const createComponent = (options) => {
     wrapper = mount(Index, options);
   };
 
@@ -27,7 +27,7 @@ describe('Index', () => {
     actions = {
       Builder: {
         changeCounter: jest.fn(),
-      }
+      },
     };
     store = generateMockStore(actions);
   });
@@ -37,22 +37,21 @@ describe('Index', () => {
     wrapper.destroy();
   });
 
-  it ('is rendered', () => {
+  it("is rendered", () => {
     createComponent({ localVue, store, stubs });
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  it ('calls changeCounter action', () => {
+  it("calls changeCounter action", () => {
     createComponent({ localVue, store, stubs });
     const ingredients = wrapper.findComponent('[data-test="changeCounter"]');
-    ingredients.vm.$emit('drop', {id: 1, count: 0 });
+    ingredients.vm.$emit("drop", { id: 1, count: 0 });
     expect(actions.Builder.changeCounter).toHaveBeenCalledWith(
       expect.any(Object), // The Vuex context
-      {id: 1, newCount: 1 }
+      { id: 1, newCount: 1 }
     );
   });
 });
-
 
 // Список элементов для тестирования
 /*

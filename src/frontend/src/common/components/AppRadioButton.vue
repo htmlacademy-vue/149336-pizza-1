@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "RadioButton",
+  name: "AppRadioButton",
   model: {
     prop: "checked",
     event: "change",

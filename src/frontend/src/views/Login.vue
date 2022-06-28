@@ -97,9 +97,6 @@ export default {
     email: "",
     password: "",
   }),
-  mounted() {
-    // this.$refs.email.$refs.input.focus();
-  },
   methods: {
     async login() {
       await this.$store.dispatch("Auth/login", {
