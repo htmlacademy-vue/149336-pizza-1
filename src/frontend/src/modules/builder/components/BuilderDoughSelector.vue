@@ -2,7 +2,7 @@
   <div class="sheet">
     <h2 class="title title--small sheet__title">Выберите тесто</h2>
     <div class="sheet__content dough">
-      <RadioButton
+      <AppRadioButton
         v-for="item in doughs"
         :key="item.id"
         name="dough"
@@ -14,20 +14,20 @@
       >
         <b data-test="name">{{ item.name }}</b>
         <span data-test="description">{{ item.description }}</span>
-      </RadioButton>
+      </AppRadioButton>
     </div>
   </div>
 </template>
 
 <script>
-import RadioButton from "@/common/components/RadioButton";
+import AppRadioButton from "@/common/components/AppRadioButton";
 
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "BuilderDoughSelector",
   components: {
-    RadioButton,
+    AppRadioButton,
   },
   computed: {
     ...mapState("Builder", {

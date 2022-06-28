@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "ItemCounter",
+  name: "AppItemCounter",
   props: {
     value: {
       type: Number,

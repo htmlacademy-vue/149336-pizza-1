@@ -1,11 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
+import { mount, createLocalVue } from "@vue/test-utils";
+import Vuex from "vuex";
 import {
   UPDATE_NAME_PIZZA,
   CHANGE_COUNTER,
   SET_LONG_ENTITY,
-} from '@/store/mutation-types';
-import { generateMockStore } from '@/store/mocks';
+} from "@/store/mutation-types";
+import { generateMockStore } from "@/store/mocks";
 // Импортируем сам компонент.
 import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
 
@@ -14,13 +14,10 @@ const localVue = createLocalVue();
 // Добавляем в него Vuex.
 localVue.use(Vuex);
 
-const namePizza = 'Салями-Ветчина';
+const namePizza = "Салями-Ветчина";
 
 const setNamePizza = (store) => {
-  store.commit(
-    'Builder/' + UPDATE_NAME_PIZZA,
-    namePizza,
-  );
+  store.commit("Builder/" + UPDATE_NAME_PIZZA, namePizza);
 };
 
 const ingridients = [
@@ -30,7 +27,7 @@ const ingridients = [
     image: "/public/img/filling/mushrooms.svg",
     price: 33,
     label: "mushrooms",
-    count: 0
+    count: 0,
   },
   {
     id: 2,
@@ -38,7 +35,7 @@ const ingridients = [
     image: "/public/img/filling/cheddar.svg",
     price: 42,
     label: "cheddar",
-    count: 0
+    count: 0,
   },
   {
     id: 3,
@@ -46,7 +43,7 @@ const ingridients = [
     image: "/public/img/filling/salami.svg",
     price: 42,
     label: "salami",
-    count: 0
+    count: 0,
   },
   {
     id: 4,
@@ -54,7 +51,7 @@ const ingridients = [
     image: "/public/img/filling/tomatoes.svg",
     price: 35,
     label: "tomatoes",
-    count: 0
+    count: 0,
   },
   {
     id: 5,
@@ -62,7 +59,7 @@ const ingridients = [
     image: "/public/img/filling/salmon.svg",
     price: 50,
     label: "salmon",
-    count: 0
+    count: 0,
   },
   {
     id: 6,
@@ -70,7 +67,7 @@ const ingridients = [
     image: "/public/img/filling/mozzarella.svg",
     price: 35,
     label: "mozzarella",
-    count: 0
+    count: 0,
   },
   {
     id: 7,
@@ -78,7 +75,7 @@ const ingridients = [
     image: "/public/img/filling/chile.svg",
     price: 21,
     label: "chile",
-    count: 0
+    count: 0,
   },
   {
     id: 8,
@@ -86,7 +83,7 @@ const ingridients = [
     image: "/public/img/filling/ananas.svg",
     price: 25,
     label: "ananas",
-    count: 0
+    count: 0,
   },
   {
     id: 9,
@@ -94,7 +91,7 @@ const ingridients = [
     image: "/public/img/filling/bacon.svg",
     price: 42,
     label: "bacon",
-    count: 0
+    count: 0,
   },
   {
     id: 10,
@@ -102,7 +99,7 @@ const ingridients = [
     image: "/public/img/filling/ham.svg",
     price: 42,
     label: "ham",
-    count: 0
+    count: 0,
   },
   {
     id: 11,
@@ -110,7 +107,7 @@ const ingridients = [
     image: "/public/img/filling/parmesan.svg",
     price: 35,
     label: "parmesan",
-    count: 0
+    count: 0,
   },
   {
     id: 12,
@@ -118,7 +115,7 @@ const ingridients = [
     image: "/public/img/filling/blue_cheese.svg",
     price: 50,
     label: "blue_cheese",
-    count: 0
+    count: 0,
   },
   {
     id: 13,
@@ -126,7 +123,7 @@ const ingridients = [
     image: "/public/img/filling/onion.svg",
     price: 21,
     label: "onion",
-    count: 0
+    count: 0,
   },
   {
     id: 14,
@@ -134,7 +131,7 @@ const ingridients = [
     image: "/public/img/filling/olives.svg",
     price: 25,
     label: "olives",
-    count: 0
+    count: 0,
   },
   {
     id: 15,
@@ -142,21 +139,17 @@ const ingridients = [
     image: "/public/img/filling/jalapeno.svg",
     price: 25,
     label: "jalapeno",
-    count: 0
-  }
+    count: 0,
+  },
 ];
 
 const getIngridients = (store) => {
-  store.commit(
-    SET_LONG_ENTITY,
-    {
-      entity:"ingr",
-      module:"Builder",
-      path:"composition",
-      value: ingridients,
-
-    },
-  );
+  store.commit(SET_LONG_ENTITY, {
+    entity: "ingr",
+    module: "Builder",
+    path: "composition",
+    value: ingridients,
+  });
 };
 
 const pizzaFilling = [
@@ -165,103 +158,100 @@ const pizzaFilling = [
     count: 1,
     name: "salami",
     price: 42,
-    title: "салями"
+    title: "салями",
   },
   {
     id: 4,
     count: 2,
     name: "tomatoes",
     price: 35,
-    title: "томаты"
-  }
+    title: "томаты",
+  },
 ];
 
 const setFillings = (store) => {
   for (let i = 0; i < pizzaFilling.length; i++) {
-    store.commit(
-      'Builder/' + CHANGE_COUNTER,
-      {
-        newCount: pizzaFilling[i].count,
-        id: pizzaFilling[i].id,
-      },
-    );
+    store.commit("Builder/" + CHANGE_COUNTER, {
+      newCount: pizzaFilling[i].count,
+      id: pizzaFilling[i].id,
+    });
   }
 };
 
 // Указываем название блока тестов — соответствует названию компонента.
-describe('BuilderPizzaView', () => {
-    // Переменные, которые будут переопределяться заново для каждого теста
-    let actions;
-    let store;
-    let wrapper;
-    
-    // Для каждого теста мы будем создавать новую обёртку.
-    const createComponent = options => {
-      wrapper = mount(BuilderPizzaView, options);
+describe("BuilderPizzaView", () => {
+  // Переменные, которые будут переопределяться заново для каждого теста
+  let actions;
+  let store;
+  let wrapper;
+
+  // Для каждого теста мы будем создавать новую обёртку.
+  const createComponent = (options) => {
+    wrapper = mount(BuilderPizzaView, options);
+  };
+
+  // Перед каждым тестом заменяем хранилище на новое,
+  // а также его действия свежими jest-функциями.
+  beforeEach(() => {
+    actions = {
+      Builder: {
+        changeNamePizza: jest.fn(),
+      },
     };
-    
-    // Перед каждым тестом заменяем хранилище на новое,
-    // а также его действия свежими jest-функциями.
-    beforeEach(() => {
-      actions = {
-        Builder: {
-          changeNamePizza: jest.fn(),
-        }
-      };
-      store = generateMockStore(actions);
-    });
-    
-      // Уничтожаем обёртку после каждого теста.
-    afterEach(() => {
-      wrapper.destroy();
-    });
-    
-      //проверяем, что компонент рендерится
-    it ('is rendered', () => {
-      createComponent({ localVue, store });
-      expect(wrapper.exists()).toBeTruthy();
-    });
+    store = generateMockStore(actions);
+  });
 
-    //проверяем, что компонент выводит название пиццы
-    it ('It displays the name of the pizza', () => {
-      setNamePizza(store);
-      createComponent({ localVue, store });
-      let name = wrapper.find('[data-test="name"]');
-      expect(name.element.value).toBe(namePizza);
-    });
+  // Уничтожаем обёртку после каждого теста.
+  afterEach(() => {
+    wrapper.destroy();
+  });
 
-    //проверяем, что компонент вызывает экшн переименования пиццы
-    it('It calls the pizza rename action', async () => {
-      createComponent({ localVue, store });
-      let name = wrapper.find('[data-test="name"]');
-      let str = "Проверка";
-      name.element.value = str;
-      await name.trigger('input');
-      expect(actions.Builder.changeNamePizza).toHaveBeenCalledWith(
-        expect.any(Object), // The Vuex context
-        str,
-      );
-    });
+  //проверяем, что компонент рендерится
+  it("is rendered", () => {
+    createComponent({ localVue, store });
+    expect(wrapper.exists()).toBeTruthy();
+  });
 
-    //проверяем, что компонент выводит картинки согласно выбранным добавкам
-    it ('It displays pictures according to the selected additives', () => {
-      getIngridients(store);
-      setFillings(store);
-      createComponent({ localVue, store });
-      let fils = wrapper.findAll('[data-test="fillings"]');
-      let newArr = [];
-      pizzaFilling.forEach((element) => {
-        newArr.push(element.count);
-      });
-      let count = newArr.reduce((sum, current) => sum + current, 0);
-      expect(fils.length).toBe(count);
-      let filFirst = wrapper.find('[data-test="fillings"]:first-of-type');
-      expect(filFirst.attributes('class')).toContain('pizza__filling--salami');
-      let filSecond = wrapper.find('[data-test="fillings"]:nth-of-type(2)');
-      expect(filSecond.attributes('class')).toContain('pizza__filling--tomatoes');
-      let filThird = wrapper.find('[data-test="fillings"]:last-of-type');
-      expect(filThird.attributes('class')).toContain('pizza__filling--second');
+  //проверяем, что компонент выводит название пиццы
+  it("It displays the name of the pizza", () => {
+    setNamePizza(store);
+    createComponent({ localVue, store });
+    let name = wrapper.find('[data-test="name"]');
+    expect(name.element.value).toBe(namePizza);
+  });
+
+  //проверяем, что компонент вызывает экшн переименования пиццы
+  it("It calls the pizza rename action", async () => {
+    createComponent({ localVue, store });
+    let name = wrapper.find('[data-test="name"]');
+    let str = "Проверка";
+    name.element.value = str;
+    await name.trigger("input");
+    expect(actions.Builder.changeNamePizza).toHaveBeenCalledWith(
+      expect.any(Object), // The Vuex context
+      str
+    );
+  });
+
+  //проверяем, что компонент выводит картинки согласно выбранным добавкам
+  it("It displays pictures according to the selected additives", () => {
+    getIngridients(store);
+    setFillings(store);
+    createComponent({ localVue, store });
+    let fils = wrapper.findAll('[data-test="fillings"]');
+    let newArr = [];
+    pizzaFilling.forEach((element) => {
+      newArr.push(element.count);
     });
+    let count = newArr.reduce((sum, current) => sum + current, 0);
+    expect(fils.length).toBe(count);
+    let filFirst = wrapper.find('[data-test="fillings"]:first-of-type');
+    expect(filFirst.attributes("class")).toContain("pizza__filling--salami");
+    let filSecond = wrapper.find('[data-test="fillings"]:nth-of-type(2)');
+    expect(filSecond.attributes("class")).toContain("pizza__filling--tomatoes");
+    let filThird = wrapper.find('[data-test="fillings"]:last-of-type');
+    expect(filThird.attributes("class")).toContain("pizza__filling--second");
+  });
 });
 
 // Список элементов для тестирования

@@ -6,7 +6,7 @@
     </p>
 
     <div class="additional-list__wrapper">
-      <ItemCounter
+      <AppItemCounter
         v-model="item.count"
         :parentClass="`additional-list__counter`"
         :colorBtn="`counter__button--orange`"
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
+import AppItemCounter from "@/common/components/AppItemCounter";
 
 export default {
   name: "CartAdditionalItem",
   components: {
-    ItemCounter,
+    AppItemCounter,
   },
   props: {
     item: {

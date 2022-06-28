@@ -4,7 +4,7 @@
     <div class="sheet__content ingridients">
       <div class="ingridients__sauce">
         <p>Основной соус:</p>
-        <RadioButton
+        <AppRadioButton
           v-for="item in sauces"
           :key="item.id"
           name="sauce"
@@ -15,7 +15,7 @@
           data-test="sauce"
         >
           <span>{{ item.name }}</span>
-        </RadioButton>
+        </AppRadioButton>
       </div>
       <div class="ingridients__filling">
         <p>Начинка:</p>
@@ -32,7 +32,7 @@
                 </span>
               </AppDrag>
             </AppDrop>
-            <ItemCounter
+            <AppItemCounter
               v-model="item.count"
               :parentClass="`ingridients__counter`"
               @input="changeCounterMethod($event, item.id)"
@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import ItemCounter from "@/common/components/ItemCounter";
-import RadioButton from "@/common/components/RadioButton";
+import AppItemCounter from "@/common/components/AppItemCounter";
+import AppRadioButton from "@/common/components/AppRadioButton";
 import AppDrag from "@/common/components/AppDrag";
 import AppDrop from "@/common/components/AppDrop";
 
@@ -56,8 +56,8 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "BuilderIngredientsSelector",
   components: {
-    ItemCounter,
-    RadioButton,
+    AppItemCounter,
+    AppRadioButton,
     AppDrag,
     AppDrop,
   },

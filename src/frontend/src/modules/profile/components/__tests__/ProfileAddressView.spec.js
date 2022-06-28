@@ -1,9 +1,9 @@
-import { mount } from '@vue/test-utils';
+import { mount } from "@vue/test-utils";
 // Импортируем сам компонент.
 import ProfileAddressView from "@/modules/profile/components/ProfileAddressView";
 
 // Указываем название блока тестов — соответствует названию компонента.
-describe('ProfileAddressView', () => {
+describe("ProfileAddressView", () => {
   // Переменные, которые будут переопределяться заново для каждого теста
   let wrapper;
   // Определяем входные параметры по умолчанию и заглушки.
@@ -15,12 +15,12 @@ describe('ProfileAddressView', () => {
       id: 1,
       name: "Дом",
       street: "Хворостянского",
-      userId: "52ac478b-7148-4f32-b391-bde858803121"
+      userId: "52ac478b-7148-4f32-b391-bde858803121",
     },
   };
 
   // Для каждого теста мы будем создавать новую обёртку.
-  const createComponent = options => {
+  const createComponent = (options) => {
     wrapper = mount(ProfileAddressView, options);
   };
 
@@ -36,13 +36,13 @@ describe('ProfileAddressView', () => {
   });
 
   //проверяем, что компонент рендерится
-  it ('is rendered', () => {
+  it("is rendered", () => {
     createComponent({ propsData });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   //проверяем, что компонент выводит название адреса, если оно есть
-  it('It displays the name of the address, if it exists', () => {
+  it("It displays the name of the address, if it exists", () => {
     createComponent({ propsData });
     let name = wrapper.find('[data-test="name"]');
     expect(name.text()).toBe(propsData.address.name);
@@ -50,7 +50,7 @@ describe('ProfileAddressView', () => {
   });
 
   //проверяем, что компонент выводит альтернативное название адреса
-  it('It displays the name of the address, if it exists', () => {
+  it("It displays the name of the address, if it exists", () => {
     let propsData = {
       address: {
         building: "204",
@@ -59,31 +59,31 @@ describe('ProfileAddressView', () => {
         id: 1,
         name: "",
         street: "Дзержинского",
-        userId: "52ac478b-7148-4f32-b391-bde858803121"
+        userId: "52ac478b-7148-4f32-b391-bde858803121",
       },
     };
     createComponent({ propsData });
     let alternate = wrapper.find('[data-test="alternate"]');
-    expect(alternate.text()).toBe(`Адрес №${propsData.address.id }.`);
+    expect(alternate.text()).toBe(`Адрес №${propsData.address.id}.`);
   });
 
   //проверяем, что генерируется событие по клику на "Изменить"
   it('It emits an event on a click on "Change"', async () => {
     createComponent({ propsData });
     let put = wrapper.find('[data-test="put"]');
-    await put.trigger('click');
+    await put.trigger("click");
     expect(wrapper.emitted().putAddress).toBeTruthy();
   });
 
   //проверяем, что компонент выводит комментарий при его наличии
-  it('It displays a comment if there is one', () => {
+  it("It displays a comment if there is one", () => {
     createComponent({ propsData });
     let comment = wrapper.find('[data-test="comment"]');
     expect(comment.text()).toBe(propsData.address.comment);
   });
 
   //проверяем, что компонент выводит адрес в ожидаемом виде
-  it ('It renders the address as expected', () => {
+  it("It renders the address as expected", () => {
     createComponent({ propsData });
     let address = wrapper.find('[data-test="street"]');
     expect(address.text()).toBe(

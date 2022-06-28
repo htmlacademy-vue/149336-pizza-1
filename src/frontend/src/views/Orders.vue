@@ -21,14 +21,9 @@ import OrdersItem from "../modules/orders/components/OrdersItem.vue";
 export default {
   name: "Orders",
   components: { OrdersItem },
-  props: [],
-  data() {
-    return {};
-  },
   computed: {
     ...mapState("Orders", ["orders"]),
   },
-  watch: {},
   created() {
     this.queryOrders();
   },

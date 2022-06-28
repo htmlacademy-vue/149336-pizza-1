@@ -19,14 +19,10 @@ import { mapState } from "vuex";
 
 export default {
   name: "OrdersAdditionalItem",
-  components: {},
   props: {
     miscItem: {
       type: Object,
     },
-  },
-  data() {
-    return {};
   },
   computed: {
     ...mapState("Orders", ["orders"]),
@@ -49,9 +45,6 @@ export default {
       return m;
     },
   },
-  watch: {},
-  created() {},
-  methods: {},
 };
 </script>
 

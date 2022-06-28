@@ -73,9 +73,6 @@ export default {
       type: Object,
     },
   },
-  data() {
-    return {};
-  },
   computed: {
     ...mapState("Orders", ["orders"]),
 
@@ -115,8 +112,6 @@ export default {
       return sum;
     },
   },
-  watch: {},
-  mounted() {},
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
     ...mapActions("Cart", ["repeatPizza"]),

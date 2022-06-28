@@ -37,8 +37,6 @@ import { mapActions, mapState } from "vuex";
 
 export default {
   name: "Popup",
-  components: {},
-  props: [],
   data() {
     return {
       element: "",
@@ -50,8 +48,6 @@ export default {
       user: (state) => state.user,
     }),
   },
-  watch: {},
-  created() {},
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),
     ...mapActions("Cart", ["resetPizzas"]),

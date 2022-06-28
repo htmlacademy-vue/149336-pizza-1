@@ -1,7 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import { SET_ENTITY, CHANGE_DOUGH } from '@/store/mutation-types';
-import { generateMockStore } from '@/store/mocks';
+import { mount, createLocalVue } from "@vue/test-utils";
+import Vuex from "vuex";
+import { SET_ENTITY, CHANGE_DOUGH } from "@/store/mutation-types";
+import { generateMockStore } from "@/store/mocks";
 // Импортируем сам компонент.
 import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
 
@@ -13,55 +13,49 @@ localVue.use(Vuex);
 const dough = "light";
 
 const setDough = (store) => {
-  store.commit(
-    "Builder/" + CHANGE_DOUGH,
-    {
-      value: dough,
-    },
-  );
+  store.commit("Builder/" + CHANGE_DOUGH, {
+    value: dough,
+  });
 };
 
 const doughs = [
   {
-    id:1,
-    name:"Тонкое",
-    image:"/public/img/dough-light.svg",
-    description:"Из твердых сортов пшеницы",
-    price:300,
-    type:"light",
-    isChecked:true
+    id: 1,
+    name: "Тонкое",
+    image: "/public/img/dough-light.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+    type: "light",
+    isChecked: true,
   },
   {
-    id:2,
-    name:"Толстое",
-    image:"/public/img/dough-large.svg",
-    description:"Из твердых сортов пшеницы",
-    price:300,
-    type:"large",
-    isChecked:false
+    id: 2,
+    name: "Толстое",
+    image: "/public/img/dough-large.svg",
+    description: "Из твердых сортов пшеницы",
+    price: 300,
+    type: "large",
+    isChecked: false,
   },
 ];
 
 const getDough = (store) => {
-  store.commit(
-    SET_ENTITY,
-    {
-      module: "Builder",
-      entity: "doughs",
-      value: doughs,
-    },
-  );
+  store.commit(SET_ENTITY, {
+    module: "Builder",
+    entity: "doughs",
+    value: doughs,
+  });
 };
 
 // Указываем название блока тестов — соответствует названию компонента.
-describe('BuilderDoughSelector', () => {
+describe("BuilderDoughSelector", () => {
   // Переменные, которые будут переопределяться заново для каждого теста
   let actions;
   let store;
   let wrapper;
 
   // Для каждого теста мы будем создавать новую обёртку.
-  const createComponent = options => {
+  const createComponent = (options) => {
     wrapper = mount(BuilderDoughSelector, options);
   };
 
@@ -78,13 +72,13 @@ describe('BuilderDoughSelector', () => {
   });
 
   //проверяем, что компонент рендерится
-  it ('is rendered', () => {
+  it("is rendered", () => {
     createComponent({ localVue, store });
     expect(wrapper.exists()).toBeTruthy();
   });
 
   //проверяем, что компонент выводит название теста
-  it ('It displays the name of the test', () => {
+  it("It displays the name of the test", () => {
     setDough(store);
     getDough(store);
     createComponent({ localVue, store });
@@ -93,7 +87,7 @@ describe('BuilderDoughSelector', () => {
   });
 
   //проверяем, что компонент выводит описание теста
-  it ('It displays the description of the test', () => {
+  it("It displays the description of the test", () => {
     setDough(store);
     getDough(store);
     createComponent({ localVue, store });
@@ -102,7 +96,7 @@ describe('BuilderDoughSelector', () => {
   });
 
   //проверяем, что в компоненте выводится правильное количество видов теста
-  it ('The correct number of test types is displayed in the component', () => {
+  it("The correct number of test types is displayed in the component", () => {
     setDough(store);
     getDough(store);
     createComponent({ localVue, store });

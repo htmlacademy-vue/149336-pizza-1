@@ -74,7 +74,6 @@ export default {
     ProfileAddressView,
     ProfileAddressEdit,
   },
-  props: [],
   data() {
     return {
       visibleForm: false,
@@ -94,7 +93,6 @@ export default {
       addresses: (state) => state.addresses,
     }),
   },
-  watch: {},
   created() {
     this.queryAddresses();
   },

@@ -1,7 +1,7 @@
 module.exports = {
-  moduleFileExtensions: ['js', 'jsx', 'json', 'vue'],
+  moduleFileExtensions: ["js", "jsx", "json", "vue"],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    "^@/(.*)$": "<rootDir>/src/$1",
   },
   preset: "@vue/cli-plugin-unit-jest",
   // setupFiles: ['<rootDir>/.jest.register-context.js'],

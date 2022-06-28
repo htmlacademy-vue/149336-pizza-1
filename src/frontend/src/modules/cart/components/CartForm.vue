@@ -252,17 +252,12 @@ export default {
     },
   },
   methods: {
-    // ...mapActions("Auth", ["changeUserPhone"]),
     ...mapActions("Cart", [
       "updateUserAddress",
       "updateUserRecipient",
       "resetUserAddress",
       "updatePhone",
     ]),
-  },
-
-  mounted() {
-    // this.$refs.phone.$refs.input.focus();
   },
 };
 </script>
