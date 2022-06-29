@@ -8,8 +8,8 @@
         name="diameter"
         :value="item.size"
         v-model="checkedSize"
-        :classRadioBtn="`diameter__input diameter__input--${item.size}`"
-        :classRadioInput="`visually-hidden`"
+        :class-radio-btn="`diameter__input diameter__input--${item.size}`"
+        :class-radio-input="`visually-hidden`"
         data-test="size"
       >
         <span> {{ item.name }}</span>

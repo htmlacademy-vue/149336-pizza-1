@@ -19,10 +19,15 @@
       </div>
     </div>
 
-    <p class="order__price" v-if="pizza.quantity > 1" data-test="quantity">
+    <p
+      class="order__price"
+      v-if="pizza.quantity > 1"
+      key="order-price"
+      data-test="quantity"
+    >
       {{ pizza.quantity }} х {{ pizza.totalPricePizza }} ₽
     </p>
-    <p class="order__price" v-else data-test="price">
+    <p class="order__price" v-else key="order-price" data-test="price">
       {{ pizza.totalPricePizza }} ₽
     </p>
   </li>
@@ -40,6 +45,7 @@ export default {
   },
   computed: {
     ...mapState("Orders", ["orders"]),
+
     ...mapState("Builder", ["ingredients", "sauces", "sizes", "doughs"]),
 
     doughSizeText() {

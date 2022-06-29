@@ -10,7 +10,7 @@
           name="sauce"
           :value="item.value"
           v-model="checkedSouce"
-          :classRadioBtn="`radio ingridients__input`"
+          :class-radio-btn="`radio ingridients__input`"
           @change="changeSouceMethod($event, item.price)"
           data-test="sauce"
         >

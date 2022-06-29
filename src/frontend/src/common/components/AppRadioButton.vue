@@ -24,18 +24,22 @@ export default {
       type: String,
       required: true,
     },
+
     classRadioBtn: {
       type: String,
       required: false,
     },
+
     classRadioInput: {
       type: String,
       required: false,
     },
+
     name: {
       type: String,
       required: true,
     },
+
     value: {
       type: String,
       required: true,

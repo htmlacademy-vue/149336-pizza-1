@@ -1,5 +1,5 @@
 <template>
-  <validation-observer v-slot="{ invalid }" class="wrap">
+  <ValidationObserver v-slot="{ invalid }" class="wrap">
     <form class="layout-form" @submit.prevent="createOrderMethod">
       <main class="content cart">
         <div class="container">
@@ -13,25 +13,25 @@
 
           <ul class="cart-list sheet" v-if="pizzas.length">
             <li
-              is="cart-product-item"
+              is="CartProductItem"
               v-for="(item, index) in pizzas"
               :key="index"
               :pizza="item"
-            ></li>
+            />
           </ul>
 
           <div class="cart__additional">
             <ul class="additional-list" v-if="pizzas.length && misc.length">
               <li
-                is="cart-additional-item"
+                is="CartAdditionalItem"
                 v-for="(item, index) in misc"
                 :key="index"
                 :item="item"
-              ></li>
+              />
             </ul>
           </div>
           <div class="cart__form" v-if="pizzas.length">
-            <cart-form />
+            <CartForm />
           </div>
         </div>
       </main>
@@ -65,7 +65,7 @@
       </section>
       <router-view />
     </form>
-  </validation-observer>
+  </ValidationObserver>
 </template>
 <script>
 import CartProductItem from "@/modules/cart/components/CartProductItem";
@@ -92,9 +92,11 @@ export default {
       user: (state) => state.user,
       isAuthenticated: (state) => state.isAuthenticated,
     }),
+
     ...mapState("Builder", {
       composition: (state) => state.composition,
     }),
+
     ...mapState("Cart", {
       pizzas: (state) => state.pizzas,
       misc: (state) => state.misc,
@@ -114,7 +116,9 @@ export default {
   },
   methods: {
     ...mapActions("Auth", ["queryAddresses", "newAddresses"]),
+
     ...mapActions("Builder", ["resetBuilder"]),
+
     ...mapActions("Orders", ["newOrder"]),
 
     createOrderMethod() {

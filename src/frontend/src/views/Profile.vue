@@ -32,7 +32,7 @@
     </div>
 
     <div class="layout__address" v-if="addresses">
-      <profile-address-view
+      <ProfileAddressView
         class="layout__address"
         v-for="address in addresses"
         :key="address.id"
@@ -43,7 +43,7 @@
     </div>
 
     <div class="layout__address" v-if="visibleForm" data-test="form">
-      <profile-address-edit
+      <ProfileAddressEdit
         :adr="editableAddress"
         @resetAddress="resetAddress"
         @changeVisibleForm="changeVisibleForm"

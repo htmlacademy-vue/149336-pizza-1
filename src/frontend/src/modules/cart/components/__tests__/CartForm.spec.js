@@ -281,7 +281,7 @@ describe("CartForm", () => {
   + {{ address.comment || `Адрес ${index + 1}` }}
   + v-if="recipientOrder === 'myself'"
   + v-model="phoneUser"
-  + :errorText="errors[0]"
+  + :error-text="errors[0]"
   + v-if="recipientOrder !== 'myself'"
   + v-if="recipientOrder == 'new'"
   + v-if="recipientOrder !== 'myself' && recipientOrder !== 'new'"

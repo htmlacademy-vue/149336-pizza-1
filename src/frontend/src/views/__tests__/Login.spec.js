@@ -94,7 +94,7 @@ describe("Login", () => {
 // Список элементов для тестирования
 /*
   + @submit.prevent="login"
-  + :errorText="errors[0]"
+  + :error-text="errors[0]"
   + :disabled="invalid"
 */
 

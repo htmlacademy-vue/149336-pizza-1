@@ -35,10 +35,12 @@ export default {
       type: Number,
       required: true,
     },
+
     parentClass: {
       type: String,
       required: false,
     },
+
     colorBtn: {
       type: String,
       required: false,

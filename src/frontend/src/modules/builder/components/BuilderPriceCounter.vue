@@ -3,6 +3,7 @@
     <p data-test="price">Итого: {{ getTotalPrice || 0 }} ₽</p>
     <button
       v-if="!composition.id"
+      key="go"
       type="button"
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
@@ -14,6 +15,7 @@
     </button>
     <button
       v-else
+      key="go"
       type="button"
       class="button"
       :class="{ 'button--disabled': isEmptyNamePizza }"
