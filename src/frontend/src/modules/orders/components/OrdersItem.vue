@@ -33,7 +33,7 @@
 
     <ul class="order__list" v-if="order.orderPizzas">
       <li
-        is="orders-pizza-item"
+        is="OrdersPizzaItem"
         class="order__item"
         v-for="pizza in order.orderPizzas"
         :key="pizza.id"
@@ -43,17 +43,19 @@
 
     <ul class="order__additional" v-if="order.orderMisc">
       <li
-        is="orders-additional-item"
+        is="OrdersAdditionalItem"
         v-for="misc in order.orderMisc"
         :key="misc.id"
         :miscItem="misc"
       ></li>
     </ul>
 
-    <p class="order__address" v-if="order.orderAddress">
+    <p class="order__address" v-if="order.orderAddress" key="order-address">
       {{ orderAddressText }}
     </p>
-    <p class="order__address" v-else>Адрес был удален или не указан</p>
+    <p class="order__address" v-else key="order-address">
+      Адрес был удален или не указан
+    </p>
   </div>
 </template>
 
@@ -114,6 +116,7 @@ export default {
   },
   methods: {
     ...mapActions("Orders", ["deleteOrder"]),
+
     ...mapActions("Cart", ["repeatPizza"]),
 
     deleteOrderMethod(order) {

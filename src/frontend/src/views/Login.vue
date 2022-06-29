@@ -17,12 +17,12 @@
         <div class="sign-form__title">
           <h1 class="title title--small">Авторизуйтесь на сайте</h1>
         </div>
-        <validation-observer v-slot="{ invalid }">
+        <ValidationObserver v-slot="{ invalid }">
           <form @submit.prevent="login">
             <div class="sign-form__input">
               <label class="input">
                 <span>E-mail</span>
-                <validation-provider
+                <ValidationProvider
                   name="E-mail"
                   rules="required|email"
                   v-slot="{ errors }"
@@ -33,17 +33,17 @@
                     name="email"
                     class="input"
                     placeholder="example@mail.ru"
-                    :errorText="errors[0]"
+                    :error-text="errors[0]"
                     data-test="email-component"
                   />
-                </validation-provider>
+                </ValidationProvider>
               </label>
             </div>
 
             <div class="sign-form__input">
               <label class="input">
                 <span>Пароль</span>
-                <validation-provider
+                <ValidationProvider
                   name="Пароль"
                   rules="required"
                   v-slot="{ errors }"
@@ -54,17 +54,17 @@
                     name="pass"
                     class="input"
                     placeholder="***********"
-                    :errorText="errors[0]"
+                    :error-text="errors[0]"
                     data-test="password-component"
                   />
-                </validation-provider>
+                </ValidationProvider>
               </label>
             </div>
             <button type="submit" class="button" :disabled="invalid">
               Авторизоваться
             </button>
           </form>
-        </validation-observer>
+        </ValidationObserver>
       </div>
     </transition>
   </div>

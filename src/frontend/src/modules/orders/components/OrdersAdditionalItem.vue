@@ -26,6 +26,7 @@ export default {
   },
   computed: {
     ...mapState("Orders", ["orders"]),
+
     ...mapState("Cart", ["misc"]),
 
     miscItemInfo() {

@@ -15,7 +15,7 @@
         {{ getTotalPriceOrder }} ₽</router-link
       >
     </div>
-    <div v-if="isAuthenticated" class="header__user">
+    <div v-if="isAuthenticated" key="is-authenticated" class="header__user">
       <router-link :to="{ name: 'Profile' }">
         <picture>
           <source
@@ -41,7 +41,7 @@
         <span>Выйти</span>
       </a>
     </div>
-    <div v-else class="header__user">
+    <div v-else key="is-authenticated" class="header__user">
       <a class="header__login" @click="$router.push('/login')">
         <span>Войти</span>
       </a>

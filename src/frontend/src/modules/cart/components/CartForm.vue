@@ -21,7 +21,7 @@
     </label>
     <label class="input input--big-label">
       <span>Контактный телефон:</span>
-      <validation-provider
+      <ValidationProvider
         v-if="recipientOrder === 'myself'"
         name="Phone"
         rules="required"
@@ -33,10 +33,10 @@
           name="tel"
           class="input"
           placeholder="+7 999-999-99-99"
-          :errorText="errors[0]"
+          :error-text="errors[0]"
           data-test="phone"
         />
-      </validation-provider>
+      </ValidationProvider>
       <AppInput
         v-else
         v-model="phoneUser"
@@ -63,7 +63,7 @@
       <div class="cart-form__input">
         <label class="input">
           <span>Улица*</span>
-          <validation-provider
+          <ValidationProvider
             v-if="recipientOrder === 'new'"
             name="Street"
             rules="required"
@@ -75,10 +75,10 @@
               class="input"
               placeholder="ул.Ленина"
               v-model="streetAddress"
-              :errorText="errors[0]"
+              :error-text="errors[0]"
               data-test="street"
             />
-          </validation-provider>
+          </ValidationProvider>
           <AppInput
             v-else
             type="text"
@@ -94,7 +94,7 @@
       <div class="cart-form__input cart-form__input--small">
         <label class="input">
           <span>Дом*</span>
-          <validation-provider
+          <ValidationProvider
             v-if="recipientOrder === 'new'"
             name="House"
             rules="required"
@@ -106,10 +106,10 @@
               class="input"
               placeholder="100"
               v-model="houseAddress"
-              :errorText="errors[0]"
+              :error-text="errors[0]"
               data-test="house"
             />
-          </validation-provider>
+          </ValidationProvider>
           <AppInput
             v-else
             type="text"
@@ -161,6 +161,7 @@ export default {
       user: (state) => state.user,
       addresses: (state) => state.addresses,
     }),
+
     ...mapState("Cart", {
       recipient: (state) => state.recipient,
       phone: (state) => state.phone,

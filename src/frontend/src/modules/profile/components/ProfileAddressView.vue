@@ -1,8 +1,12 @@
 <template>
   <div class="sheet address-form">
     <div class="address-form__header">
-      <b v-if="address.name" data-test="name">{{ address.name }}</b>
-      <b v-else data-test="alternate">Адрес №{{ address.id }}.</b>
+      <b v-if="address.name" data-test="name" key="address-name">{{
+        address.name
+      }}</b>
+      <b v-else data-test="alternate" key="address-name"
+        >Адрес №{{ address.id }}.</b
+      >
       <div class="address-form__edit">
         <button
           type="button"

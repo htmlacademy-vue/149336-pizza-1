@@ -10,9 +10,9 @@
       name="view"
       appear
       mode="in-out"
-      v-on:enter="enter"
-      v-on:leave="leave"
-      v-on:after-leave="afterLeave"
+      @enter="enter"
+      @leave="leave"
+      @after-leave="afterLeave"
     >
       <div class="popup">
         <a href="" @click.prevent="leave" class="close" data-test="close">
@@ -50,6 +50,7 @@ export default {
   },
   methods: {
     ...mapActions("Builder", ["resetBuilder"]),
+
     ...mapActions("Cart", ["resetPizzas"]),
 
     closePopupMethod() {

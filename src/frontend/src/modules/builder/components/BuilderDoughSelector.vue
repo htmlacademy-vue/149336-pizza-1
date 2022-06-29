@@ -8,8 +8,8 @@
         name="dough"
         :value="item.type"
         v-model="checkedDough"
-        :classRadioBtn="`dough__input dough__input--${item.type}`"
-        :classRadioInput="`visually-hidden`"
+        :class-radio-btn="`dough__input dough__input--${item.type}`"
+        :class-radio-input="`visually-hidden`"
         data-test="radio"
       >
         <b data-test="name">{{ item.name }}</b>

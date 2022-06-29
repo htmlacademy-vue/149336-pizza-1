@@ -1,20 +1,20 @@
 <template>
-  <validation-observer v-slot="{ invalid }">
+  <ValidationObserver v-slot="{ invalid }">
     <form
       class="address-form address-form--opened sheet"
       @submit.prevent="updateAddress"
       data-test="form"
     >
       <div class="address-form__header">
-        <b v-if="addrId">Адрес №{{ addrId }}</b>
-        <b v-else>Адрес №</b>
+        <b v-if="addrId" key="address-id">Адрес №{{ addrId }}</b>
+        <b v-else key="address-id">Адрес №</b>
       </div>
 
       <div class="address-form__wrapper">
         <div class="address-form__input">
           <label class="input">
             <span>Название адреса*</span>
-            <validation-provider
+            <ValidationProvider
               name="Название"
               rules="required"
               v-slot="{ errors }"
@@ -25,16 +25,16 @@
                 name="addr-name"
                 class="input"
                 placeholder="Введите название адреса"
-                :errorText="errors[0]"
+                :error-text="errors[0]"
                 data-test="name"
               />
-            </validation-provider>
+            </ValidationProvider>
           </label>
         </div>
         <div class="address-form__input address-form__input--size--normal">
           <label class="input">
             <span>Улица*</span>
-            <validation-provider
+            <ValidationProvider
               name="Улица"
               rules="required"
               v-slot="{ errors }"
@@ -45,16 +45,16 @@
                 name="addr-street"
                 class="input"
                 placeholder="Введите название улицы"
-                :errorText="errors[0]"
+                :error-text="errors[0]"
                 data-test="street"
               />
-            </validation-provider>
+            </ValidationProvider>
           </label>
         </div>
         <div class="address-form__input address-form__input--size--small">
           <label class="input">
             <span>Дом*</span>
-            <validation-provider
+            <ValidationProvider
               name="Дом"
               rules="required|alpha_num"
               v-slot="{ errors }"
@@ -65,16 +65,16 @@
                 name="addr-house"
                 class="input"
                 placeholder="Введите номер дома"
-                :errorText="errors[0]"
+                :error-text="errors[0]"
                 data-test="house"
               />
-            </validation-provider>
+            </ValidationProvider>
           </label>
         </div>
         <div class="address-form__input address-form__input--size--small">
           <label class="input">
             <span>Квартира</span>
-            <validation-provider
+            <ValidationProvider
               name="Квартира"
               rules="numeric"
               v-slot="{ errors }"
@@ -85,10 +85,10 @@
                 name="addr-apartment"
                 class="input"
                 placeholder="Введите № квартиры"
-                :errorText="errors[0]"
+                :error-text="errors[0]"
                 data-test="flat"
               />
-            </validation-provider>
+            </ValidationProvider>
           </label>
         </div>
         <div class="address-form__input">
@@ -134,7 +134,7 @@
         </button>
       </div>
     </form>
-  </validation-observer>
+  </ValidationObserver>
 </template>
 
 <script>

@@ -5,12 +5,12 @@
     </div>
 
     <section
-      is="orders-item"
+      is="OrdersItem"
       class="sheet order"
       v-for="order in orders"
       :key="order.id"
       :order="order"
-    ></section>
+    />
   </div>
 </template>
 
