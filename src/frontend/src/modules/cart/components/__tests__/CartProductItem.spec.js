@@ -302,8 +302,8 @@ describe("CartProductItem", () => {
   + {{ pizza.sauce }}
   + {{ pizza.fillings }}
   + v-model="pizza.count"
-  + :parentClass="`cart-list__counter`"
-  + :colorBtn="`counter__button--orange`"
+  + :parent-class="`cart-list__counter`"
+  + :color-btn="`counter__button--orange`"
   + {{ pizza.price * pizza.count }}
   + @click="changePizzaMethod(pizza)"
   + ...mapActions("Cart", ["updatePizza"]),

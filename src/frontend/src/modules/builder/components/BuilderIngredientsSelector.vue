@@ -34,7 +34,7 @@
             </AppDrop>
             <AppItemCounter
               v-model="item.count"
-              :parentClass="`ingridients__counter`"
+              :parent-class="`ingridients__counter`"
               @input="changeCounterMethod($event, item.id)"
               data-test="counter"
             />

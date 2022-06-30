@@ -82,8 +82,8 @@ describe("CartAdditionalItem", () => {
   + :alt="item.name"
   + {{ item.name }}
   + v-model="item.count"
-  + :parentClass="`additional-list__counter`"
-  + :colorBtn="`counter__button--orange`"
+  + :parent-class="`additional-list__counter`"
+  + :color-btn="`counter__button--orange`"
   + {{ item.price }}
 */
 
