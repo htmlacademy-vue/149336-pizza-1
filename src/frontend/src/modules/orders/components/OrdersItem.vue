@@ -38,7 +38,7 @@
         v-for="pizza in order.orderPizzas"
         :key="pizza.id"
         :pizza="pizza"
-      ></li>
+      />
     </ul>
 
     <ul class="order__additional" v-if="order.orderMisc">
@@ -46,8 +46,8 @@
         is="OrdersAdditionalItem"
         v-for="misc in order.orderMisc"
         :key="misc.id"
-        :miscItem="misc"
-      ></li>
+        :misc-item="misc"
+      />
     </ul>
 
     <p class="order__address" v-if="order.orderAddress" key="order-address">

@@ -8,8 +8,8 @@
     <div class="additional-list__wrapper">
       <AppItemCounter
         v-model="item.count"
-        :parentClass="`additional-list__counter`"
-        :colorBtn="`counter__button--orange`"
+        :parent-class="`additional-list__counter`"
+        :color-btn="`counter__button--orange`"
       />
 
       <div class="additional-list__price">

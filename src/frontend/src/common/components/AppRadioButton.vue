@@ -8,7 +8,7 @@
       :class="classRadioInput"
       @change="$emit('change', $event.target.value)"
     />
-    <slot></slot>
+    <slot />
   </label>
 </template>
 

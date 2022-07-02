@@ -27,7 +27,7 @@
               `pizza__filling--${item.name}`,
             ]"
             data-test="fillings"
-          ></div>
+          />
         </transition-group>
       </div>
     </div>

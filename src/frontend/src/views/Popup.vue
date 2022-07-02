@@ -1,11 +1,5 @@
 <template>
   <div class="wrapper">
-    <!--<transition
-      mode="out-in"
-      appear
-      enter-active-class="animate__animated animate__zoomIn"
-      leave-active-class="animate__animated animate__zoomOut"
-    >-->
     <transition
       name="view"
       appear
